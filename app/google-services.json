@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "913811940697",
+    "firebase_url": "https://messengerapplication-122d4.firebaseio.com",
+    "project_id": "messengerapplication-122d4",
+    "storage_bucket": "messengerapplication-122d4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:913811940697:android:f35b9d202f1c71f842d848",
+        "android_client_info": {
+          "package_name": "ru.popkovden.messengerapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "913811940697-3hs0rmnbg6aj2sktei4iqfba51hj1fdo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCz0B3CjdgHS64_eQ9zVz5IzJCdvyHsoJQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "913811940697-3hs0rmnbg6aj2sktei4iqfba51hj1fdo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
