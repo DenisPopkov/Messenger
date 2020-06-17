@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="ru.popkovden.messengerapplication.viewmodel.VerifyCodeFragmentViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/mainColor"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton"
+        app:layout_constraintStart_toStartOf="@+id/imageButton"
+        tools:context=".ui.fragment.GreetingFragment">
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/backToSendPhoneNumber"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:background="@color/mainColor"
+            android:src="@drawable/arrow_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/verification_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/verification_code"
+            android:textColor="@color/whiteColor"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/message_for_user"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/message_for_user"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="30dp"
+            android:text="@string/message_in_fragment_verify_screen"
+            android:textAlignment="center"
+            android:textColor="@color/whiteColor"
+            android:textSize="17sp"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayoutCompat"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/linearLayoutCompat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/firstCodeBox"
+                android:layout_width="45dp"
+                android:layout_height="55dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/verify_code_square_view"
+                android:cursorVisible="false"
+                android:inputType="phone"
+                android:maxLength="1"
+                android:textAlignment="center"
+                android:textColor="@color/whiteColor"
+                android:textSize="32sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/secondCodeBox"
+                android:layout_width="45dp"
+                android:layout_height="55dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/verify_code_square_view"
+                android:cursorVisible="false"
+                android:inputType="phone"
+                android:maxLength="1"
+                android:textAlignment="center"
+                android:textColor="@color/whiteColor"
+                android:textSize="32sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/thirdCodeBox"
+                android:layout_width="45dp"
+                android:layout_height="55dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/verify_code_square_view"
+                android:cursorVisible="false"
+                android:inputType="phone"
+                android:maxLength="1"
+                android:textAlignment="center"
+                android:textColor="@color/whiteColor"
+                android:textSize="32sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/fourthCodeBox"
+                android:layout_width="45dp"
+                android:layout_height="55dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/verify_code_square_view"
+                android:cursorVisible="false"
+                android:inputType="phone"
+                android:maxLength="1"
+                android:textAlignment="center"
+                android:textColor="@color/whiteColor"
+                android:textSize="32sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/fifthCodeBox"
+                android:layout_width="45dp"
+                android:layout_height="55dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/verify_code_square_view"
+                android:cursorVisible="false"
+                android:inputType="phone"
+                android:maxLength="1"
+                android:textAlignment="center"
+                android:textColor="@color/whiteColor"
+                android:textSize="32sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/sixthCodeBox"
+                android:layout_width="45dp"
+                android:layout_height="55dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/verify_code_square_view"
+                android:cursorVisible="false"
+                android:inputType="phone"
+                android:maxLength="1"
+                android:textAlignment="center"
+                android:textColor="@color/whiteColor"
+                android:textSize="32sp"
+                android:textStyle="bold" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <TextView
+            android:id="@+id/timer"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="@string/resend"
+            android:textAlignment="center"
+            android:textColor="@color/whiteColor"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

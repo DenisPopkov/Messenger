@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">MessengerApplication</string>
+    <string name="verification_code">Код подтверждения</string>
+    <string name="message_in_fragment_verify_screen">Пожалуйста введите код подтверждения отправленный на номер %1$s</string>
+    <string name="resend">Отправить повторно  (%1$s)</string>
+    <string name="resendWithoutTimer">Отправить повторно</string>
+    <string name="registration">Регистрация</string>
+    <string name="phone_number_verify">Введите свой номер телефона для регистрации</string>
+    <string name="next">Продолжить</string>
+    <string name="phone_number_hint">Номер необходимо вводить в международном формате</string>
 </resources>

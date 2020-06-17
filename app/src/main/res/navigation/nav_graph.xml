@@ -9,5 +9,39 @@
         android:id="@+id/greetingFragment"
         android:name="ru.popkovden.messengerapplication.ui.fragment.GreetingFragment"
         android:label="fragment_greeting"
-        tools:layout="@layout/fragment_greeting" />
+        tools:layout="@layout/fragment_greeting" >
+        <action
+            android:id="@+id/action_greetingFragment_to_sendPhoneNumberFragment"
+            app:destination="@id/sendPhoneNumberFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/sendPhoneNumberFragment"
+        android:name="ru.popkovden.messengerapplication.ui.fragment.SendPhoneNumberFragment"
+        android:label="fragment_send_phone_number"
+        tools:layout="@layout/fragment_send_phone_number" >
+        <action
+            android:id="@+id/action_sendPhoneNumberFragment_to_verifyCodeFragment"
+            app:destination="@id/verifyCodeFragment" />
+        <argument
+            android:name="phoneNumber"
+            app:argType="string"
+            android:defaultValue="+7" />
+        <argument
+            android:name="verificationCode"
+            app:argType="string[]" />
+    </fragment>
+    <fragment
+        android:id="@+id/verifyCodeFragment"
+        android:name="ru.popkovden.messengerapplication.ui.fragment.VerifyCodeFragment"
+        android:label="fragment_verify_code"
+        tools:layout="@layout/fragment_verify_code" >
+        <action
+            android:id="@+id/action_verifyCodeFragment_to_sendPhoneNumberFragment"
+            app:destination="@id/sendPhoneNumberFragment" />
+        <argument
+            android:name="phoneNumber"
+            app:argType="string"
+            android:defaultValue="+7" />
+    </fragment>
 </navigation>
