@@ -26,7 +26,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/verification_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/message_for_user"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -81,7 +81,8 @@
                 android:textAlignment="center"
                 android:textColor="@color/whiteColor"
                 android:textSize="42sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:requestFocusToNextView="@{secondCodeBox}"/>
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/secondCodeBox"
@@ -96,7 +97,9 @@
                 android:textAlignment="center"
                 android:textColor="@color/whiteColor"
                 android:textSize="42sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:requestFocusToNextView="@{thirdCodeBox}"
+                app:requestFocusToPreviousView="@{firstCodeBox}"/>
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/thirdCodeBox"
@@ -111,7 +114,9 @@
                 android:textAlignment="center"
                 android:textColor="@color/whiteColor"
                 android:textSize="42sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:requestFocusToNextView="@{fourthCodeBox}"
+                app:requestFocusToPreviousView="@{secondCodeBox}"/>
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/fourthCodeBox"
@@ -126,7 +131,9 @@
                 android:textAlignment="center"
                 android:textColor="@color/whiteColor"
                 android:textSize="42sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:requestFocusToNextView="@{fifthCodeBox}"
+                app:requestFocusToPreviousView="@{thirdCodeBox}"/>
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/fifthCodeBox"
@@ -141,7 +148,9 @@
                 android:textAlignment="center"
                 android:textColor="@color/whiteColor"
                 android:textSize="42sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:requestFocusToNextView="@{sixthCodeBox}"
+                app:requestFocusToPreviousView="@{fourthCodeBox}"/>
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/sixthCodeBox"
@@ -156,19 +165,22 @@
                 android:textAlignment="center"
                 android:textColor="@color/whiteColor"
                 android:textSize="42sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:requestFocusToPreviousView="@{fifthCodeBox}"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/timer"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="10dp"
             android:gravity="center"
+            android:focusable="true"
+            android:enabled="false"
             android:text="@string/resend"
             android:textAlignment="center"
-            android:textColor="@color/whiteColor"
+            android:textColor="@color/grayColor"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

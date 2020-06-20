@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MessengerApplication</string>
+    <string name="app_name">GoChat</string>
     <string name="verification_code">Verification code</string>
     <string name="message_in_fragment_verify_screen">Please type the verification code send to %1$s</string>
     <string name="resend">Resend  (%1$s)</string>
@@ -9,4 +9,7 @@
     <string name="phone_number_verify">Enter your phone number to verify your account</string>
     <string name="next">Continue</string>
     <string name="phone_number_hint">The number must be entered in international format</string>
+    <string name="loading">""</string>
+    <string name="code_error">"Incorrect verification code</string>
+    <string name="internet">Internet unavailable</string>
 </resources>

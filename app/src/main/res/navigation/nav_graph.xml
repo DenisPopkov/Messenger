@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_greetingFragment_to_sendPhoneNumberFragment"
             app:destination="@id/sendPhoneNumberFragment" />
+        <action
+            android:id="@+id/action_greetingFragment_to_mainChatScreenFragment"
+            app:destination="@id/mainChatScreenFragment" />
     </fragment>
 
     <fragment
@@ -27,9 +30,6 @@
             android:name="phoneNumber"
             app:argType="string"
             android:defaultValue="+7" />
-        <argument
-            android:name="verificationCode"
-            app:argType="string[]" />
     </fragment>
     <fragment
         android:id="@+id/verifyCodeFragment"
@@ -44,4 +44,10 @@
             app:argType="string"
             android:defaultValue="+7" />
     </fragment>
+    <fragment
+        android:id="@+id/mainChatScreenFragment"
+        android:name="ru.popkovden.messengerapplication.ui.fragment.MainChatScreenFragment"
+        android:label="MainChatScreenFragment"
+
+        tools:layout="@layout/fragment_main_chat_screen"/>
 </navigation>

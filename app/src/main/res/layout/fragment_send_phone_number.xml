@@ -15,7 +15,7 @@
         android:background="@color/mainColor"
         tools:context=".ui.fragment.SendPhoneNumberFragment">
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/message_for_user"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -53,7 +53,6 @@
             android:background="@drawable/custom_phone_number_input"
             android:cursorVisible="false"
             android:hint="+7"
-            android:text="@{viewModel.currentPhoneNumber}"
             android:inputType="phone"
             android:maxLength="15"
             android:paddingStart="18dp"
@@ -69,11 +68,23 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginTop="40dp"
+            android:enabled="false"
             android:background="@drawable/custom_corner_button"
             android:src="@drawable/arrow_next"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/phoneNumber"
             app:layout_constraintTop_toBottomOf="@+id/message_for_user" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/status_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/phoneNumber"
+            app:layout_constraintEnd_toEndOf="@+id/phoneNumber"
+            app:layout_constraintTop_toTopOf="@+id/phoneNumber"
+            app:srcCompat="@drawable/error_icon" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,10 +1,16 @@
 package ru.popkovden.messengerapplication.koin.modules
 
-import androidx.appcompat.widget.AppCompatEditText
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+import ru.popkovden.messengerapplication.utils.auth.FirebaseAuthHelper
+import ru.popkovden.messengerapplication.utils.custom_view.SnackBarView
 import ru.popkovden.messengerapplication.viewmodel.SendPhoneNumberFragmentViewModel
 import ru.popkovden.messengerapplication.viewmodel.VerifyCodeFragmentViewModel
+
+val helperModule = module {
+    single { FirebaseAuthHelper() }
+    single { SnackBarView() }
+}
 
 val viewModelModule = module {
     viewModel { VerifyCodeFragmentViewModel() }

@@ -8,24 +8,26 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import kotlinx.android.synthetic.main.fragment_send_phone_number.*
-import kotlinx.android.synthetic.main.fragment_verify_code.*
+import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.Main
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.databinding.FragmentVerifyCodeBinding
-import ru.popkovden.messengerapplication.utils.text_watcher_for_verify_code.RequestFocusToNextView
-import ru.popkovden.messengerapplication.utils.text_watcher_for_verify_code.RequestFocusToPreviousView
+import ru.popkovden.messengerapplication.utils.auth.FirebaseAuthHelper
 import ru.popkovden.messengerapplication.viewmodel.VerifyCodeFragmentViewModel
 
 class VerifyCodeFragment : Fragment() {
 
-    private var phoneNumber = ""
+    private var number = ""
+    private var verificationId = ""
+    private var code = ""
+    private var infoFromSms = hashMapOf<String, String>()
     private val viewModel: VerifyCodeFragmentViewModel by viewModel()
+    private val firebaseAuthHelper: FirebaseAuthHelper by inject()
+    private val job = Job()
+    private val coroutineScope = CoroutineScope(Main + job)
     private lateinit var binding: FragmentVerifyCodeBinding
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,34 +37,36 @@ class VerifyCodeFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_verify_code, container, false)
 
         binding.backToSendPhoneNumber?.setOnClickListener {
-            val action = VerifyCodeFragmentDirections.actionVerifyCodeFragmentToSendPhoneNumberFragment(phoneNumber, emptyArray())
+            val action =
+                VerifyCodeFragmentDirections.actionVerifyCodeFragmentToSendPhoneNumberFragment(
+                    number
+                )
             findNavController().navigate(action)
         }
 
         arguments?.let {
-            phoneNumber = VerifyCodeFragmentArgs.fromBundle(it).phoneNumber
+            with(VerifyCodeFragmentArgs.fromBundle(it)) {
+                number = phoneNumber
+                infoFromSms = firebaseAuthHelper.sendSmsCode(phoneNumber)
+            }
+
+            coroutineScope.launch {
+
+                while (true) {
+                    delay(500)
+                    code = infoFromSms["smsCode"].toString()
+                    verificationId = infoFromSms["verificationId"].toString()
+
+                    if (code.length >= 6) {
+                        fillCodeBox()
+                        firebaseAuthHelper.signIn(verificationId, code)
+                        this.cancel()
+                    }
+                }
+            }
         }
 
-        //Переходит на новый editText
-        binding.firstCodeBox.addTextChangedListener(RequestFocusToNextView(binding.firstCodeBox, binding.secondCodeBox))
-        binding.secondCodeBox.addTextChangedListener(RequestFocusToNextView(binding.secondCodeBox, binding.thirdCodeBox))
-        binding.thirdCodeBox.addTextChangedListener(RequestFocusToNextView(binding.thirdCodeBox, binding.fourthCodeBox))
-        binding.fourthCodeBox.addTextChangedListener(RequestFocusToNextView(binding.fourthCodeBox, binding.fifthCodeBox))
-        binding.fifthCodeBox.addTextChangedListener(RequestFocusToNextView(binding.fifthCodeBox, binding.sixthCodeBox))
-        binding.sixthCodeBox.addTextChangedListener(RequestFocusToNextView(binding.sixthCodeBox, null))
-
-        //Возращает на предыдущий editText
-        binding.firstCodeBox.setOnKeyListener(RequestFocusToPreviousView(binding.firstCodeBox, null))
-        binding.secondCodeBox.setOnKeyListener(RequestFocusToPreviousView(binding.secondCodeBox, binding.firstCodeBox))
-        binding.thirdCodeBox.setOnKeyListener(RequestFocusToPreviousView(binding.thirdCodeBox, binding.secondCodeBox))
-        binding.fourthCodeBox.setOnKeyListener(RequestFocusToPreviousView(binding.fourthCodeBox, binding.thirdCodeBox))
-        binding.fifthCodeBox.setOnKeyListener(RequestFocusToPreviousView(binding.fifthCodeBox, binding.fourthCodeBox))
-        binding.sixthCodeBox.setOnKeyListener(RequestFocusToPreviousView(binding.sixthCodeBox, binding.fifthCodeBox))
-
-        binding.messageForUser.text = getString(R.string.message_in_fragment_verify_screen, phoneNumber)
-
-        binding.timer.isEnabled = false
-        binding.timer.setTextColor(resources.getColor(R.color.grayColor))
+        binding.messageForUser.text = getString(R.string.message_in_fragment_verify_screen, number)
 
         viewModel.currentLiveDataTimerCodeResend.observe(viewLifecycleOwner, Observer { time ->
             binding.timer.text = getString(R.string.resend, time.toString())
@@ -75,9 +79,42 @@ class VerifyCodeFragment : Fragment() {
         })
 
         binding.timer.setOnClickListener {
-            viewModel.verifyCode()
+            makeTimerReset()
         }
 
         return binding.root
+    }
+
+    private fun fillCodeBox() {
+        binding.firstCodeBox.setText(code[0].toString())
+        binding.secondCodeBox.setText(code[1].toString())
+        binding.thirdCodeBox.setText(code[2].toString())
+        binding.fourthCodeBox.setText(code[3].toString())
+        binding.fifthCodeBox.setText(code[4].toString())
+        binding.sixthCodeBox.setText(code[5].toString())
+    }
+
+    private fun cleanCodeBox() {
+        binding.firstCodeBox.setText("")
+        binding.secondCodeBox.setText("")
+        binding.thirdCodeBox.setText("")
+        binding.fourthCodeBox.setText("")
+        binding.fifthCodeBox.setText("")
+        binding.sixthCodeBox.setText("")
+    }
+
+    private fun makeTimerReset() {  // TODO() ЗДЕСЬ БАГ
+        firebaseAuthHelper.sendSmsCode(number)
+        viewModel.timerReset()
+        binding.timer.isEnabled = false
+        binding.timer.setTextColor(resources.getColor(R.color.grayColor))
+        verificationId = ""
+        code = ""
+        cleanCodeBox()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        job.cancel()
     }
 }

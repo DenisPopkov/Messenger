@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimary">#03B3FF</color>
     <color name="colorPrimaryDark">#03B3FF</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="whiteColor">#FFFFFF</color>
@@ -8,4 +8,7 @@
     <color name="grayColor">#DCDCDC</color>
     <color name="blackColor">#000000</color>
     <color name="purpleColor">#7866FE</color>
+    <color name="redColor">#FF0000</color>
+    <color name="grayColorForNightBubble">#343640</color>
+    <color name="darkerColorForNightBackground">#282A34</color>
 </resources>
