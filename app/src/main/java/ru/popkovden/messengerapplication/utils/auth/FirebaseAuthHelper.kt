@@ -12,7 +12,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.HashMap
 
-class FirebaseAuthHelper {
+object FirebaseAuthHelper {
 
     private val firebaseAuth = FirebaseAuth.getInstance()
 

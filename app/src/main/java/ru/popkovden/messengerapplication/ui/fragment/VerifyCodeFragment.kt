@@ -60,7 +60,10 @@ class VerifyCodeFragment : Fragment() {
                     if (code.length >= 6) {
                         fillCodeBox()
                         firebaseAuthHelper.signIn(verificationId, code)
+                        delay(1500)
                         this.cancel()
+                        val action = VerifyCodeFragmentDirections.actionVerifyCodeFragmentToMainChatScreenFragment()
+                        findNavController().navigate(action)
                     }
                 }
             }
