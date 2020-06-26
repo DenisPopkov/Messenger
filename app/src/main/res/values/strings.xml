@@ -16,4 +16,9 @@
     <string name="posts">Посты</string>
     <string name="friends">Друзья</string>
     <string name="photos">Фото</string>
+    <string name="chats">Чаты</string>
+    <string name="dark">Темная тема</string>
+    <string name="black_list">Черный список</string>
+    <string name="security">Приватность</string>
+    <string name="about">О приложении</string>
 </resources>

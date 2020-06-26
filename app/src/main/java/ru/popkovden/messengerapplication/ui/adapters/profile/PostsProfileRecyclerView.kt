@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.posts_item.view.*
 import ru.popkovden.messengerapplication.R
 
 class PostsProfileRecyclerView(val context: Context, private val value: List<String>) :
@@ -19,7 +18,7 @@ class PostsProfileRecyclerView(val context: Context, private val value: List<Str
     override fun getItemCount(): Int = value.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.itemView.run {
-        val currentPosition = value[position]
+
     }
 }
 

@@ -6,11 +6,8 @@ import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
-import ru.popkovden.messengerapplication.ui.fragment.VerifyCodeFragment
-import java.lang.Exception
 import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.collections.HashMap
 
 object FirebaseAuthHelper {
 
@@ -56,6 +53,5 @@ object FirebaseAuthHelper {
     }
 
     fun singOut() {
-
     }
 }

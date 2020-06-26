@@ -20,4 +20,9 @@
         <item name="cornerSize">10%</item>
     </style>
 
+    <style name="ShapeAppearance.Image.AVATAR" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">20%</item>
+    </style>
+
 </resources>

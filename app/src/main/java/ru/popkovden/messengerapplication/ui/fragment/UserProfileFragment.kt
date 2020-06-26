@@ -16,11 +16,19 @@ import ru.popkovden.messengerapplication.ui.adapters.profile.PostsProfileRecycle
 import ru.popkovden.messengerapplication.utils.custom_view.FabControl
 import ru.popkovden.messengerapplication.utils.custom_view.StatusBarColorChanger
 
+
 class UserProfileFragment : Fragment() {
+
 
     private lateinit var binding: FragmentUserProfileBinding
     private val uiHelper: StatusBarColorChanger by inject()
     private val fabControl: FabControl by inject()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,7 +37,7 @@ class UserProfileFragment : Fragment() {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_profile, container, false)
 
-        uiHelper.changeStatusBarColor(requireActivity())
+        uiHelper.changeStatusBarColor(requireActivity(), R.color.whiteColor)
 
         val mergerAdapter = MergeAdapter(MainProfileRecyclerViewPart(requireContext()), PostsProfileRecyclerView(requireContext(),
             arrayListOf("Здесь пока ничего нет", "Здесь пока ничего нет", "Здесь пока ничего нет", "Здесь пока ничего нет")))

@@ -7,35 +7,29 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/mainColor"
-        tools:context=".ui.fragment.MainChatScreenFragment">
+        android:layout_height="match_parent">
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/mainChatScreenViewPager"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/mainChatBottomNavigationView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent"
+            android:layout_above="@+id/mainChatBottomNavigationView"
+            android:background="@color/mainColor"
+            tools:context=".ui.fragment.MainChatScreenFragment">
 
-        </androidx.viewpager2.widget.ViewPager2>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/mainChatBottomNavigationView"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom|end"
             android:background="@color/whiteColor"
             app:itemIconSize="30dp"
-            app:itemIconTint="#939598"
             app:labelVisibilityMode="unlabeled"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:menu="@menu/tab_menu" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 </layout>

@@ -12,9 +12,14 @@
     <string name="loading">""</string>
     <string name="code_error">"Incorrect verification code</string>
     <string name="internet">Internet unavailable</string>
-    <string name="edit">Edit</string>
+    <string name="edit">Edit account</string>
     <string name="profile">Profile</string>
     <string name="posts">Posts</string>
     <string name="friends">Friends</string>
     <string name="photos">Photos</string>
+    <string name="chats">Chats</string>
+    <string name="dark">Dark theme</string>
+    <string name="black_list">Black list</string>
+    <string name="security">Privacy</string>
+    <string name="about">About app</string>
 </resources>
