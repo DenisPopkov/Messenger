@@ -3,16 +3,16 @@
 
     <item
         android:id="@+id/discover"
-        android:title=""
+        android:title="discover"
         android:icon="@drawable/discover_icon"/>
 
     <item
         android:id="@+id/chat"
-        android:title=""
+        android:title="message"
         android:icon="@drawable/chat_icon"/>
 
     <item
         android:id="@+id/account"
-        android:title=""
+        android:title="profile"
         android:icon="@drawable/account_icon"/>
 </menu>

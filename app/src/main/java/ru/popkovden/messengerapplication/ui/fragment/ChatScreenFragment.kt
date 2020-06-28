@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.databinding.FragmentChatScreenBinding
-import ru.popkovden.messengerapplication.ui.adapters.chat.UserMessagesRecyclerView
+import ru.popkovden.messengerapplication.ui.adapters.chat.messenger.contacts.UserMessagesRecyclerView
 
 class ChatScreenFragment : Fragment() {
 
@@ -23,7 +23,11 @@ class ChatScreenFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_chat_screen, container, false)
 
         binding.chatScreenRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.chatScreenRecyclerView.adapter = UserMessagesRecyclerView(requireContext())
+        binding.chatScreenRecyclerView.adapter =
+            UserMessagesRecyclerView(
+                requireContext(),
+                childFragmentManager
+            )
 
         return binding.root
     }

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -9,29 +8,30 @@
         android:id="@+id/appCompatTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="5dp"
         android:background="@drawable/bubble_view_for_sent_messages"
-        android:paddingStart="10dp"
+        android:paddingStart="12dp"
         android:paddingTop="10dp"
-        android:paddingEnd="50dp"
+        android:paddingEnd="53dp"
         android:paddingBottom="10dp"
+        android:text="I'm okay!"
         android:textColor="@color/whiteColor"
         android:textSize="@dimen/text_message_size"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Hello?" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="3dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="5dp"
         android:text="12:30"
-        android:textSize="11sp"
+        android:textColor="#E7EFF8"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView"
         app:layout_constraintEnd_toEndOf="@+id/appCompatTextView" />
 

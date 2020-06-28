@@ -15,7 +15,7 @@ class PostsProfileRecyclerView(val context: Context, private val value: List<Str
             LayoutInflater.from(context).inflate(R.layout.posts_item, parent, false)
         )
 
-    override fun getItemCount(): Int = value.size
+    override fun getItemCount(): Int = 6
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.itemView.run {
 

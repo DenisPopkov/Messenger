@@ -6,10 +6,15 @@
     app:startDestination="@id/greetingFragment">
 
     <fragment
+        android:id="@+id/mainChatScreenFragment"
+        android:name="ru.popkovden.messengerapplication.ui.fragment.MainChatScreenFragment"
+        android:label="MainChatScreenFragment"
+        tools:layout="@layout/fragment_main_chat_screen"/>
+    <fragment
         android:id="@+id/greetingFragment"
         android:name="ru.popkovden.messengerapplication.ui.fragment.GreetingFragment"
-        android:label="fragment_greeting"
-        tools:layout="@layout/fragment_greeting" >
+        android:label="GreetingFragment"
+        tools:layout="@layout/fragment_greeting">
         <action
             android:id="@+id/action_greetingFragment_to_sendPhoneNumberFragment"
             app:destination="@id/sendPhoneNumberFragment" />
@@ -17,40 +22,31 @@
             android:id="@+id/action_greetingFragment_to_mainChatScreenFragment"
             app:destination="@id/mainChatScreenFragment" />
     </fragment>
-
     <fragment
         android:id="@+id/sendPhoneNumberFragment"
         android:name="ru.popkovden.messengerapplication.ui.fragment.SendPhoneNumberFragment"
-        android:label="fragment_send_phone_number"
-        tools:layout="@layout/fragment_send_phone_number" >
+        android:label="SendPhoneNumberFragment"
+        tools:layout="@layout/fragment_send_phone_number">
         <action
             android:id="@+id/action_sendPhoneNumberFragment_to_verifyCodeFragment"
             app:destination="@id/verifyCodeFragment" />
         <argument
             android:name="phoneNumber"
-            app:argType="string"
-            android:defaultValue="+7" />
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/verifyCodeFragment"
         android:name="ru.popkovden.messengerapplication.ui.fragment.VerifyCodeFragment"
-        android:label="fragment_verify_code"
-        tools:layout="@layout/fragment_verify_code" >
+        android:label="VerifyCodeFragment"
+        tools:layout="@layout/fragment_verify_code">
         <action
             android:id="@+id/action_verifyCodeFragment_to_sendPhoneNumberFragment"
             app:destination="@id/sendPhoneNumberFragment" />
         <argument
             android:name="phoneNumber"
-            app:argType="string"
-            android:defaultValue="+7" />
+            app:argType="string" />
         <action
             android:id="@+id/action_verifyCodeFragment_to_mainChatScreenFragment"
             app:destination="@id/mainChatScreenFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/mainChatScreenFragment"
-        android:name="ru.popkovden.messengerapplication.ui.fragment.MainChatScreenFragment"
-        android:label="MainChatScreenFragment"
-
-        tools:layout="@layout/fragment_main_chat_screen"/>
 </navigation>

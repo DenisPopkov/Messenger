@@ -8,6 +8,7 @@
     </data>
 
     <RelativeLayout
+        android:id="@+id/relative"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -19,6 +20,15 @@
             android:background="@color/mainColor"
             tools:context=".ui.fragment.MainChatScreenFragment">
 
+            <fragment
+                android:id="@+id/nav_host_test"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:name="androidx.navigation.fragment.NavHostFragment"
+                app:navGraph="@navigation/nav_graph_test"
+                app:defaultNavHost="true"
+                tools:layout="@layout/fragment_feed_screen"/>
+
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -27,7 +37,7 @@
             android:layout_height="48dp"
             android:layout_alignParentBottom="true"
             android:layout_gravity="bottom|end"
-            android:background="@color/whiteColor"
+            android:background="#F6F5F5"
             app:itemIconSize="30dp"
             app:labelVisibilityMode="unlabeled"
             app:menu="@menu/tab_menu" />
