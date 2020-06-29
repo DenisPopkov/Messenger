@@ -9,7 +9,7 @@
     <item
         android:id="@+id/chat"
         android:title="message"
-        android:icon="@drawable/chat_icon"/>
+        android:icon="@drawable/bubble_message_test"/>
 
     <item
         android:id="@+id/account"

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.databinding.FragmentMainChatScreenBinding
@@ -25,6 +26,14 @@ class MainChatScreenFragment : Fragment() {
         val navHostFragment = childFragmentManager.findFragmentById(R.id.nav_host_test) as NavHostFragment
         val navController = navHostFragment.navController
         NavigationUI.setupWithNavController(binding.mainChatBottomNavigationView, navController)
+
+        navHostFragment.findNavController().addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.messenger,
+                R.id.createPost -> binding.mainChatBottomNavigationView.visibility = View.GONE
+                else -> binding.mainChatBottomNavigationView.visibility = View.VISIBLE
+            }
+        }
 
         return binding.root
     }

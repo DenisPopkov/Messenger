@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/shapeableImageView2"
         android:layout_width="270dp"
         android:layout_height="190dp"
         android:layout_marginStart="10dp"
@@ -17,4 +18,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.Image.ROUND" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/indicatorCounter"
+        android:layout_width="40dp"
+        android:layout_height="30dp"
+        android:layout_gravity="end"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/corner_for_image_counter"
+        android:gravity="center"
+        android:text="1/3"
+        android:textColor="#fff"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="@+id/shapeableImageView2"
+        app:layout_constraintTop_toTopOf="@+id/shapeableImageView2" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -22,4 +22,7 @@
     <string name="black_list">Black list</string>
     <string name="security">Privacy</string>
     <string name="about">About app</string>
+    <string name="whats_name">What\'s your name?</string>
+    <string name="send_message">Message</string>
+    <string name="create_post">Create post</string>
 </resources>

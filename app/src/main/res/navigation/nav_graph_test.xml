@@ -17,15 +17,19 @@
         tools:layout="@layout/fragment_chat_screen">
         <action
             android:id="@+id/action_chat_to_fragmentMessengerScreen"
-            app:destination="@id/fragmentMessengerScreen" />
+            app:destination="@id/messenger" />
     </fragment>
     <fragment
         android:id="@+id/account"
         android:name="ru.popkovden.messengerapplication.ui.fragment.UserProfileFragment"
         android:label="UserProfileFragment"
-        tools:layout="@layout/fragment_user_profile"/>
+        tools:layout="@layout/fragment_user_profile">
+        <action
+            android:id="@+id/action_account_to_createPostFragmentFragment"
+            app:destination="@id/createPost" />
+    </fragment>
     <fragment
-        android:id="@+id/fragmentMessengerScreen"
+        android:id="@+id/messenger"
         android:name="ru.popkovden.messengerapplication.ui.fragment.FragmentMessengerScreen"
         android:label="FragmentMessengerScreen"
         tools:layout="@layout/fragment_messenger_screen">
@@ -33,4 +37,14 @@
             android:id="@+id/action_fragmentMessengerScreen_to_chat"
             app:destination="@id/chat" />
     </fragment>
+    <fragment
+        android:id="@+id/contactsFragment"
+        android:name="ru.popkovden.messengerapplication.ui.fragment.ContactsFragment"
+        android:label="ContactsFragment"
+        tools:layout="@layout/fragment_contacts"/>
+    <fragment
+        android:id="@+id/createPost"
+        android:name="ru.popkovden.messengerapplication.ui.fragment.CreatePostFragmentFragment"
+        android:label="CreatePostFragmentFragment"
+        tools:layout="@layout/fragment_create_post_fragment"/>
 </navigation>

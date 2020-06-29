@@ -9,6 +9,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.MergeAdapter
 import org.koin.android.ext.android.inject
@@ -41,6 +42,10 @@ class UserProfileFragment : Fragment() {
         uiHelper.changeStatusBarColor(requireActivity(), R.color.whiteColor)
         fabControl.controlFabActionPosition(binding.profileRecyclerView, binding.fab)
         drawerControl(binding.drawerLayout, binding.content)
+
+        binding.fab.setOnClickListener {
+            findNavController().navigate(UserProfileFragmentDirections.actionAccountToCreatePostFragmentFragment())
+        }
 
         return binding.root
     }

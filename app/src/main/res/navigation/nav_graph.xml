@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/greetingFragment">
+    app:startDestination="@id/mainChatScreenFragment">
 
     <fragment
         android:id="@+id/mainChatScreenFragment"
@@ -16,11 +16,12 @@
         android:label="GreetingFragment"
         tools:layout="@layout/fragment_greeting">
         <action
-            android:id="@+id/action_greetingFragment_to_sendPhoneNumberFragment"
-            app:destination="@id/sendPhoneNumberFragment" />
-        <action
             android:id="@+id/action_greetingFragment_to_mainChatScreenFragment"
             app:destination="@id/mainChatScreenFragment" />
+        <argument
+            android:name="phoneNumber"
+            app:argType="string"
+            android:defaultValue="+7" />
     </fragment>
     <fragment
         android:id="@+id/sendPhoneNumberFragment"
@@ -32,7 +33,8 @@
             app:destination="@id/verifyCodeFragment" />
         <argument
             android:name="phoneNumber"
-            app:argType="string" />
+            app:argType="string"
+            android:defaultValue="+7" />
     </fragment>
     <fragment
         android:id="@+id/verifyCodeFragment"
@@ -44,9 +46,10 @@
             app:destination="@id/sendPhoneNumberFragment" />
         <argument
             android:name="phoneNumber"
-            app:argType="string" />
+            app:argType="string"
+            android:defaultValue="+7" />
         <action
-            android:id="@+id/action_verifyCodeFragment_to_mainChatScreenFragment"
-            app:destination="@id/mainChatScreenFragment" />
+            android:id="@+id/action_verifyCodeFragment_to_greetingFragment"
+            app:destination="@id/greetingFragment" />
     </fragment>
 </navigation>

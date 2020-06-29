@@ -2,6 +2,7 @@ package ru.popkovden.messengerapplication.koin.modules
 
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+import ru.popkovden.messengerapplication.data.repository.CreateUser
 import ru.popkovden.messengerapplication.utils.auth.FirebaseAuthHelper
 import ru.popkovden.messengerapplication.utils.custom_view.FabControl
 import ru.popkovden.messengerapplication.utils.custom_view.SnackBarView
@@ -14,6 +15,7 @@ val helperModule = module {
     single { SnackBarView }
     single { StatusBarColorChanger }
     single { FabControl }
+    single { CreateUser() }
 }
 
 val viewModelModule = module {

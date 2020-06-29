@@ -69,7 +69,7 @@
             android:layout_height="40dp"
             android:layout_marginTop="40dp"
             android:enabled="false"
-            android:background="@drawable/custom_corner_button"
+            android:background="@drawable/purple_circle"
             android:src="@drawable/arrow_next"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/phoneNumber"

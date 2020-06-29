@@ -22,6 +22,7 @@ class VerifyCodeFragment : Fragment() {
     private var number = ""
     private var verificationId = ""
     private var code = ""
+    private var uid = ""
     private var infoFromSms = hashMapOf<String, String>()
     private val viewModel: VerifyCodeFragmentViewModel by viewModel()
     private val firebaseAuthHelper: FirebaseAuthHelper by inject()
@@ -37,11 +38,7 @@ class VerifyCodeFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_verify_code, container, false)
 
         binding.backToSendPhoneNumber?.setOnClickListener {
-            val action =
-                VerifyCodeFragmentDirections.actionVerifyCodeFragmentToSendPhoneNumberFragment(
-                    number
-                )
-            findNavController().navigate(action)
+            findNavController().navigate(VerifyCodeFragmentDirections.actionVerifyCodeFragmentToSendPhoneNumberFragment(number))
         }
 
         arguments?.let {
@@ -62,7 +59,7 @@ class VerifyCodeFragment : Fragment() {
                         firebaseAuthHelper.signIn(verificationId, code)
                         delay(1500)
                         this.cancel()
-                        val action = VerifyCodeFragmentDirections.actionVerifyCodeFragmentToMainChatScreenFragment()
+                        val action = VerifyCodeFragmentDirections.actionVerifyCodeFragmentToGreetingFragment(number)
                         findNavController().navigate(action)
                     }
                 }

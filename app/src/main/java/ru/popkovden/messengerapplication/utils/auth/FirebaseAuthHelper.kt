@@ -43,15 +43,12 @@ object FirebaseAuthHelper {
         return infoFromSmsCode
     }
 
-    fun signIn(verificationId: String, verificationCode: String) {
+    fun signIn(verificationId: String, verificationCode: String){
         try {
             val credintal = PhoneAuthProvider.getCredential(verificationId, verificationCode)
             firebaseAuth.signInWithCredential(credintal)
         } catch (error: Exception) {
             Log.d("Messenger", "signIn error - $error")
         }
-    }
-
-    fun singOut() {
     }
 }

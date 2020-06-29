@@ -37,7 +37,7 @@
             android:layout_height="48dp"
             android:layout_alignParentBottom="true"
             android:layout_gravity="bottom|end"
-            android:background="#F6F5F5"
+            android:background="@color/whiteColor"
             app:itemIconSize="30dp"
             app:labelVisibilityMode="unlabeled"
             app:menu="@menu/tab_menu" />

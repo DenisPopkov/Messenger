@@ -13,6 +13,8 @@ import kotlinx.android.synthetic.main.toolbar_for_messaging.view.*
 import org.koin.android.ext.android.inject
 import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.databinding.FragmentMessengerScreenBinding
+import ru.popkovden.messengerapplication.ui.adapters.chat.messenger.audiomessage.ReceivedVoiceMessagesRecyclerView
+import ru.popkovden.messengerapplication.ui.adapters.chat.messenger.audiomessage.SentVoiceMessagesRecyclerView
 import ru.popkovden.messengerapplication.ui.adapters.chat.messenger.images.ReceivedImagedRecyclerView
 import ru.popkovden.messengerapplication.ui.adapters.chat.messenger.images.SentImagesRecyclerView
 import ru.popkovden.messengerapplication.ui.adapters.chat.messenger.messeges.ReceivedMessagesRecyclerView
@@ -38,7 +40,9 @@ class FragmentMessengerScreen : Fragment() {
             ReceivedMessagesRecyclerView(requireContext()),
             SentMessagesRecyclerView(requireContext()),
             SentImagesRecyclerView(requireContext()),
-            ReceivedImagedRecyclerView(requireContext())
+            ReceivedImagedRecyclerView(requireContext()),
+            ReceivedVoiceMessagesRecyclerView(requireContext()),
+            SentVoiceMessagesRecyclerView(requireContext())
         )
 
         binding.messengerScreenRecyclerView.layoutManager = LinearLayoutManager(requireContext())
