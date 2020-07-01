@@ -14,27 +14,33 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.MergeAdapter
 import org.koin.android.ext.android.inject
 import ru.popkovden.messengerapplication.R
+import ru.popkovden.messengerapplication.data.repository.posts.GetPosts
 import ru.popkovden.messengerapplication.databinding.FragmentUserProfileBinding
-import ru.popkovden.messengerapplication.ui.adapters.profile.MainProfileRecyclerViewPart
-import ru.popkovden.messengerapplication.ui.adapters.profile.PostsProfileRecyclerView
-import ru.popkovden.messengerapplication.utils.custom_view.FabControl
-import ru.popkovden.messengerapplication.utils.custom_view.StatusBarColorChanger
+import ru.popkovden.messengerapplication.ui.adapters.profile.mainPart.MainProfileRecyclerViewPart
+import ru.popkovden.messengerapplication.ui.adapters.profile.mainPart.PostsProfileRecyclerView
+import ru.popkovden.messengerapplication.utils.customView.FabControl
+import ru.popkovden.messengerapplication.utils.customView.StatusBarColorChanger
+import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
 
 class UserProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentUserProfileBinding
     private val uiHelper: StatusBarColorChanger by inject()
     private val fabControl: FabControl by inject()
+    private val infoAboutUser: InfoAboutUser by inject()
+    private val getPostHelper: GetPosts by inject()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_user_profile, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_profile, container, false)
 
-        val mergerAdapter = MergeAdapter(MainProfileRecyclerViewPart(requireContext()), PostsProfileRecyclerView(requireContext(), arrayListOf()))
+        // Получение информации о профиле пользователя
+        infoAboutUser.loadInfoFromSharedPreferences(requireContext())
+
+        // Настройка адаптера
+        val mergerAdapter = MergeAdapter()
+        mergerAdapter.addAdapter(MainProfileRecyclerViewPart(requireContext(), infoAboutUser.UID, infoAboutUser.userProfileImage, infoAboutUser.userName))
+        mergerAdapter.addAdapter(PostsProfileRecyclerView(requireContext(), getPostHelper.getAllPosts(infoAboutUser.UID)))
         binding.profileRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.profileRecyclerView.adapter = mergerAdapter
 
@@ -52,12 +58,7 @@ class UserProfileFragment : Fragment() {
 
     private fun drawerControl(drawerLayout: DrawerLayout, contentLayout: ConstraintLayout) {
         val actionBarDrawerToggle: ActionBarDrawerToggle =
-            object : ActionBarDrawerToggle(
-                requireActivity(),
-                drawerLayout,
-                R.string.app_name,
-                R.string.about
-            ) {
+            object : ActionBarDrawerToggle(requireActivity(), drawerLayout, R.string.app_name, R.string.about) {
                 override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
                     super.onDrawerSlide(drawerView, slideOffset)
 

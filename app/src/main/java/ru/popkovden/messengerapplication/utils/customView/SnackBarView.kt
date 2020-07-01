@@ -1,4 +1,4 @@
-package ru.popkovden.messengerapplication.utils.custom_view
+package ru.popkovden.messengerapplication.utils.customView
 
 import android.view.View
 import androidx.core.content.ContextCompat

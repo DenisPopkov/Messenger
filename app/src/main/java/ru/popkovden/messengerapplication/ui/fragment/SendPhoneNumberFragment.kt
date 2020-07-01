@@ -1,7 +1,6 @@
 package ru.popkovden.messengerapplication.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,38 +12,25 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.databinding.FragmentSendPhoneNumberBinding
-import ru.popkovden.messengerapplication.utils.custom_view.SnackBarView
-import ru.popkovden.messengerapplication.utils.internet_checker.CheckInternetConnection
 import ru.popkovden.messengerapplication.viewmodel.SendPhoneNumberFragmentViewModel
 
 class SendPhoneNumberFragment : Fragment() {
 
     private lateinit var binding: FragmentSendPhoneNumberBinding
     private val viewModel: SendPhoneNumberFragmentViewModel by viewModel()
-    private val customView: SnackBarView by inject()
-    private val checkInternetConnection = CheckInternetConnection
+//    private val customView: SnackBarView by inject()
+//    private val checkInternetConnection: CheckInternetConnection by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        try {
-            binding =
-                DataBindingUtil.inflate(
-                    inflater,
-                    R.layout.fragment_send_phone_number,
-                    container,
-                    false
-                )
-        } catch (e: Exception) {
-            Log.d("efefe", "error - $e")
-            throw e
-        }
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_send_phone_number, container, false)
 
         arguments?.let {
             val phone = SendPhoneNumberFragmentArgs.fromBundle(it).phoneNumber
@@ -63,17 +49,12 @@ class SendPhoneNumberFragment : Fragment() {
         binding.toVerifyPhoneNumber.setOnClickListener {
             val phoneNumber = binding.phoneNumber.text.toString()
 
-            if (checkInternetConnection.isInternetAvailable(container?.context!!)) {
+            val action =
+                SendPhoneNumberFragmentDirections.actionSendPhoneNumberFragmentToVerifyCodeFragment(
+                    phoneNumber
+                )
 
-                val action =
-                    SendPhoneNumberFragmentDirections.actionSendPhoneNumberFragmentToVerifyCodeFragment(
-                        phoneNumber
-                    )
-
-                findNavController().navigate(action)
-            } else {
-                customView.showSnackBar(it, resources.getString(R.string.internet), 5000)
-            }
+            findNavController().navigate(action)
         }
 
         viewModel.currentPhoneNumber.observe(viewLifecycleOwner, Observer { number ->

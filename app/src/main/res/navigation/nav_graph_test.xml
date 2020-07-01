@@ -46,5 +46,9 @@
         android:id="@+id/createPost"
         android:name="ru.popkovden.messengerapplication.ui.fragment.CreatePostFragmentFragment"
         android:label="CreatePostFragmentFragment"
-        tools:layout="@layout/fragment_create_post_fragment"/>
+        tools:layout="@layout/fragment_create_post_fragment">
+        <action
+            android:id="@+id/action_createPost_to_account"
+            app:destination="@id/account" />
+    </fragment>
 </navigation>

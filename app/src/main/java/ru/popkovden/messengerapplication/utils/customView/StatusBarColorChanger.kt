@@ -1,4 +1,4 @@
-package ru.popkovden.messengerapplication.utils.custom_view
+package ru.popkovden.messengerapplication.utils.customView
 
 import android.app.Activity
 import android.os.Build

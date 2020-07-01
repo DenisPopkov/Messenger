@@ -13,7 +13,7 @@
         android:layout_height="match_parent">
 
         <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/backToContactList"
+            android:id="@+id/backToProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/transperent"
@@ -42,7 +42,7 @@
             android:textSize="26sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/backToContactList"
+            app:layout_constraintStart_toEndOf="@+id/backToProfile"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.appcompat.widget.Toolbar>

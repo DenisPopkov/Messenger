@@ -24,4 +24,5 @@
     <string name="whats_name">Как вас зовут?</string>
     <string name="send_message">Сообщение</string>
     <string name="create_post">Создание записи</string>
+    <string name="please_fill_all_data">Пожалуйста заполните все данные</string>
 </resources>

@@ -38,3 +38,5 @@
 -keepclassmembernames class kotlin.coroutines.SafeContinuation {
     volatile <fields>;
 }
+
+-keep class androidx.appcompat.widget.* { *; }

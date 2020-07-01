@@ -1,8 +1,7 @@
-package ru.popkovden.messengerapplication.utils.text_watcher_for_verify_code
+package ru.popkovden.messengerapplication.utils.textWatcher
 
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.databinding.BindingAdapter
 import ru.popkovden.messengerapplication.R

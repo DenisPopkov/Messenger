@@ -13,8 +13,8 @@ import kotlinx.coroutines.Dispatchers.Main
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.popkovden.messengerapplication.R
+import ru.popkovden.messengerapplication.data.repository.auth.FirebaseAuthHelper
 import ru.popkovden.messengerapplication.databinding.FragmentVerifyCodeBinding
-import ru.popkovden.messengerapplication.utils.auth.FirebaseAuthHelper
 import ru.popkovden.messengerapplication.viewmodel.VerifyCodeFragmentViewModel
 
 class VerifyCodeFragment : Fragment() {
@@ -22,7 +22,6 @@ class VerifyCodeFragment : Fragment() {
     private var number = ""
     private var verificationId = ""
     private var code = ""
-    private var uid = ""
     private var infoFromSms = hashMapOf<String, String>()
     private val viewModel: VerifyCodeFragmentViewModel by viewModel()
     private val firebaseAuthHelper: FirebaseAuthHelper by inject()

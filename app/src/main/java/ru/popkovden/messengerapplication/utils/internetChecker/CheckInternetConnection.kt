@@ -1,4 +1,4 @@
-package ru.popkovden.messengerapplication.utils.internet_checker
+package ru.popkovden.messengerapplication.utils.internetChecker
 
 import android.content.Context
 import android.net.ConnectivityManager

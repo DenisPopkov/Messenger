@@ -1,4 +1,4 @@
-package ru.popkovden.messengerapplication.utils.text_watcher_for_verify_code
+package ru.popkovden.messengerapplication.utils.textWatcher
 
 import android.view.KeyEvent
 import android.view.View

@@ -1,4 +1,4 @@
-package ru.popkovden.messengerapplication.utils.auth
+package ru.popkovden.messengerapplication.data.repository.auth
 
 import android.util.Log
 import com.google.android.gms.tasks.TaskExecutors

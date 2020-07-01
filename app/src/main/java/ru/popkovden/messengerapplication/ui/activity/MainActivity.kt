@@ -3,8 +3,6 @@ package ru.popkovden.messengerapplication.ui.activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.findNavController
-import com.google.firebase.auth.FirebaseAuth
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidFileProperties
 import org.koin.android.ext.koin.androidLogger
@@ -13,9 +11,8 @@ import org.koin.core.context.stopKoin
 import org.koin.core.logger.Level
 import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.databinding.ActivityMainBinding
-import ru.popkovden.messengerapplication.koin.modules.helperModule
-import ru.popkovden.messengerapplication.koin.modules.viewModelModule
-import ru.popkovden.messengerapplication.ui.fragment.GreetingFragmentDirections
+import ru.popkovden.messengerapplication.koin.helperModule
+import ru.popkovden.messengerapplication.koin.viewModelModule
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,10 +23,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        if (FirebaseAuth.getInstance().currentUser != null) {
-            findNavController(R.id.nav_host).navigate(
-                GreetingFragmentDirections.actionGreetingFragmentToMainChatScreenFragment())
-        }
+//        if (FirebaseAuth.getInstance().currentUser != null) {
+//            findNavController(R.id.nav_host).navigate(
+//                SendPhoneNumberFragmentDirections.actionSendPhoneNumberFragmentToMainChatScreenFragment())
+//        }
 
         startKoin {
             androidContext(this@MainActivity)

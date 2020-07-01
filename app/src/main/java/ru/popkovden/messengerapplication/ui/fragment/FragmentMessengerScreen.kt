@@ -19,7 +19,7 @@ import ru.popkovden.messengerapplication.ui.adapters.chat.messenger.images.Recei
 import ru.popkovden.messengerapplication.ui.adapters.chat.messenger.images.SentImagesRecyclerView
 import ru.popkovden.messengerapplication.ui.adapters.chat.messenger.messeges.ReceivedMessagesRecyclerView
 import ru.popkovden.messengerapplication.ui.adapters.chat.messenger.messeges.SentMessagesRecyclerView
-import ru.popkovden.messengerapplication.utils.custom_view.StatusBarColorChanger
+import ru.popkovden.messengerapplication.utils.customView.StatusBarColorChanger
 
 class FragmentMessengerScreen : Fragment() {
 

@@ -7,17 +7,15 @@
     android:layout_marginStart="10dp"
     android:layout_marginBottom="5dp"
     android:layout_marginTop="5dp"
-    android:background="@drawable/blue_circle">
+    android:background="@drawable/bubble_view_for_received_messages">
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/appCompatImageButton4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
         android:background="@color/transperent"
-        android:src="@drawable/play_button_icon"
+        android:src="@drawable/play_blue_buttom_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -27,9 +25,9 @@
         android:layout_width="140dp"
         android:layout_height="32dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="50dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="10dp"
         app:animateExpansion="false"
         app:chunkHeight="24dp"
         app:chunkRadius="2dp"
@@ -39,9 +37,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/appCompatImageButton4"
         app:layout_constraintTop_toTopOf="parent"
-        app:minChunkHeight="7dp"
+        app:minChunkHeight="6dp"
         app:touchable="true"
-        app:waveColor="@color/whiteColor" />
+        app:waveColor="@color/mainColor" />
 
     <TextView
         android:id="@+id/textView2"
@@ -49,7 +47,6 @@
         android:layout_height="wrap_content"
         android:text="12:30"
         android:textSize="12sp"
-        android:textColor="#E7EFF8"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="5dp"
         app:layout_constraintBottom_toBottomOf="parent"

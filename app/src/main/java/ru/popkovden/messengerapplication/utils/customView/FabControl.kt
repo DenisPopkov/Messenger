@@ -1,4 +1,4 @@
-package ru.popkovden.messengerapplication.utils.custom_view
+package ru.popkovden.messengerapplication.utils.customView
 
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton

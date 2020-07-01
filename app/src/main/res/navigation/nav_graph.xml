@@ -35,6 +35,9 @@
             android:name="phoneNumber"
             app:argType="string"
             android:defaultValue="+7" />
+        <action
+            android:id="@+id/action_sendPhoneNumberFragment_to_mainChatScreenFragment"
+            app:destination="@id/mainChatScreenFragment" />
     </fragment>
     <fragment
         android:id="@+id/verifyCodeFragment"
