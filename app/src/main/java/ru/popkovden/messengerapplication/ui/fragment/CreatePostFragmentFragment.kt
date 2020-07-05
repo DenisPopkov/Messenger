@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -14,6 +15,9 @@ import androidx.recyclerview.widget.MergeAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.create_post_panel.view.*
 import kotlinx.android.synthetic.main.create_post_toolbar.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.data.repository.posts.CreatePost
@@ -48,9 +52,16 @@ class CreatePostFragmentFragment : Fragment() {
         }
 
         binding.panel.createPost.setOnClickListener {
-            createPostHelper.createPost(PostsModel(imageSlider, videoSlider, documentSlider,
-                "12", "Разработка", binding.postMainText.text.toString()), infoUser.UID)
-            backToProfile()
+            if (binding.postMainText.text.toString().isBlank()) {
+                Toast.makeText(requireContext(), "Пустая запись", Toast.LENGTH_SHORT).show()
+            } else {
+                CoroutineScope(IO).launch {
+                    createPostHelper.createPost(PostsModel(imageSlider, videoSlider, documentSlider,
+                        "12", "Разработка ${System.currentTimeMillis()}", binding.postMainText.text.toString()), infoUser.UID)
+                }
+
+                backToProfile()
+            }
         }
 
         binding.panel.imagePick.setOnClickListener {

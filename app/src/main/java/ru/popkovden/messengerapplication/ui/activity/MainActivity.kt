@@ -12,6 +12,7 @@ import org.koin.core.logger.Level
 import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.databinding.ActivityMainBinding
 import ru.popkovden.messengerapplication.koin.helperModule
+import ru.popkovden.messengerapplication.koin.repositoryModule
 import ru.popkovden.messengerapplication.koin.viewModelModule
 
 class MainActivity : AppCompatActivity() {
@@ -32,7 +33,7 @@ class MainActivity : AppCompatActivity() {
             androidContext(this@MainActivity)
             androidLogger(Level.INFO)
             androidFileProperties()
-            modules(listOf(helperModule, viewModelModule))
+            modules(listOf(helperModule, viewModelModule, repositoryModule))
         }
     }
 

@@ -1,4 +1,4 @@
-package ru.popkovden.messengerapplication.ui.adapters.chat.messenger.audiomessage
+package ru.popkovden.messengerapplication.ui.adapters.chat.audiomessage
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -12,9 +12,9 @@ class SentVoiceMessagesRecyclerView(val context: Context) : RecyclerView.Adapter
         SentAudioMessagesViewHolder(
             LayoutInflater.from(context).inflate(R.layout.sent_voice_messages, parent, false)
         )
-
     override fun getItemCount(): Int = 2
-    override fun onBindViewHolder(holder: SentAudioMessagesViewHolder, position: Int) {}
+    override fun onBindViewHolder(holder: SentAudioMessagesViewHolder, position: Int) {
+    }
 }
 
 class SentAudioMessagesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

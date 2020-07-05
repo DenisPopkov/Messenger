@@ -27,7 +27,6 @@
             android:layout_height="0dp"
             android:overScrollMode="never"
             android:paddingTop="5dp"
-            android:paddingBottom="5dp"
             app:layout_constraintBottom_toTopOf="@+id/linearLayoutCompat2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

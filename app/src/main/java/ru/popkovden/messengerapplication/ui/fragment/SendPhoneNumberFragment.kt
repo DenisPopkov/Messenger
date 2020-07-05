@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
@@ -29,8 +28,7 @@ class SendPhoneNumberFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_send_phone_number, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_send_phone_number, container, false)
 
         arguments?.let {
             val phone = SendPhoneNumberFragmentArgs.fromBundle(it).phoneNumber
@@ -48,37 +46,9 @@ class SendPhoneNumberFragment : Fragment() {
 
         binding.toVerifyPhoneNumber.setOnClickListener {
             val phoneNumber = binding.phoneNumber.text.toString()
-
-            val action =
-                SendPhoneNumberFragmentDirections.actionSendPhoneNumberFragmentToVerifyCodeFragment(
-                    phoneNumber
-                )
-
+            val action = SendPhoneNumberFragmentDirections.actionSendPhoneNumberFragmentToVerifyCodeFragment(phoneNumber)
             findNavController().navigate(action)
         }
-
-        viewModel.currentPhoneNumber.observe(viewLifecycleOwner, Observer { number ->
-
-            if (number.contains("+") && number.length > 5) {
-
-                with(binding.statusIcon) {
-                    visibility = View.VISIBLE
-                    setImageResource(R.drawable.success)
-                }
-
-                binding.toVerifyPhoneNumber.isEnabled = true
-                binding.statusIcon.visibility = View.VISIBLE
-
-            } else if (number.isNotEmpty() && !number.contains("+")) {
-
-                with(binding.statusIcon) {
-                    visibility = View.VISIBLE
-                    setImageResource(R.drawable.error_icon)
-                }
-
-                binding.toVerifyPhoneNumber.isEnabled = false
-            }
-        })
 
         return binding.root
     }

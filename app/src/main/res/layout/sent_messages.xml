@@ -5,7 +5,7 @@
     android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/appCompatTextView"
+        android:id="@+id/sentMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -24,7 +24,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/timeSentMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="12dp"
@@ -32,7 +32,7 @@
         android:text="12:30"
         android:textColor="#E7EFF8"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView"
-        app:layout_constraintEnd_toEndOf="@+id/appCompatTextView" />
+        app:layout_constraintBottom_toBottomOf="@+id/sentMessage"
+        app:layout_constraintEnd_toEndOf="@+id/sentMessage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,6 @@
 package ru.popkovden.messengerapplication.ui.adapters.profile.mainPart
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,7 @@ import com.bumptech.glide.Glide
 import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.model.PostsModel
 
-class PostsProfileRecyclerView(val context: Context, private val postsList: ArrayList<PostsModel>) :
+class PostsProfileRecyclerView(val context: Context, private val postsList: MutableList<PostsModel>) :
     RecyclerView.Adapter<ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
@@ -24,8 +23,6 @@ class PostsProfileRecyclerView(val context: Context, private val postsList: Arra
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         for (post in postsList) {
-            Log.d("efefe", post.postTitle)
-            Log.d("efefe", post.postMainText)
             holder.title.text = post.postTitle
             holder.mainPostText.text = post.postMainText
 

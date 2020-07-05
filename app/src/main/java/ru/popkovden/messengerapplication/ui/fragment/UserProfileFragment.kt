@@ -1,26 +1,26 @@
 package ru.popkovden.messengerapplication.ui.fragment
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.MergeAdapter
+import kotlinx.android.synthetic.main.profile_toolbar.view.*
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.data.repository.posts.GetPosts
 import ru.popkovden.messengerapplication.databinding.FragmentUserProfileBinding
-import ru.popkovden.messengerapplication.ui.adapters.profile.mainPart.MainProfileRecyclerViewPart
-import ru.popkovden.messengerapplication.ui.adapters.profile.mainPart.PostsProfileRecyclerView
 import ru.popkovden.messengerapplication.utils.customView.FabControl
 import ru.popkovden.messengerapplication.utils.customView.StatusBarColorChanger
 import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
+import ru.popkovden.messengerapplication.viewmodel.UserProfileFragmentViewModel
 
 class UserProfileFragment : Fragment() {
 
@@ -28,21 +28,25 @@ class UserProfileFragment : Fragment() {
     private val uiHelper: StatusBarColorChanger by inject()
     private val fabControl: FabControl by inject()
     private val infoAboutUser: InfoAboutUser by inject()
-    private val getPostHelper: GetPosts by inject()
+    private val getPostsHelper: GetPosts by inject()
+    private val viewModel: UserProfileFragmentViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_profile, container, false)
+        binding = FragmentUserProfileBinding.inflate(layoutInflater)
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         // Получение информации о профиле пользователя
         infoAboutUser.loadInfoFromSharedPreferences(requireContext())
 
-        // Настройка адаптера
-        val mergerAdapter = MergeAdapter()
-        mergerAdapter.addAdapter(MainProfileRecyclerViewPart(requireContext(), infoAboutUser.UID, infoAboutUser.userProfileImage, infoAboutUser.userName))
-        mergerAdapter.addAdapter(PostsProfileRecyclerView(requireContext(), getPostHelper.getAllPosts(infoAboutUser.UID)))
+        getPostsHelper.getPosts(infoAboutUser.UID, binding.profileRecyclerView, requireContext(), infoAboutUser.userProfileImage, infoAboutUser.userName)
         binding.profileRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.profileRecyclerView.adapter = mergerAdapter
+        binding.profileRecyclerView.setHasFixedSize(true)
 
         // Настройка интерфейса
         uiHelper.changeStatusBarColor(requireActivity(), R.color.whiteColor)
@@ -53,7 +57,9 @@ class UserProfileFragment : Fragment() {
             findNavController().navigate(UserProfileFragmentDirections.actionAccountToCreatePostFragmentFragment())
         }
 
-        return binding.root
+        binding.toolbar.drawerCall.setOnClickListener {
+            binding.drawerLayout.openDrawer(Gravity.RIGHT)
+        }
     }
 
     private fun drawerControl(drawerLayout: DrawerLayout, contentLayout: ConstraintLayout) {

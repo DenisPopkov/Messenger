@@ -5,7 +5,7 @@
     android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/appCompatTextView"
+        android:id="@+id/receivedMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -24,14 +24,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/timeReceivedMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="12dp"
         android:layout_marginBottom="4dp"
         android:text="12:30"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView"
-        app:layout_constraintEnd_toEndOf="@+id/appCompatTextView" />
+        app:layout_constraintBottom_toBottomOf="@+id/receivedMessage"
+        app:layout_constraintEnd_toEndOf="@+id/receivedMessage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
