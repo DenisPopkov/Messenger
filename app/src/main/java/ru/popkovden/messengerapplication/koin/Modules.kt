@@ -38,4 +38,5 @@ val viewModelModule = module {
     viewModel { GreetingFragmentViewModel() }
     viewModel { UserProfileFragmentViewModel() }
     viewModel { MessengerFragmentViewModel() }
+    viewModel { EditProfileFragmentViewModel() }
 }

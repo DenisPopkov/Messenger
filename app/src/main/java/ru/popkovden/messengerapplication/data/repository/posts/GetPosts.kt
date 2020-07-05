@@ -33,7 +33,7 @@ object GetPosts{
                         val postTitle = document.get("postTitle").toString()
 //                        val postVideos = document.get("postVideos") as? ArrayList<String>
                         userPosts.add(PostsModel(arrayListOf(), arrayListOf(), arrayListOf(), likeCount, postTitle, postMainText))
-                        val mergeAdapter = MergeAdapter(MainProfileRecyclerViewPart(context, UID, image, name), PostsProfileRecyclerView(context, userPosts))
+                        val mergeAdapter = MergeAdapter(MainProfileRecyclerViewPart(context, image, name), PostsProfileRecyclerView(context, userPosts))
                         recyclerViewAdapter.adapter = mergeAdapter
                         val adapter = recyclerViewAdapter.adapter
                         adapter?.notifyDataSetChanged()

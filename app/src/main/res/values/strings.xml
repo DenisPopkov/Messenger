@@ -25,4 +25,6 @@
     <string name="send_message">Сообщение</string>
     <string name="create_post">Создание записи</string>
     <string name="please_fill_all_data">Пожалуйста заполните все данные</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

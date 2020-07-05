@@ -66,7 +66,8 @@
             android:layout_gravity="end|top"
             android:fitsSystemWindows="true">
 
-            <include layout="@layout/drawer_profile_content"/>
+            <include layout="@layout/drawer_profile_content"
+                android:id="@+id/contentDrawer"/>
 
         </com.google.android.material.navigation.NavigationView>
     </androidx.drawerlayout.widget.DrawerLayout>

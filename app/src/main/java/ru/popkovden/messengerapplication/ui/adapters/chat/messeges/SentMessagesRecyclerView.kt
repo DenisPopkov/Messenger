@@ -17,6 +17,8 @@ class SentMessagesRecyclerView(private val sentMessageList: ArrayList<HashMap<St
 
     override fun onBindViewHolder(holder: SentMessagesViewHolder, position: Int) = holder.itemView.run {
 
+        holder.setIsRecyclable(false)
+
         val currentItem = sentMessageList[position]
 
         sentMessage.text = currentItem["message"].toString()

@@ -27,6 +27,9 @@
         <action
             android:id="@+id/action_account_to_createPostFragmentFragment"
             app:destination="@id/createPost" />
+        <action
+            android:id="@+id/action_account_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
     </fragment>
     <fragment
         android:id="@+id/messenger"
@@ -49,6 +52,22 @@
         tools:layout="@layout/fragment_create_post_fragment">
         <action
             android:id="@+id/action_createPost_to_account"
+            app:destination="@id/account" />
+    </fragment>
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="ru.popkovden.messengerapplication.ui.fragment.EditProfileFragment"
+        android:label="EditProfileFragment"
+        tools:layout="@layout/fragment_edit_profile">
+        <argument
+            android:name="userName"
+            app:argType="string" />
+        <argument
+            android:name="userImage"
+            app:argType="string"
+            android:defaultValue="image" />
+        <action
+            android:id="@+id/action_editProfileFragment_to_account"
             app:destination="@id/account" />
     </fragment>
 </navigation>

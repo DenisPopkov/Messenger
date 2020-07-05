@@ -1,6 +1,6 @@
 package ru.popkovden.messengerapplication.ui.fragment
 
-import android.app.Activity.RESULT_OK
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -14,71 +14,64 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.auth.FirebaseAuth
+import com.bumptech.glide.Glide
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.data.repository.auth.CreateUser
-import ru.popkovden.messengerapplication.databinding.FragmentGreetingBinding
-import ru.popkovden.messengerapplication.utils.customView.SnackBarView
+import ru.popkovden.messengerapplication.databinding.FragmentEditProfileBinding
 import ru.popkovden.messengerapplication.utils.customView.StatusBarColorChanger
 import ru.popkovden.messengerapplication.utils.helper.DecodeUri
-import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
-import ru.popkovden.messengerapplication.utils.internetChecker.CheckInternetConnection
-import ru.popkovden.messengerapplication.viewmodel.GreetingFragmentViewModel
+import ru.popkovden.messengerapplication.viewmodel.EditProfileFragmentViewModel
 
-class GreetingFragment : Fragment() {
+class EditProfileFragment : Fragment() {
 
-    private lateinit var binding: FragmentGreetingBinding
-    private var number = ""
-    private var uid = ""
-    private var userName = ""
+    private lateinit var binding: FragmentEditProfileBinding
+    var name = ""
     private var userImageUri: Uri? = null
     private val userCreateHelper: CreateUser by inject()
-    private val viewModel: GreetingFragmentViewModel by viewModel()
+    private val viewModel: EditProfileFragmentViewModel by viewModel()
     private val decodeUri: DecodeUri by inject()
-    private val infoAboutUser: InfoAboutUser by inject()
     private val uiHelper: StatusBarColorChanger by inject()
-    private val customView: SnackBarView by inject()
-    private val checkInternetConnection: CheckInternetConnection by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_greeting, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit_profile, container, false)
 
+        uiHelper.changeStatusBarColor(requireActivity(), R.color.mainColor)
         requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
 
-        infoAboutUser.UID = FirebaseAuth.getInstance().uid.toString() // Получение UID пользователя
-        uid = infoAboutUser.UID
-
         arguments?.let {
-            number = GreetingFragmentArgs.fromBundle(it).phoneNumber
+            userImageUri = Uri.parse(EditProfileFragmentArgs.fromBundle(it).userImage)
+            name = EditProfileFragmentArgs.fromBundle(it).userName
         }
 
-        binding.userImage.setOnClickListener {
+        binding.userNameInput.setText(name)
+        Glide.with(requireContext()).load(userImageUri).into(binding.profileImage)
+
+        binding.profileImage.setOnClickListener {
             openGalleryForOnePicture()
         }
 
         binding.toMainScreen.setOnClickListener {
+            name = binding.userNameInput.text.toString()
 
-            userName = binding.userNameInput.text.toString()
-
-            if (userName.isBlank()) {
+            if (name.isBlank()) {
                 Toast.makeText(requireContext(), resources.getText(R.string.please_fill_all_data), Toast.LENGTH_SHORT).show()
             } else {
-                userCreateHelper.userCreate(number, userName, requireContext())
-                findNavController().navigate(GreetingFragmentDirections.actionGreetingFragmentToMainChatScreenFragment())
+                userCreateHelper.updateUserInfo(name, requireContext())
+                findNavController().navigate(EditProfileFragmentDirections.actionEditProfileFragmentToAccount())
             }
         }
 
         viewModel.currentUriLiveData.observe(viewLifecycleOwner, Observer { uri ->
             val image = decodeUri.decodeUriToBitmap(uri!!, requireContext())
-            binding.userImage.setImageBitmap(image)
+            binding.profileImage.setImageBitmap(image)
         })
 
         return binding.root
@@ -103,15 +96,15 @@ class GreetingFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         when (requestCode) {
-            1 -> if (resultCode == RESULT_OK) launchImageCrop(data?.data!!)
+            1 -> if (resultCode == Activity.RESULT_OK) launchImageCrop(data?.data!!)
 
             CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
                 val result = CropImage.getActivityResult(data)
 
-                if (resultCode == RESULT_OK) {
+                if (resultCode == Activity.RESULT_OK) {
                     val bitmap = decodeUri.decodeUriToBitmap(result.uri, requireContext())
                     viewModel.updateUri(result.uri)
-                    binding.userImage.setImageBitmap(bitmap)
+                    binding.profileImage.setImageBitmap(bitmap)
                     userImageUri = result.uri
                 }
 

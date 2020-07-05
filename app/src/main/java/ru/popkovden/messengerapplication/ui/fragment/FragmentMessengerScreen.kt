@@ -41,8 +41,10 @@ class FragmentMessengerScreen : Fragment() {
         uiHelper.changeStatusBarColor(requireActivity(), R.color.whiteColor)
 
         // Настривает адапер
-        getSentMessagesHelper.getMessages("Kwe5CLjp9TeBs1OVfoCO4hqGRIu1", "12", binding.messengerScreenRecyclerView)
-
+        val mergeAdapter = getSentMessagesHelper.getMessages("Kwe5CLjp9TeBs1OVfoCO4hqGRIu1", "12", binding.messengerScreenRecyclerView)
+        binding.messengerScreenRecyclerView.adapter = mergeAdapter
+        val adapter = binding.messengerScreenRecyclerView.adapter
+//        binding.messengerScreenRecyclerView.smoothScrollToPosition(adapter!!.itemCount - 1)
         binding.messengerScreenRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.messengerScreenRecyclerView.setHasFixedSize(true)
 

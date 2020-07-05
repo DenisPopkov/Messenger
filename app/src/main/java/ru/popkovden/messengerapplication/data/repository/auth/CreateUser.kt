@@ -38,4 +38,21 @@ class CreateUser : AppCompatActivity() {
 
         infoAboutUser.saveInfo(context)
     }
+
+    fun updateUserInfo(userName: String, context: Context) {
+
+        userInfo["userName"] = userName
+        userInfo["UID"] = infoAboutUser.UID
+        infoAboutUser.userName = userName
+
+        storageReference.child(infoAboutUser.UID).downloadUrl.addOnSuccessListener { task ->
+            userInfo["userProfileImage"] = task.toString()
+
+            // Добовляет все данные о пользователе
+            firebaseFirestore.collection("users").document(infoAboutUser.UID)
+                .update(userInfo)
+        }
+
+        infoAboutUser.saveInfo(context)
+    }
 }

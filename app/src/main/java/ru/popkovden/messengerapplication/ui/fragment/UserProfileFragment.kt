@@ -11,18 +11,20 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.drawer_profile_content.view.*
 import kotlinx.android.synthetic.main.profile_toolbar.view.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.data.repository.posts.GetPosts
 import ru.popkovden.messengerapplication.databinding.FragmentUserProfileBinding
+import ru.popkovden.messengerapplication.ui.adapters.profile.mainPart.MainProfileRecyclerViewPart
 import ru.popkovden.messengerapplication.utils.customView.FabControl
 import ru.popkovden.messengerapplication.utils.customView.StatusBarColorChanger
 import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
 import ru.popkovden.messengerapplication.viewmodel.UserProfileFragmentViewModel
 
-class UserProfileFragment : Fragment() {
+class UserProfileFragment : Fragment(){
 
     private lateinit var binding: FragmentUserProfileBinding
     private val uiHelper: StatusBarColorChanger by inject()
@@ -47,6 +49,7 @@ class UserProfileFragment : Fragment() {
         getPostsHelper.getPosts(infoAboutUser.UID, binding.profileRecyclerView, requireContext(), infoAboutUser.userProfileImage, infoAboutUser.userName)
         binding.profileRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.profileRecyclerView.setHasFixedSize(true)
+        binding.profileRecyclerView.adapter = MainProfileRecyclerViewPart(requireContext(), infoAboutUser.userProfileImage, infoAboutUser.userName)
 
         // Настройка интерфейса
         uiHelper.changeStatusBarColor(requireActivity(), R.color.whiteColor)
@@ -59,6 +62,10 @@ class UserProfileFragment : Fragment() {
 
         binding.toolbar.drawerCall.setOnClickListener {
             binding.drawerLayout.openDrawer(Gravity.RIGHT)
+        }
+
+        binding.contentDrawer.edit_icon.setOnClickListener {
+            findNavController().navigate(UserProfileFragmentDirections.actionAccountToEditProfileFragment(infoAboutUser.userName, infoAboutUser.userProfileImage))
         }
     }
 

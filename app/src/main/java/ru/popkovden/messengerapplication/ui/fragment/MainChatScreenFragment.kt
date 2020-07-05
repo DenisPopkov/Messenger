@@ -30,7 +30,8 @@ class MainChatScreenFragment : Fragment() {
         navHostFragment.findNavController().addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.messenger,
-                R.id.createPost -> binding.mainChatBottomNavigationView.visibility = View.GONE
+                R.id.createPost,
+                R.id.editProfileFragment -> binding.mainChatBottomNavigationView.visibility = View.GONE
                 else -> binding.mainChatBottomNavigationView.visibility = View.VISIBLE
             }
         }
