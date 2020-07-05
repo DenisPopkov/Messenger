@@ -9,29 +9,30 @@ import kotlinx.coroutines.launch
 import ru.popkovden.messengerapplication.ui.adapters.chat.messeges.ReceivedMessagesRecyclerView
 import ru.popkovden.messengerapplication.ui.adapters.chat.messeges.SentMessagesRecyclerView
 
-object GetMessages {
+class GetMessages {
 
     private val firebaseFirestore = FirebaseFirestore.getInstance()
     private var receivedMessagesRequestList = arrayListOf<HashMap<String, Any>>()
     private var sentMessagesRequestList = arrayListOf<HashMap<String, Any>>()
-    private val mergeAdapter = MergeAdapter()
 
-    fun getMessages(UID: String, UserUID: String, recyclerViewAdapter: RecyclerView) : MergeAdapter{
+    fun getMessages(UID: String, UserUID: String, recyclerViewAdapter: RecyclerView) {
 
         CoroutineScope(IO).launch {
-
-//            // Настраивает параметры адаптера
-//            recyclerViewAdapter.adapter = mergeAdapter
-//            val adapter = recyclerViewAdapter.adapter
 
             // Получает с БД "отпрвленные" от другого пользователя сообщения
             firebaseFirestore.collection("users").document(UID)
                 .collection("chats").document(UserUID).collection("sentMessages")
                 .addSnapshotListener { documentSnapshot, _ ->
-                    val messagesRequest = documentSnapshot?.documents
 
+                    // Получает данные
+                    val messagesRequest = documentSnapshot?.documents
                     sentMessagesRequestList.clear()
 
+                    // Настраивает параметры адаптера
+                    val mergeAdapter = MergeAdapter()
+                    recyclerViewAdapter.adapter = mergeAdapter
+
+                    // Перебирает данные
                     for (message in messagesRequest!!) {
                         val sentMessagesHashMap = hashMapOf<String, Any>()
                         sentMessagesHashMap["message"] = message["message"].toString()
@@ -41,30 +42,33 @@ object GetMessages {
 
                     // Устанавливает адаптер, на отправленные сообщения
                     mergeAdapter.addAdapter(SentMessagesRecyclerView(sentMessagesRequestList))
+
+                    getReceivedMessages(mergeAdapter, UID, UserUID)
                 }
-
-            // Получает с БД "полученные" от другого пользователя сообщения
-            firebaseFirestore.collection("users").document(UID)
-                .collection("chats").document(UserUID).collection("receivedMessages")
-                .addSnapshotListener { documentSnapshot, _ ->
-                    val receivedMessagesRequest = documentSnapshot?.documents
-
-                    receivedMessagesRequestList.clear()
-
-                    for (message in receivedMessagesRequest!!) {
-                        val receivedMessagesHashMap = hashMapOf<String, Any>()
-                        receivedMessagesHashMap["message"] = message["message"].toString()
-                        receivedMessagesHashMap["time"] = message["time"].toString()
-                        receivedMessagesRequestList.add(receivedMessagesHashMap)
-                    }
-
-                    // Устанавливает адаптер, на полученные сообщения
-                    mergeAdapter.addAdapter(ReceivedMessagesRecyclerView(receivedMessagesRequestList))
-                }
-
-//            adapter?.notifyDataSetChanged()
         }
+    }
 
-        return mergeAdapter
+    private fun getReceivedMessages(mergeAdapter: MergeAdapter, UID: String, UserUID: String) {
+
+        // Получает с БД "полученные" от другого пользователя сообщения
+        firebaseFirestore.collection("users").document(UID)
+            .collection("chats").document(UserUID).collection("receivedMessages")
+            .addSnapshotListener { documentSnapshot2, _ ->
+
+                // Получает данные
+                val receivedMessagesRequest = documentSnapshot2?.documents
+                receivedMessagesRequestList.clear()
+
+                // Перебирает данные
+                for (message in receivedMessagesRequest!!) {
+                    val receivedMessagesHashMap = hashMapOf<String, Any>()
+                    receivedMessagesHashMap["message"] = message["message"].toString()
+                    receivedMessagesHashMap["time"] = message["time"].toString()
+                    receivedMessagesRequestList.add(receivedMessagesHashMap)
+                }
+
+                // Устанавливает адаптер, на полученные сообщения
+                mergeAdapter.addAdapter(ReceivedMessagesRecyclerView(receivedMessagesRequestList))
+            }
     }
 }

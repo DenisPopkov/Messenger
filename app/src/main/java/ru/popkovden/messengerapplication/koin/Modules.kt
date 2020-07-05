@@ -29,7 +29,7 @@ val repositoryModule = module {
     single { GetPosts }
     single { CreatePost }
     single { SendMessageToUser }
-    factory { GetMessages }
+    factory { GetMessages() }
 }
 
 val viewModelModule = module {

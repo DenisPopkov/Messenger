@@ -31,6 +31,7 @@ class FragmentMessengerScreen : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_messenger_screen, container, false)
+        infoAboutUser.loadInfoFromSharedPreferences(requireContext())
 
         return binding.root
     }
@@ -41,8 +42,7 @@ class FragmentMessengerScreen : Fragment() {
         uiHelper.changeStatusBarColor(requireActivity(), R.color.whiteColor)
 
         // Настривает адапер
-        val mergeAdapter = getSentMessagesHelper.getMessages("Kwe5CLjp9TeBs1OVfoCO4hqGRIu1", "12", binding.messengerScreenRecyclerView)
-        binding.messengerScreenRecyclerView.adapter = mergeAdapter
+        getSentMessagesHelper.getMessages("j7ygO5bhmCOSR4ybe52hkX9v6nR2", "12", binding.messengerScreenRecyclerView)
         val adapter = binding.messengerScreenRecyclerView.adapter
 //        binding.messengerScreenRecyclerView.smoothScrollToPosition(adapter!!.itemCount - 1)
         binding.messengerScreenRecyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -54,7 +54,7 @@ class FragmentMessengerScreen : Fragment() {
         }
 
         binding.bottomMessage.microphoneIcon.setOnClickListener {
-            sendMessageHelper.sendMessage("Kwe5CLjp9TeBs1OVfoCO4hqGRIu1", "12", SendMessageModel(binding.bottomMessage.messageInput.text.toString(), "15:45", infoAboutUser.UID))
+            sendMessageHelper.sendMessage("j7ygO5bhmCOSR4ybe52hkX9v6nR2", "12", SendMessageModel(binding.bottomMessage.messageInput.text.toString(), "15:45", infoAboutUser.UID))
             binding.bottomMessage.messageInput.text?.clear()
         }
     }
