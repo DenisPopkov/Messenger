@@ -25,6 +25,7 @@
     <string name="send_message">Сообщение</string>
     <string name="create_post">Создание записи</string>
     <string name="please_fill_all_data">Пожалуйста заполните все данные</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="empty_posts">Вы не создали ни одного поста\nДля создания нажмите +</string>
+    <string name="contacts">Контакты</string>
+    <string name="contact_not_exist">Этот контакт не зарегистрирован в приложении</string>
 </resources>

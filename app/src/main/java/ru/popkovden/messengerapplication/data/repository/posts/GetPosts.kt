@@ -14,33 +14,39 @@ import ru.popkovden.messengerapplication.ui.adapters.profile.mainPart.PostsProfi
 object GetPosts{
 
     private val firebaseFirestore = FirebaseFirestore.getInstance()
-    private val userPosts = mutableListOf<PostsModel>()
+    private val userPosts = arrayListOf<PostsModel>()
 
-    fun getPosts(UID: String, recyclerViewAdapter: RecyclerView, context: Context, image: String, name: String): MutableList<PostsModel> {
+    fun getPosts(UID: String, recyclerViewAdapter: RecyclerView, context: Context, image: String, name: String){
 
         CoroutineScope(IO).launch {
             firebaseFirestore.collection("users")
                 .document(UID)
                 .collection("posts").addSnapshotListener { querySnapshot, _ ->
 
+                    // Получает данные
+                    val postsRequestList = querySnapshot?.documents
                     userPosts.clear()
 
-                    for (document in querySnapshot!!.documents) {
+                    // Настраивает параметры адаптера
+                    val mergeAdapter = MergeAdapter()
+                    recyclerViewAdapter.adapter = mergeAdapter
+
+                    // Основная часть адаптера
+                    mergeAdapter.addAdapter(MainProfileRecyclerViewPart(context, image, name))
+
+                    // Перебирает данные
+                    for (document in postsRequestList!!) {
                         val likeCount = document.get("likeCount").toString()
-//                        val postFiles = document.get("postFiles") as? ArrayList<String>
-//                        val postImages = document.get("postImages") as? ArrayList<String>
+                        val postImages: ArrayList<String>? = document.get("postImages") as ArrayList<String>?
                         val postMainText = document.get("postMainText").toString()
                         val postTitle = document.get("postTitle").toString()
-//                        val postVideos = document.get("postVideos") as? ArrayList<String>
-                        userPosts.add(PostsModel(arrayListOf(), arrayListOf(), arrayListOf(), likeCount, postTitle, postMainText))
-                        val mergeAdapter = MergeAdapter(MainProfileRecyclerViewPart(context, image, name), PostsProfileRecyclerView(context, userPosts))
-                        recyclerViewAdapter.adapter = mergeAdapter
-                        val adapter = recyclerViewAdapter.adapter
-                        adapter?.notifyDataSetChanged()
+                        val postVideos = document.get("postVideos") as ArrayList<String>?
+                        userPosts.add(PostsModel(postImages, postVideos, likeCount, postTitle, postMainText, ""))
                     }
+
+                    // Устанавливает адаптер с постами
+                    mergeAdapter.addAdapter(PostsProfileRecyclerView(context, userPosts))
                 }
         }
-
-        return userPosts
     }
 }

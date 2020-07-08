@@ -35,7 +35,9 @@ class MainChatScreenFragment : Fragment() {
             when (destination.id) {
                 R.id.messenger,
                 R.id.createPost,
-                R.id.editProfileFragment -> binding.mainChatBottomNavigationView.visibility = View.GONE
+                R.id.editProfileFragment,
+                R.id.zoomImagesFragment,
+                R.id.contactsFragment -> binding.mainChatBottomNavigationView.visibility = View.GONE
                 else -> binding.mainChatBottomNavigationView.visibility = View.VISIBLE
             }
         }

@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.custom_toolbar_for_chat_screen.view.*
 import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.databinding.FragmentChatScreenBinding
-import ru.popkovden.messengerapplication.ui.adapters.chat.messenger.contacts.UserMessagesRecyclerView
+import ru.popkovden.messengerapplication.ui.adapters.chat.contacts.UserMessagesRecyclerView
 
 class ChatScreenFragment : Fragment() {
 
@@ -25,9 +27,12 @@ class ChatScreenFragment : Fragment() {
         binding.chatScreenRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.chatScreenRecyclerView.adapter =
             UserMessagesRecyclerView(
-                requireContext(),
-                childFragmentManager
+                requireContext()
             )
+
+        binding.chatToolbar.writeToNewContact.setOnClickListener {
+            findNavController().navigate(ChatScreenFragmentDirections.actionChatToContactsFragment())
+        }
 
         return binding.root
     }

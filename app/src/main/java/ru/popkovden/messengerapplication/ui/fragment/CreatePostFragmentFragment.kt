@@ -2,7 +2,9 @@ package ru.popkovden.messengerapplication.ui.fragment
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,18 +17,15 @@ import androidx.recyclerview.widget.MergeAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.create_post_panel.view.*
 import kotlinx.android.synthetic.main.create_post_toolbar.view.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.data.repository.posts.CreatePost
 import ru.popkovden.messengerapplication.databinding.FragmentCreatePostFragmentBinding
 import ru.popkovden.messengerapplication.model.PostsModel
-import ru.popkovden.messengerapplication.ui.adapters.profile.createPost.FileSliderRecyclerView
 import ru.popkovden.messengerapplication.ui.adapters.profile.createPost.ImageSliderRecyclerView
 import ru.popkovden.messengerapplication.ui.adapters.profile.createPost.VideoSliderRecyclerView
 import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
+
 
 class CreatePostFragmentFragment : Fragment() {
 
@@ -36,6 +35,7 @@ class CreatePostFragmentFragment : Fragment() {
     private val imageSlider = arrayListOf<String>()
     private val videoSlider = arrayListOf<String>()
     private val documentSlider = arrayListOf<String>()
+    private val compressImages = arrayListOf<Uri>()
     private var mergeAdapter = MergeAdapter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -52,14 +52,23 @@ class CreatePostFragmentFragment : Fragment() {
         }
 
         binding.panel.createPost.setOnClickListener {
-            if (binding.postMainText.text.toString().isBlank()) {
+
+            val textFromPost = binding.postMainText.text.toString()
+            var header = textFromPost
+
+            if (textFromPost.isBlank()) {
                 Toast.makeText(requireContext(), "Пустая запись", Toast.LENGTH_SHORT).show()
             } else {
-                CoroutineScope(IO).launch {
-                    createPostHelper.createPost(PostsModel(imageSlider, videoSlider, documentSlider,
-                        "12", "Разработка ${System.currentTimeMillis()}", binding.postMainText.text.toString()), infoUser.UID)
+
+                header = if (textFromPost.length <= 25)  {
+                    textFromPost
+                } else {
+                    header.take(24) + "..."
                 }
 
+                Log.d("efefe", "$header header")
+
+                createPostHelper.createPost(PostsModel(imageSlider, videoSlider, "0", header, textFromPost, ""), infoUser.UID, requireContext())
                 backToProfile()
             }
         }
@@ -70,10 +79,6 @@ class CreatePostFragmentFragment : Fragment() {
 
         binding.panel.videoPick.setOnClickListener {
             openFileFinder("video/*")
-        }
-
-        binding.panel.documentPick.setOnClickListener {
-            openFileFinder("*/*")
         }
 
         return binding.root
@@ -100,6 +105,17 @@ class CreatePostFragmentFragment : Fragment() {
                 for (i in 0 until count) {
                     val uri = data.clipData!!.getItemAt(i).uri.toString()
                     list.add(uri)
+
+//                    CoroutineScope(IO).launch {
+//                        Log.d("efefe", "${data.data!!.path!!} path from create")
+//                        val compressedImageFile = Compressor.compress(requireContext(), File(data.clipData!!.getItemAt(i).uri.path!!)) {
+//                            resolution(1280, 720)
+//                            quality(80)
+//                            format(Bitmap.CompressFormat.WEBP)
+//                            size(2_097_152) // 2 MB
+//                        }
+//                        compressImages.add(Uri.fromFile(compressedImageFile))
+//                    }
                 }
 
             } else if (data?.data != null) { // Для одного элемента
@@ -127,11 +143,6 @@ class CreatePostFragmentFragment : Fragment() {
             2 -> {
                 getDataFromExternal(resultCode, data, videoSlider)
                 mergeAdapter.addAdapter(VideoSliderRecyclerView(videoSlider, requireContext()))
-            }
-
-            3 -> {
-                getDataFromExternal(resultCode, data, documentSlider)
-                mergeAdapter.addAdapter(FileSliderRecyclerView(documentSlider, requireContext()))
             }
         }
     }

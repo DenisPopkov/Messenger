@@ -39,18 +39,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title" />
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/postImage"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/postFileSliderRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="190dp"
-        android:layout_marginStart="10dp"
         android:layout_marginTop="15dp"
-        android:layout_marginEnd="10dp"
-        android:src="@color/mainColor"
+        android:overScrollMode="never"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainPostText"
-        app:shapeAppearanceOverlay="@style/ShapeAppearance.Image.ROUND" />
+        app:layout_constraintTop_toBottomOf="@+id/mainPostText"/>
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/linear"
@@ -61,7 +58,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/postImage">
+        app:layout_constraintTop_toBottomOf="@+id/postFileSliderRecyclerView">
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:layout_width="wrap_content"
@@ -125,8 +122,9 @@
         android:background="@drawable/corner_for_image_counter"
         android:gravity="center"
         android:text="1/3"
+        android:visibility="invisible"
         android:textColor="#fff"
         android:textSize="13sp"
-        app:layout_constraintEnd_toEndOf="@+id/postImage"
-        app:layout_constraintTop_toTopOf="@+id/postImage" />
+        app:layout_constraintEnd_toEndOf="@+id/postFileSliderRecyclerView"
+        app:layout_constraintTop_toTopOf="@+id/postFileSliderRecyclerView" />
 </androidx.constraintlayout.widget.ConstraintLayout>

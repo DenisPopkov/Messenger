@@ -14,7 +14,7 @@
         tools:context=".ui.fragment.ChatScreenFragment">
 
         <include
-            android:id="@+id/include"
+            android:id="@+id/chatToolbar"
             layout="@layout/custom_toolbar_for_chat_screen"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +30,7 @@
             android:background="@color/grayColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/include" />
+            app:layout_constraintTop_toBottomOf="@+id/chatToolbar" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/chat_screen_recycler_view"

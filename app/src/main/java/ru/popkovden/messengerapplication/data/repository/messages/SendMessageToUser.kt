@@ -18,6 +18,7 @@ object SendMessageToUser {
         sentMessage["message"] = sendMessageModel.message
         sentMessage["time"] = sendMessageModel.time
         sentMessage["uidSender"] = sendMessageModel.uidSender
+        sentMessage["id"] = sendMessageModel.id
 
         firebaseFirestore.collection("users").document(UID)
             .collection("chats").document(UserUID).collection("sentMessages").add(sentMessage)

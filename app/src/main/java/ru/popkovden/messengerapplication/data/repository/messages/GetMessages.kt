@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import ru.popkovden.messengerapplication.ui.adapters.chat.messeges.ReceivedMessagesRecyclerView
 import ru.popkovden.messengerapplication.ui.adapters.chat.messeges.SentMessagesRecyclerView
 
-class GetMessages {
+object GetMessages {
 
     private val firebaseFirestore = FirebaseFirestore.getInstance()
     private var receivedMessagesRequestList = arrayListOf<HashMap<String, Any>>()
@@ -41,7 +41,8 @@ class GetMessages {
                     }
 
                     // Устанавливает адаптер, на отправленные сообщения
-                    mergeAdapter.addAdapter(SentMessagesRecyclerView(sentMessagesRequestList))
+                    val sentMessagesRecyclerView = SentMessagesRecyclerView(sentMessagesRequestList)
+                    mergeAdapter.addAdapter(sentMessagesRecyclerView)
 
                     getReceivedMessages(mergeAdapter, UID, UserUID)
                 }

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginStart="70dp">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/sentMessage"
@@ -14,14 +16,14 @@
         android:background="@drawable/bubble_view_for_sent_messages"
         android:paddingStart="12dp"
         android:paddingTop="8dp"
-        android:paddingEnd="53dp"
+        android:paddingEnd="12dp"
         android:paddingBottom="8dp"
-        android:text="I'm okay!"
         android:textColor="@color/whiteColor"
         android:textSize="@dimen/text_message_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="I'm okayoejfeo" />
 
     <TextView
         android:id="@+id/timeSentMessage"
@@ -32,7 +34,21 @@
         android:text="12:30"
         android:textColor="#E7EFF8"
         android:textSize="12sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/sentMessage"
         app:layout_constraintEnd_toEndOf="@+id/sentMessage" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintGuide_begin="-19dp"
+        app:layout_constraintGuide_end="10dp"
+        app:layout_constraintStart_toStartOf="@id/sentMessage"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -54,7 +54,7 @@ class FragmentMessengerScreen : Fragment() {
         }
 
         binding.bottomMessage.microphoneIcon.setOnClickListener {
-            sendMessageHelper.sendMessage("j7ygO5bhmCOSR4ybe52hkX9v6nR2", "12", SendMessageModel(binding.bottomMessage.messageInput.text.toString(), "15:45", infoAboutUser.UID))
+            sendMessageHelper.sendMessage("j7ygO5bhmCOSR4ybe52hkX9v6nR2", "12", SendMessageModel(binding.bottomMessage.messageInput.text.toString(), "15:45", infoAboutUser.UID, ""))
             binding.bottomMessage.messageInput.text?.clear()
         }
     }

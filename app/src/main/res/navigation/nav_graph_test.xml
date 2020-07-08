@@ -18,6 +18,9 @@
         <action
             android:id="@+id/action_chat_to_fragmentMessengerScreen"
             app:destination="@id/messenger" />
+        <action
+            android:id="@+id/action_chat_to_contactsFragment"
+            app:destination="@id/contactsFragment" />
     </fragment>
     <fragment
         android:id="@+id/account"
@@ -30,6 +33,9 @@
         <action
             android:id="@+id/action_account_to_editProfileFragment"
             app:destination="@id/editProfileFragment" />
+        <action
+            android:id="@+id/action_account_to_zoomImagesFragment"
+            app:destination="@id/zoomImagesFragment" />
     </fragment>
     <fragment
         android:id="@+id/messenger"
@@ -44,7 +50,11 @@
         android:id="@+id/contactsFragment"
         android:name="ru.popkovden.messengerapplication.ui.fragment.ContactsFragment"
         android:label="ContactsFragment"
-        tools:layout="@layout/fragment_contacts"/>
+        tools:layout="@layout/fragment_contacts">
+        <action
+            android:id="@+id/action_contactsFragment_to_chat"
+            app:destination="@id/chat" />
+    </fragment>
     <fragment
         android:id="@+id/createPost"
         android:name="ru.popkovden.messengerapplication.ui.fragment.CreatePostFragmentFragment"
@@ -69,5 +79,13 @@
         <action
             android:id="@+id/action_editProfileFragment_to_account"
             app:destination="@id/account" />
+    </fragment>
+    <fragment
+        android:id="@+id/zoomImagesFragment"
+        android:name="ru.popkovden.messengerapplication.ui.fragment.ZoomImagesFragment"
+        android:label="ZoomImagesFragment"
+        tools:layout="@layout/fragment_zoom_images">
+        <argument android:name="imagesList"
+            app:argType="string[]" />
     </fragment>
 </navigation>
