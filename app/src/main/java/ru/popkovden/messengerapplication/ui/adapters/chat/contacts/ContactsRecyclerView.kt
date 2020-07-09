@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.contacts_item.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
@@ -15,7 +16,7 @@ import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.data.repository.auth.CheckIfUserExist
 import ru.popkovden.messengerapplication.model.ContactsModel
 
-class ContactsRecyclerView(private val contactsList: MutableList<ContactsModel>) : RecyclerView.Adapter<ContactsViewHolder>() {
+class ContactsRecyclerView(private val contactsList: List<ContactsModel>) : RecyclerView.Adapter<ContactsViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactsViewHolder = ContactsViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.contacts_item, parent, false))
 
@@ -27,11 +28,12 @@ class ContactsRecyclerView(private val contactsList: MutableList<ContactsModel>)
 
         contactName.text = currentContactsItem.contactName
         contactNumber.text = currentContactsItem.contactPhoneNumber
+        Glide.with(context).load(currentContactsItem.contactPhoto).placeholder(R.drawable.contact_placeholder_icon_2).into(contactImage)
 
         this.setOnClickListener {
             it.setOnClickListener {
                 CoroutineScope(IO).launch {
-                    val checkResult = CheckIfUserExist.check(currentContactsItem.contactPhoneNumber)
+                    val checkResult = CheckIfUserExist.check(it.contactNumber.text.toString())
                     if (checkResult) {
                         withContext(Main) {
                             Toast.makeText(context, "Успешно", Toast.LENGTH_SHORT).show()
