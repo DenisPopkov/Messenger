@@ -1,6 +1,5 @@
 package ru.popkovden.messengerapplication.data.repository.posts
 
-import android.content.Context
 import android.net.Uri
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -20,7 +19,7 @@ object CreatePost {
     private val userInfo = hashMapOf<String, Any>()
     private val imageHelper = arrayListOf<String>()
 
-    fun createPost(postInfo: PostsModel, UID: String, context: Context) = CoroutineScope(IO).launch {
+    fun createPost(postInfo: PostsModel, UID: String) = CoroutineScope(IO).launch {
 
         userInfo.clear()
         imageHelper.clear()

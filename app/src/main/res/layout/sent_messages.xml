@@ -1,54 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout android:id="@+id/relative"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="70dp">
+    android:layout_marginStart="50dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/sentMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="5dp"
+        android:layout_alignParentEnd="true"
         android:background="@drawable/bubble_view_for_sent_messages"
-        android:paddingStart="12dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="12dp"
-        android:paddingBottom="8dp"
+        android:paddingStart="13dp"
+        android:paddingTop="7dp"
+        android:paddingEnd="50dp"
+        android:paddingBottom="12dp"
+        android:text="Что делаешь"
         android:textColor="@color/whiteColor"
-        android:textSize="@dimen/text_message_size"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="I'm okayoejfeo" />
+        android:textSize="@dimen/text_message_size"/>
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/timeSentMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="12dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="14dp"
         android:layout_marginBottom="4dp"
         android:text="12:30"
+        android:layout_alignBottom="@id/sentMessage"
         android:textColor="#E7EFF8"
-        android:textSize="12sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/sentMessage"
-        app:layout_constraintEnd_toEndOf="@+id/sentMessage" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline4"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintGuide_begin="-19dp"
-        app:layout_constraintGuide_end="10dp"
-        app:layout_constraintStart_toStartOf="@id/sentMessage"
-        app:layout_constraintTop_toTopOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:textSize="11.5sp"/>
+</RelativeLayout>

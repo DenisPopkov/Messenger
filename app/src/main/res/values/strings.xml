@@ -28,4 +28,5 @@
     <string name="empty_posts">Вы не создали ни одного поста\nДля создания нажмите +</string>
     <string name="contacts">Контакты</string>
     <string name="contact_not_exist">Этот контакт не зарегистрирован в приложении</string>
+    <string name="photo_loading">Идет загрузка. Пожалуйста подождите</string>
 </resources>

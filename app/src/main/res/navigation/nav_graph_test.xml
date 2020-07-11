@@ -45,6 +45,18 @@
         <action
             android:id="@+id/action_fragmentMessengerScreen_to_chat"
             app:destination="@id/chat" />
+        <argument
+            android:name="UserUID"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="UserName"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="UserPhoto"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/contactsFragment"
@@ -54,6 +66,9 @@
         <action
             android:id="@+id/action_contactsFragment_to_chat"
             app:destination="@id/chat" />
+        <action
+            android:id="@+id/action_contactsFragment_to_messenger"
+            app:destination="@id/messenger" />
     </fragment>
     <fragment
         android:id="@+id/createPost"

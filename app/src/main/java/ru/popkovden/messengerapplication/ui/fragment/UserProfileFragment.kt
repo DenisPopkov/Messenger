@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
+import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -36,7 +37,7 @@ class UserProfileFragment : Fragment(){
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        binding = FragmentUserProfileBinding.inflate(layoutInflater)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_profile, container,false)
 
         return binding.root
     }
@@ -106,6 +107,7 @@ class UserProfileFragment : Fragment(){
         // Настройка интерфейса
         uiHelper.changeStatusBarColor(requireActivity(), R.color.whiteColor)
         fabControl.controlFabActionPosition(binding.profileRecyclerView, binding.fab)
+
         drawerControl(binding.drawerLayout, binding.content)
 
         binding.fab.setOnClickListener {
@@ -116,7 +118,7 @@ class UserProfileFragment : Fragment(){
             binding.drawerLayout.openDrawer(GravityCompat.END)
         }
 
-        binding.drawerContent.userName.text = infoAboutUser.userName
+        binding.drawerContent.contactName.text = infoAboutUser.userName
     }
 
     private fun drawerControl(drawerLayout: DrawerLayout, contentLayout: ConstraintLayout) {

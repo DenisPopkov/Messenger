@@ -4,7 +4,6 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,8 +14,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.MergeAdapter
 import androidx.recyclerview.widget.RecyclerView
+import id.zelory.compressor.Compressor
+import id.zelory.compressor.constraint.resolution
+import id.zelory.compressor.constraint.size
 import kotlinx.android.synthetic.main.create_post_panel.view.*
 import kotlinx.android.synthetic.main.create_post_toolbar.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.data.repository.posts.CreatePost
@@ -24,7 +29,11 @@ import ru.popkovden.messengerapplication.databinding.FragmentCreatePostFragmentB
 import ru.popkovden.messengerapplication.model.PostsModel
 import ru.popkovden.messengerapplication.ui.adapters.profile.createPost.ImageSliderRecyclerView
 import ru.popkovden.messengerapplication.ui.adapters.profile.createPost.VideoSliderRecyclerView
+import ru.popkovden.messengerapplication.utils.helper.READ_EXTERNAL_STORAGE
+import ru.popkovden.messengerapplication.utils.helper.checkPermission
+import ru.popkovden.messengerapplication.utils.helper.getPath
 import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
+import java.io.File
 
 
 class CreatePostFragmentFragment : Fragment() {
@@ -34,13 +43,16 @@ class CreatePostFragmentFragment : Fragment() {
     private val infoUser: InfoAboutUser by inject()
     private val imageSlider = arrayListOf<String>()
     private val videoSlider = arrayListOf<String>()
-    private val documentSlider = arrayListOf<String>()
-    private val compressImages = arrayListOf<Uri>()
+    private val compressImages = arrayListOf<String>()
     private var mergeAdapter = MergeAdapter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_post_fragment, container, false)
+
+        compressImages.clear()
+        imageSlider.clear()
+        videoSlider.clear()
 
         // Настройка адаптера
         mergeAdapter = MergeAdapter()
@@ -65,20 +77,26 @@ class CreatePostFragmentFragment : Fragment() {
                 } else {
                     header.take(24) + "..."
                 }
-
-                Log.d("efefe", "$header header")
-
-                createPostHelper.createPost(PostsModel(imageSlider, videoSlider, "0", header, textFromPost, ""), infoUser.UID, requireContext())
-                backToProfile()
+                
+                if (compressImages.size == imageSlider.size) {
+                    createPostHelper.createPost(PostsModel(compressImages, videoSlider, "0", header, textFromPost, ""), infoUser.UID)
+                    backToProfile()
+                } else {
+                    Toast.makeText(requireContext(), resources.getString(R.string.photo_loading), Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
         binding.panel.imagePick.setOnClickListener {
-            openFileFinder("image/*")
+            if (checkPermission(READ_EXTERNAL_STORAGE, requireActivity())) {
+                openFileFinder("image/*")
+            }
         }
 
         binding.panel.videoPick.setOnClickListener {
-            openFileFinder("video/*")
+            if (checkPermission(READ_EXTERNAL_STORAGE, requireActivity())) {
+                openFileFinder("video/*")
+            }
         }
 
         return binding.root
@@ -105,23 +123,35 @@ class CreatePostFragmentFragment : Fragment() {
                 for (i in 0 until count) {
                     val uri = data.clipData!!.getItemAt(i).uri.toString()
                     list.add(uri)
+                }
 
-//                    CoroutineScope(IO).launch {
-//                        Log.d("efefe", "${data.data!!.path!!} path from create")
-//                        val compressedImageFile = Compressor.compress(requireContext(), File(data.clipData!!.getItemAt(i).uri.path!!)) {
-//                            resolution(1280, 720)
-//                            quality(80)
-//                            format(Bitmap.CompressFormat.WEBP)
-//                            size(2_097_152) // 2 MB
-//                        }
-//                        compressImages.add(Uri.fromFile(compressedImageFile))
-//                    }
+                CoroutineScope(IO).launch {
+                    for (i in 0 until count) {
+
+                        val uri = data.clipData!!.getItemAt(i).uri.toString()
+
+                        val compressedImageFile = Compressor.compress(requireContext(), File(getPath(requireContext(), Uri.parse(uri))!!)) {
+                            resolution(1280, 720)
+                            size(1_097_152) // 1 MB
+                        }
+
+                        compressImages.add(Uri.fromFile(compressedImageFile).toString())
+                    }
                 }
 
             } else if (data?.data != null) { // Для одного элемента
 
                 val uri = data.data.toString()
+
                 list.add(uri)
+
+                CoroutineScope(IO).launch {
+                    val compressedImageFile = Compressor.compress(requireContext(), File(getPath(requireContext(), Uri.parse(uri))!!)) {
+                        resolution(1280, 720)
+                        size(1_097_152) // 1 MB
+                    }
+                    compressImages.add(Uri.fromFile(compressedImageFile).toString())
+                }
             }
         }
     }
@@ -131,7 +161,6 @@ class CreatePostFragmentFragment : Fragment() {
 
         imageSlider.clear()
         videoSlider.clear()
-        documentSlider.clear()
 
         when (requestCode) {
 

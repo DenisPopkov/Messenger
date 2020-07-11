@@ -4,5 +4,6 @@ data class SendMessageModel(
     val message: String,
     val time: String,
     val uidSender: String,
-    val id: String
+    val id: Int,
+    val CONTENT_TYPE: Int
 )

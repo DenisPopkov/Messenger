@@ -13,4 +13,8 @@
     <color name="greenColor">#18FF00</color>
     <color name="grayColorForNightBubble">#343640</color>
     <color name="darkerColorForNightBackground">#282A34</color>
+
+    <color name="camera_elips">#EEF9FB</color>
+    <color name="gallery_elips">#F8F7FF</color>
+    <color name="file_elips">#F2F6FF</color>
 </resources>

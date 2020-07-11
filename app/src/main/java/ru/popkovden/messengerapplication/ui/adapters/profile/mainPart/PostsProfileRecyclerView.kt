@@ -4,10 +4,11 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.MergeAdapter
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
+import kotlinx.android.synthetic.main.post_item_for_feed.view.mainPostText
+import kotlinx.android.synthetic.main.post_item_for_feed.view.title
+import kotlinx.android.synthetic.main.posts_item.view.*
 import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.model.PostsModel
 import ru.popkovden.messengerapplication.ui.adapters.profile.createPost.VideoSliderRecyclerView
@@ -21,26 +22,24 @@ class PostsProfileRecyclerView(val context: Context, private val postsList: Muta
 
     override fun getItemCount(): Int = postsList.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.itemView.run {
 
         val postImages = arrayListOf<String>()
         val postVideos = arrayListOf<String>()
 
-        for (post in postsList) {
-            holder.title.text = post.postTitle
-            holder.mainPostText.text = post.postMainText
-            postImages.addAll(post.postImages!!)
-            postVideos.addAll(post.postVideos!!)
+        val currentPosition = postsList[position]
+
+        title.text = currentPosition.postTitle
+        mainPostText.text = currentPosition.postMainText
+
+        for (images in currentPosition.postImages!!) {
+            postImages.add(images)
         }
 
         val mergeAdapter = MergeAdapter(PostFilesSlider(postImages, context))
         mergeAdapter.addAdapter(VideoSliderRecyclerView(postVideos, context))
-        holder.recyclerView.adapter = mergeAdapter
+        postFileSliderRecyclerView.adapter = mergeAdapter
     }
 }
 
-class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    val title: AppCompatTextView = itemView.findViewById(R.id.title)
-    val mainPostText: AppCompatTextView = itemView.findViewById(R.id.mainPostText)
-    val recyclerView: ViewPager2 = itemView.findViewById(R.id.postFileSliderRecyclerView)
-}
+class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

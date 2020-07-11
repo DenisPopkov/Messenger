@@ -12,7 +12,7 @@ object CheckIfUserExist {
         val result = firestoreReference.whereEqualTo("phoneNumber", phoneNumber)
             .get().await()
 
-        if (result.documents != null) {
+        if (result.documents != null && result.documents.isNotEmpty()) {
             return true
         }
          else {

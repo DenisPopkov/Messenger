@@ -5,6 +5,7 @@ import org.koin.dsl.module
 import ru.popkovden.messengerapplication.data.repository.auth.CheckIfUserExist
 import ru.popkovden.messengerapplication.data.repository.auth.CreateUser
 import ru.popkovden.messengerapplication.data.repository.auth.FirebaseAuthHelper
+import ru.popkovden.messengerapplication.data.repository.contacts.GetContacts
 import ru.popkovden.messengerapplication.data.repository.messages.GetMessages
 import ru.popkovden.messengerapplication.data.repository.messages.SendMessageToUser
 import ru.popkovden.messengerapplication.data.repository.posts.CreatePost
@@ -32,6 +33,7 @@ val repositoryModule = module {
     single { SendMessageToUser }
     factory { GetMessages }
     single { CheckIfUserExist }
+    single { GetContacts }
 }
 
 val viewModelModule = module {

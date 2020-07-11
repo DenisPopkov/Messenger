@@ -20,7 +20,7 @@
         android:background="#C9FAF8F8">
 
         <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/writeToNewContact"
+            android:id="@+id/attachFile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -48,7 +48,7 @@
             app:messageInputChecker="@{microphoneIcon}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/appCompatImageButton3"
-            app:layout_constraintStart_toEndOf="@+id/writeToNewContact"
+            app:layout_constraintStart_toEndOf="@+id/attachFile"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageButton

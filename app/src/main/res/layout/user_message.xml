@@ -18,7 +18,7 @@
         app:shapeAppearanceOverlay="@style/ShapeAppearance.Image.PILL" />
 
     <TextView
-        android:id="@+id/userName"
+        android:id="@+id/contactName12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
@@ -32,7 +32,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/lastMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
@@ -42,7 +42,7 @@
         android:textColor="#919191"
         android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@+id/userImage"
-        app:layout_constraintTop_toBottomOf="@+id/userName" />
+        app:layout_constraintTop_toBottomOf="@+id/contactName12" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:layout_width="13dp"

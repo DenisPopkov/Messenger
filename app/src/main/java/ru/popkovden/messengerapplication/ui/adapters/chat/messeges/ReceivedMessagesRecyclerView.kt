@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.received_messages.view.*
 import ru.popkovden.messengerapplication.R
 
-class ReceivedMessagesRecyclerView(private val receivedMessageList: ArrayList<HashMap<String, Any>>) : RecyclerView.Adapter<ReceivedViewHolder>() {
+class ReceivedMessagesRecyclerView(private val receivedMessageList: List<HashMap<String, Any>>) : RecyclerView.Adapter<ReceivedViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReceivedViewHolder =
         ReceivedViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.received_messages, parent, false)

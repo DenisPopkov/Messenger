@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 /* Файл для работы с разрешениями*/
 
 const val READ_CONTACTS = Manifest.permission.READ_CONTACTS
+const val READ_EXTERNAL_STORAGE = Manifest.permission.READ_EXTERNAL_STORAGE
 const val PERMISSION_REQUEST = 200
 
 fun checkPermission(permission: String, activity: Activity): Boolean {
