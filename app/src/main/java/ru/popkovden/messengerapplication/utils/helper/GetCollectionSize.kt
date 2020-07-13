@@ -11,10 +11,13 @@ suspend fun getCollectionSize(UID: String): Int? {
     return firebaseFirestore.get("collectionSize")?.toString()?.toInt()
 }
 
-fun updateCollectionSize(UID: String, lastValue: Int) {
+fun updateCollectionSize(UID: String, lastValue: Int, userUID: String) {
 
     val hashMap = hashMapOf("collectionSize" to lastValue.plus(1))
 
     FirebaseFirestore.getInstance().collection("users")
         .document(UID).collection("chats").document("CollectionSize").set(hashMap)
+
+    FirebaseFirestore.getInstance().collection("users")
+        .document(userUID).collection("chats").document("CollectionSize").set(hashMap)
 }

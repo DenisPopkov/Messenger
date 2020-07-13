@@ -53,6 +53,7 @@
             android:background="@drawable/custom_phone_number_input"
             android:cursorVisible="false"
             android:hint="+7"
+            android:text="+7"
             android:inputType="phone"
             android:maxLength="15"
             android:paddingStart="18dp"

@@ -1,4 +1,4 @@
-package ru.popkovden.messengerapplication.ui.adapters.chat
+package ru.popkovden.messengerapplication.ui.adapters.chat.helper
 
 import androidx.recyclerview.widget.DiffUtil
 import ru.popkovden.messengerapplication.model.MessageModel

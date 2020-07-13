@@ -1,5 +1,6 @@
 package ru.popkovden.messengerapplication.data.repository.messages
 
+import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
@@ -31,6 +32,9 @@ object SendMessageToUser {
         receivedMessage["uidSender"] = sendMessageModel.uidSender
         receivedMessage["id"] = getCollectionSize(UID)!!
         receivedMessage["CONTENT_TYPE"] = 2
+
+        Log.d("efefe", "$UserUID - userUID")
+        Log.d("efefe", "$UID - uid")
 
         // Отправляет в БД
         firebaseFirestore.collection("users").document(UID)

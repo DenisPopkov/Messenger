@@ -29,4 +29,5 @@
     <string name="contacts">Контакты</string>
     <string name="contact_not_exist">Этот контакт не зарегистрирован в приложении</string>
     <string name="photo_loading">Идет загрузка. Пожалуйста подождите</string>
+    <string name="feed">Интересное</string>
 </resources>

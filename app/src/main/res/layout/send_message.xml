@@ -23,13 +23,12 @@
             android:id="@+id/attachFile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="center|bottom"
             android:layout_marginStart="10dp"
             android:background="@color/transperent"
             android:src="@drawable/attach_icon"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/messageInput"
@@ -55,25 +54,23 @@
             android:id="@+id/appCompatImageButton3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="center|bottom"
             android:layout_marginEnd="15dp"
             android:background="@color/transperent"
             android:src="@drawable/happy_smile"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/microphoneIcon"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toStartOf="@+id/microphoneIcon" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/microphoneIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="center|bottom"
             android:layout_marginEnd="15dp"
             android:background="@color/transperent"
             android:src="@drawable/microphone_icon"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

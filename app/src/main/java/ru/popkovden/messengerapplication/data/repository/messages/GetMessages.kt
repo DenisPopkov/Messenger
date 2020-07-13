@@ -1,5 +1,6 @@
 package ru.popkovden.messengerapplication.data.repository.messages
 
+import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
@@ -13,14 +14,13 @@ object GetMessages {
     private val firebaseFirestore = FirebaseFirestore.getInstance()
     private var messagesRequestList = arrayListOf<MessageModel>()
 
-    fun getMessages(UID: String, UserUID: String, recyclerViewAdapter: RecyclerView) {
+    fun getMessages(UID: String, UserUID: String, recyclerViewAdapter: RecyclerView, context: Context) {
 
         CoroutineScope(IO).launch {
 
             // Получает с БД "отправленные" от другого пользователя сообщения
             firebaseFirestore.collection("users").document(UID)
-                .collection("chats").document(UserUID).collection("sentMessages")
-                .addSnapshotListener { documentSnapshot, _ ->
+                .collection("chats").document(UserUID).collection("sentMessages").addSnapshotListener { documentSnapshot, _ ->
 
                     // Получает данные
                     val messagesRequest = documentSnapshot?.documents
@@ -34,16 +34,20 @@ object GetMessages {
                         sentMessagesHashMap["time"] = message["time"].toString()
                         val messageId = message["id"].toString().toInt()
                         sentMessages.add(sentMessagesHashMap)
-                        messagesRequestList.add(MessageModel(sentMessages, null, 1, messageId))
+                        messagesRequestList.add(MessageModel(sentMessages, null, null, 1, messageId))
                     }
 
+//                    recyclerViewAdapter.adapter = MessagesRecyclerViewAdapter(messagesRequestList.sortedWith(compareBy { it.id }), context)
+
                     // Получает с БД "полученные" от другого пользователя сообщения
-                    getReceivedMessages(recyclerViewAdapter, UID, UserUID)
+                    getReceivedMessages(recyclerViewAdapter, UID, UserUID, context)
+                    // Получает с БД "отправленные" фото
+//                    getSentImages(recyclerViewAdapter, UID, UserUID, context)
                 }
         }
     }
 
-    private fun getReceivedMessages(recyclerViewAdapter: RecyclerView, UID: String, UserUID: String) {
+    private fun getReceivedMessages(recyclerViewAdapter: RecyclerView, UID: String, UserUID: String, context: Context) {
 
         // Получает с БД "полученные" от другого пользователя сообщения
         firebaseFirestore.collection("users").document(UID)
@@ -61,11 +65,37 @@ object GetMessages {
                     receivedMessagesHashMap["time"] = messages["time"].toString()
                     val messageId = messages["id"].toString().toInt()
                     receivedMessages.add(receivedMessagesHashMap)
-                    messagesRequestList.add(MessageModel(null, receivedMessages, 2, messageId))
+                    messagesRequestList.add(MessageModel(null, receivedMessages, null, 2, messageId))
                 }
 
                 // Передает данные в адаптер, отфильтрованные по ID
-                recyclerViewAdapter.adapter = MessagesRecyclerViewAdapter(messagesRequestList.sortedWith(compareBy { it.id }))
+                recyclerViewAdapter.adapter = MessagesRecyclerViewAdapter(messagesRequestList.sortedWith(compareBy { it.id }).distinctBy { it.sentMessages }, context)
+            }
+    }
+
+    private fun getSentImages(recyclerViewAdapter: RecyclerView, UID: String, UserUID: String, context: Context) {
+
+        // Получает с БД "полученные" от другого пользователя сообщения
+        firebaseFirestore.collection("users").document(UID)
+            .collection("chats").document(UserUID).collection("sentImages")
+            .addSnapshotListener { documentSnapshot, _ ->
+
+                // Получает данные
+                val sentImagesRequest = documentSnapshot?.documents
+
+                // Перебирает данные
+                for (images in sentImagesRequest!!) {
+                    val sentImagesHashMap = hashMapOf<String, Any>()
+                    val sentImages = arrayListOf<HashMap<String, Any>>()
+                    sentImagesHashMap["images"] = images["images"].toString()
+                    sentImagesHashMap["time"] = images["time"].toString()
+                    val messageId = images["id"].toString().toInt()
+                    sentImages.add(sentImagesHashMap)
+                    messagesRequestList.add(MessageModel(null, null, sentImages, 3, messageId))
+                }
+
+                // Передает данные в адаптер, отфильтрованные по ID
+                recyclerViewAdapter.adapter = MessagesRecyclerViewAdapter(messagesRequestList.sortedWith(compareBy { it.id }), context)
             }
     }
 }

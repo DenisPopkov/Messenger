@@ -27,6 +27,7 @@ class CreateUser : AppCompatActivity() {
         userInfo["phoneNumber"] = phoneNumber
         userInfo["UID"] = infoAboutUser.UID
         infoAboutUser.userName = userName
+        infoAboutUser.phoneNumber = phoneNumber
 
         storageReference.child(infoAboutUser.UID).downloadUrl.addOnSuccessListener { task ->
             userInfo["userProfileImage"] = task.toString()

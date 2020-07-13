@@ -1,6 +1,7 @@
 package ru.popkovden.messengerapplication.ui.adapters.chat.contacts
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +28,7 @@ class UserMessagesRecyclerView(val context: Context, val contacts: ArrayList<Con
 
         this.setOnClickListener {
             val action = ChatScreenFragmentDirections.actionChatToFragmentMessengerScreen(currentContact.contactUID, currentContact.contactName, currentContact.contactPhoto)
+            Log.d("efefe", "${currentContact.contactUID}, ${currentContact.contactName}, ${currentContact.contactPhoto}")
             findNavController().navigate(action)
         }
     }

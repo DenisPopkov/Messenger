@@ -39,6 +39,8 @@ class SendPhoneNumberFragment : Fragment() {
             binding.phoneNumber.setText(phone)
         }
 
+        binding.phoneNumber.setText("+7")
+
         CoroutineScope(Main).launch {
             while (true) {
                 val phoneNumber = binding.phoneNumber.text.toString()

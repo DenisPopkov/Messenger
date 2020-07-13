@@ -35,7 +35,6 @@ import ru.popkovden.messengerapplication.utils.helper.getPath
 import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
 import java.io.File
 
-
 class CreatePostFragmentFragment : Fragment() {
 
     private lateinit var binding: FragmentCreatePostFragmentBinding

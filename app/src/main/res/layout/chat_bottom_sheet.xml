@@ -5,28 +5,98 @@
     android:layout_width="match_parent"
     android:layout_height="315dp"
     android:padding="10dp"
-    android:background="@color/transperent"
+    android:layout_marginBottom="100dp"
+    android:background="@android:color/transparent"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="285dp"
         android:background="@drawable/shape_bottom_sheet"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/sheet_recyclerView"
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/camera_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/camera_elips"
+            android:padding="11dp"
+            android:src="@drawable/camera_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/camera_text"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="5dp"
-            android:overScrollMode="never"
-            app:layout_constraintBottom_toTopOf="@+id/appCompatButton"
+            android:layout_height="45dp"
+            android:layout_marginTop="21dp"
+            android:fontFamily="@font/roboto"
+            android:gravity="center|start"
+            android:paddingStart="80dp"
+            android:text="Камера"
+            android:textColor="@color/blackColor"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/gallery_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/purple_elips"
+            android:padding="11dp"
+            android:src="@drawable/gallery_sheet_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/camera_icon" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/gallery_text"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="22dp"
+            android:fontFamily="@font/roboto"
+            android:gravity="center|start"
+            android:paddingStart="80dp"
+            android:text="Фото или видео"
+            android:textColor="@color/blackColor"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@+id/camera_text" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/file_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/file_elips"
+            android:padding="11dp"
+            android:src="@drawable/file_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gallery_icon" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/file_text"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="26dp"
+            android:fontFamily="@font/roboto"
+            android:gravity="center|start"
+            android:paddingStart="80dp"
+            android:text="Файл"
+            android:textColor="@color/blackColor"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@+id/gallery_text" />
+
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/appCompatButton"
+            android:id="@+id/cancelBottomSheet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

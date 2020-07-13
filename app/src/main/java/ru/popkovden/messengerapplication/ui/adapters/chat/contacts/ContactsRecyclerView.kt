@@ -1,5 +1,6 @@
 package ru.popkovden.messengerapplication.ui.adapters.chat.contacts
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,11 +20,13 @@ import ru.popkovden.messengerapplication.data.repository.contacts.AddContact
 import ru.popkovden.messengerapplication.model.ContactFriendModel
 import ru.popkovden.messengerapplication.model.ContactsModel
 import ru.popkovden.messengerapplication.ui.fragment.ContactsFragmentDirections
+import ru.popkovden.messengerapplication.utils.helper.getUserImage
+import ru.popkovden.messengerapplication.utils.helper.getUserName
 import ru.popkovden.messengerapplication.utils.helper.getUserUID
 import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
 
-class ContactsRecyclerView(private val contactsList: List<ContactsModel>) :
-    RecyclerView.Adapter<ContactsViewHolder>() {
+class ContactsRecyclerView(private val contactsList: List<ContactsModel>) : RecyclerView.Adapter<ContactsViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactsViewHolder =
         ContactsViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.contacts_item, parent, false)
@@ -41,24 +44,26 @@ class ContactsRecyclerView(private val contactsList: List<ContactsModel>) :
             .placeholder(R.drawable.contact_placeholder_icon_2).into(contactImage)
 
         this.setOnClickListener {
-            it.setOnClickListener {
                 CoroutineScope(IO).launch {
+
                     val checkResult = CheckIfUserExist.check(it.contactNumber.text.toString())
-
                     val userUID = getUserUID(currentContactsItem.contactPhoneNumber)
+                    val image = getUserImage(currentContactsItem.contactPhoneNumber)
 
-                    if (checkResult) {
-                        AddContact.addContact(ContactFriendModel(currentContactsItem.contactName,
-                            userUID,
-                            currentContactsItem.contactPhoto.toString()), InfoAboutUser.UID)
+                    if (checkResult && image.isNotEmpty() && userUID.isNotEmpty()) {
 
-                        findNavController().navigate(ContactsFragmentDirections.actionContactsFragmentToMessenger(userUID, currentContactsItem.contactName, currentContactsItem.contactPhoto))
+                        val userPhoto = getUserImage(InfoAboutUser.phoneNumber)
+                        val userName = getUserName(currentContactsItem.contactPhoneNumber)
+                        Log.d("efefe", "$userPhoto photo")
+                        Log.d("efefe", "$userName userNameeeee")
+
+                        AddContact.addContact(ContactFriendModel(currentContactsItem.contactName, userUID, image), InfoAboutUser.UID, userPhoto, userName)
+                        findNavController().navigate(ContactsFragmentDirections.actionContactsFragmentToMessenger(userUID, currentContactsItem.contactName, image))
 
                     } else {
                         withContext(Main) {
                             Toast.makeText(context, resources.getString(R.string.contact_not_exist), Toast.LENGTH_SHORT).show()
                         }
-                    }
                 }
             }
         }
