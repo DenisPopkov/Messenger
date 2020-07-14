@@ -8,7 +8,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import ru.popkovden.messengerapplication.model.SentImageModel
-import ru.popkovden.messengerapplication.utils.helper.getCollectionSize
+import ru.popkovden.messengerapplication.utils.helper.getData.getCollectionSize
 
 object SendImages {
 
@@ -48,13 +48,19 @@ object SendImages {
         // Наполняет данные для "отправленного" сообщения"
         sentImages["image"] = sentImageModel.image
         sentImages["time"] = sentImageModel.time
-        sentImages["id"] = getCollectionSize(UID)!!
+        sentImages["id"] = getCollectionSize(
+            UID,
+            UserUID
+        )!!
         sentImages["CONTENT_TYPE"] = 1
 
         // Наполняет данные для "полученного" другим пользователем сообщением
         receivedImages["image"] = sentImageModel.image
         receivedImages["time"] = sentImageModel.time
-        receivedImages["id"] = getCollectionSize(UID)!!
+        receivedImages["id"] = getCollectionSize(
+            UID,
+            UserUID
+        )!!
         receivedImages["CONTENT_TYPE"] = 2
 
         // Отправляет в БД

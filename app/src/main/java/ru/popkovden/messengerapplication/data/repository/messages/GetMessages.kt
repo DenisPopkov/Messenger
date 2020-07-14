@@ -14,7 +14,13 @@ object GetMessages {
     private val firebaseFirestore = FirebaseFirestore.getInstance()
     private var messagesRequestList = arrayListOf<MessageModel>()
 
+    fun clear() {
+        messagesRequestList.clear()
+    }
+
     fun getMessages(UID: String, UserUID: String, recyclerViewAdapter: RecyclerView, context: Context) {
+
+        messagesRequestList.clear()
 
         CoroutineScope(IO).launch {
 
@@ -69,7 +75,7 @@ object GetMessages {
                 }
 
                 // Передает данные в адаптер, отфильтрованные по ID
-                recyclerViewAdapter.adapter = MessagesRecyclerViewAdapter(messagesRequestList.sortedWith(compareBy { it.id }).distinctBy { it.sentMessages }, context)
+                recyclerViewAdapter.adapter = MessagesRecyclerViewAdapter(messagesRequestList.sortedWith(compareBy { it.id }).toMutableSet().toMutableList(), context)
             }
     }
 

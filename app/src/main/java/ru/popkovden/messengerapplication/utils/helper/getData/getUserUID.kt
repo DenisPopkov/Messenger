@@ -1,4 +1,4 @@
-package ru.popkovden.messengerapplication.utils.helper
+package ru.popkovden.messengerapplication.utils.helper.getData
 
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await

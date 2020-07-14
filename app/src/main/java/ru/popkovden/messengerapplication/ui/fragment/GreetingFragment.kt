@@ -9,7 +9,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -52,12 +51,8 @@ class GreetingFragment : Fragment() {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_greeting, container, false)
 
-        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
-
         infoAboutUser.UID = FirebaseAuth.getInstance().uid.toString() // Получение UID пользователя
         uid = infoAboutUser.UID
-        Log.d("efefe", FirebaseAuth.getInstance().uid.toString() + " auth id")
-        Log.d("efefe", infoAboutUser.UID + " info id")
 
         arguments?.let {
             number = GreetingFragmentArgs.fromBundle(it).phoneNumber
@@ -70,11 +65,18 @@ class GreetingFragment : Fragment() {
         binding.toMainScreen.setOnClickListener {
 
             userName = binding.userNameInput.text.toString()
+            infoAboutUser.userName = userName
 
             if (userName.isBlank()) {
                 Toast.makeText(requireContext(), resources.getText(R.string.please_fill_all_data), Toast.LENGTH_SHORT).show()
             } else {
-                userCreateHelper.userCreate(number, userName, requireContext())
+                val userInfo = hashMapOf<String, String>()
+                userInfo["userName"] = infoAboutUser.userName
+                userInfo["phoneNumber"] = infoAboutUser.phoneNumber
+                userInfo["UID"] = infoAboutUser.UID
+                userInfo["userProfileImage"] = infoAboutUser.userProfileImage
+                Log.d("efefe", "${infoAboutUser.userName}, ${infoAboutUser.phoneNumber}, ${infoAboutUser.UID} - uid last okay")
+                userCreateHelper.userCreate(requireContext(), userInfo, InfoAboutUser, infoAboutUser.UID)
                 findNavController().navigate(GreetingFragmentDirections.actionGreetingFragmentToMainChatScreenFragment())
             }
         }
@@ -118,7 +120,7 @@ class GreetingFragment : Fragment() {
                     userImageUri = result.uri
                 }
 
-                userCreateHelper.loadImageToDatabase(userImageUri!!)
+                userCreateHelper.loadImageToDatabase(userImageUri!!, infoAboutUser.UID, InfoAboutUser)
             }
         }
     }

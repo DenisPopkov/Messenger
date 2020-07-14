@@ -32,7 +32,11 @@ import ru.popkovden.messengerapplication.databinding.FragmentMessengerScreenBind
 import ru.popkovden.messengerapplication.model.SendMessageModel
 import ru.popkovden.messengerapplication.model.SentImageModel
 import ru.popkovden.messengerapplication.utils.customView.StatusBarColorChanger
-import ru.popkovden.messengerapplication.utils.helper.*
+import ru.popkovden.messengerapplication.utils.helper.getData.getCollectionSize
+import ru.popkovden.messengerapplication.utils.helper.getData.getCurrentDateTime
+import ru.popkovden.messengerapplication.utils.helper.getData.toString
+import ru.popkovden.messengerapplication.utils.helper.getData.updateCollectionSize
+import ru.popkovden.messengerapplication.utils.helper.getPath
 import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
 import ru.popkovden.messengerapplication.viewmodel.MessengerFragmentViewModel
 import java.io.File
@@ -88,6 +92,16 @@ class FragmentMessengerScreen : Fragment() {
             findNavController().navigate(action)
         }
 
+        // Получает количество сообщения в диалоге
+        CoroutineScope(IO).launch {
+            while (true) {
+                try {
+                    collectionSize = getCollectionSize(infoAboutUser.UID, userUID)!!
+                } catch (e: Exception) {
+                }
+            }
+        }
+
         // Показывает BottomSheetDialog
         binding.bottomMessage.attachFile.setOnClickListener {
             val bottomSheet = BottomSheetDialog(requireContext(), R.style.BottomSheetDialogTheme)
@@ -105,8 +119,13 @@ class FragmentMessengerScreen : Fragment() {
 
         binding.bottomMessage.appCompatImageButton3.setOnClickListener {
             if (compressImages.size == imageSlider.size) {
-                updateCollectionSize(UID, collectionSize, userUID)
-                SendImages.sendImages(UID, userUID, SentImageModel(imageSlider, getCurrentDateTime().toString("HH:mm"), "$UID-$userUID"))
+                updateCollectionSize(
+                    UID,
+                    collectionSize,
+                    userUID
+                )
+                SendImages.sendImages(UID, userUID, SentImageModel(imageSlider, getCurrentDateTime()
+                    .toString("HH:mm"), "$UID-$userUID"))
             }
         }
 
@@ -117,11 +136,7 @@ class FragmentMessengerScreen : Fragment() {
 
             if (textInput.isNotEmpty()) {
 
-                // Получает количество сообщения в диалоге
-                CoroutineScope(IO).launch {
-                    collectionSize = getCollectionSize(infoAboutUser.UID)!!
-                }
-
+                getSentMessagesHelper.clear()
                 val currentTime = getCurrentDateTime().toString("HH:mm")
 
                 sendMessageHelper.sendMessage(infoAboutUser.UID, userUID, SendMessageModel(textInput, currentTime, UID, collectionSize, 0))

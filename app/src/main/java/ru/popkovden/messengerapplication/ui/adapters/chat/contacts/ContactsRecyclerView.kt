@@ -1,6 +1,5 @@
 package ru.popkovden.messengerapplication.ui.adapters.chat.contacts
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,9 +19,9 @@ import ru.popkovden.messengerapplication.data.repository.contacts.AddContact
 import ru.popkovden.messengerapplication.model.ContactFriendModel
 import ru.popkovden.messengerapplication.model.ContactsModel
 import ru.popkovden.messengerapplication.ui.fragment.ContactsFragmentDirections
-import ru.popkovden.messengerapplication.utils.helper.getUserImage
-import ru.popkovden.messengerapplication.utils.helper.getUserName
-import ru.popkovden.messengerapplication.utils.helper.getUserUID
+import ru.popkovden.messengerapplication.utils.helper.getData.getUserImage
+import ru.popkovden.messengerapplication.utils.helper.getData.getUserName
+import ru.popkovden.messengerapplication.utils.helper.getData.getUserUID
 import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
 
 class ContactsRecyclerView(private val contactsList: List<ContactsModel>) : RecyclerView.Adapter<ContactsViewHolder>() {
@@ -47,15 +46,25 @@ class ContactsRecyclerView(private val contactsList: List<ContactsModel>) : Recy
                 CoroutineScope(IO).launch {
 
                     val checkResult = CheckIfUserExist.check(it.contactNumber.text.toString())
-                    val userUID = getUserUID(currentContactsItem.contactPhoneNumber)
-                    val image = getUserImage(currentContactsItem.contactPhoneNumber)
+                    val userUID =
+                        getUserUID(
+                            currentContactsItem.contactPhoneNumber
+                        )
+                    val image =
+                        getUserImage(
+                            currentContactsItem.contactPhoneNumber
+                        )
 
                     if (checkResult && image.isNotEmpty() && userUID.isNotEmpty()) {
 
-                        val userPhoto = getUserImage(InfoAboutUser.phoneNumber)
-                        val userName = getUserName(currentContactsItem.contactPhoneNumber)
-                        Log.d("efefe", "$userPhoto photo")
-                        Log.d("efefe", "$userName userNameeeee")
+                        val userPhoto =
+                            getUserImage(
+                                InfoAboutUser.phoneNumber
+                            )
+                        val userName =
+                            getUserName(
+                                currentContactsItem.contactPhoneNumber
+                            )
 
                         AddContact.addContact(ContactFriendModel(currentContactsItem.contactName, userUID, image), InfoAboutUser.UID, userPhoto, userName)
                         findNavController().navigate(ContactsFragmentDirections.actionContactsFragmentToMessenger(userUID, currentContactsItem.contactName, image))

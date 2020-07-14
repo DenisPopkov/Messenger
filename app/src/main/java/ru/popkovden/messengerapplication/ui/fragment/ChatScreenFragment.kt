@@ -46,7 +46,7 @@ class ChatScreenFragment : Fragment() {
                 Status.ERROR -> Log.d("efefe", "error")
                 Status.SUCCESS -> {
                     it?.data?.let { result ->
-                        binding.chatScreenRecyclerView.adapter = UserMessagesRecyclerView(requireContext(), result)
+                        binding.chatScreenRecyclerView.adapter = UserMessagesRecyclerView(requireContext(), result, uid)
                     }
                 }
             }

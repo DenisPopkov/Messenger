@@ -45,7 +45,7 @@ object GetPosts{
                     }
 
                     // Устанавливает адаптер с постами
-                    mergeAdapter.addAdapter(PostsProfileRecyclerView(context, userPosts))
+                    mergeAdapter.addAdapter(PostsProfileRecyclerView(context, userPosts, UID))
                 }
         }
     }

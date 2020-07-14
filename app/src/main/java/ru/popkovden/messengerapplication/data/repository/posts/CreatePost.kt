@@ -51,6 +51,6 @@ object CreatePost {
 
         // Создает пост
         firebaseFirestore.collection("users").document(UID)
-            .collection("posts").document().set(userInfo)
+            .collection("posts").document("$UID-${postInfo.postTitle}").set(userInfo)
     }
 }

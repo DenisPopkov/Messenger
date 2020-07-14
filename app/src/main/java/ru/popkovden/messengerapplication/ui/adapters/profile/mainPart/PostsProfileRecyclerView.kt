@@ -1,6 +1,7 @@
 package ru.popkovden.messengerapplication.ui.adapters.profile.mainPart
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +13,10 @@ import kotlinx.android.synthetic.main.posts_item.view.*
 import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.model.PostsModel
 import ru.popkovden.messengerapplication.ui.adapters.profile.createPost.VideoSliderRecyclerView
+import ru.popkovden.messengerapplication.utils.helper.minusLike
+import ru.popkovden.messengerapplication.utils.helper.plusLike
 
-class PostsProfileRecyclerView(val context: Context, private val postsList: MutableList<PostsModel>) : RecyclerView.Adapter<ViewHolder>() {
+class PostsProfileRecyclerView(val context: Context, private val postsList: MutableList<PostsModel>, val UID: String) : RecyclerView.Adapter<ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
@@ -39,6 +42,23 @@ class PostsProfileRecyclerView(val context: Context, private val postsList: Muta
         val mergeAdapter = MergeAdapter(PostFilesSlider(postImages, context))
         mergeAdapter.addAdapter(VideoSliderRecyclerView(postVideos, context))
         postFileSliderRecyclerView.adapter = mergeAdapter
+
+        this.setOnClickListener {
+            likeCount.setOnClickListener {
+                var counter = 1
+                Log.d("efefe", "click")
+
+                if (counter == 1) {
+                    likeIcon.setImageDrawable(resources.getDrawable(R.drawable.like_lined_icon))
+                    counter = 2
+                    plusLike(likeCount.text.toString().toInt(), UID, currentPosition.postTitle)
+                } else {
+                    likeIcon.setImageDrawable(resources.getDrawable(R.drawable.like_outlined_icon))
+                    minusLike(likeCount.text.toString().toInt(), UID, currentPosition.postTitle)
+                    counter = 1
+                }
+            }
+        }
     }
 }
 

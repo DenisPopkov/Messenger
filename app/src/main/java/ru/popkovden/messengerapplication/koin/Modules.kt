@@ -24,7 +24,7 @@ val helperModule = module {
     single { SnackBarView }
     single { StatusBarColorChanger }
     single { FabControl }
-    single { CreateUser() }
+    single { CreateUser }
     single { DecodeUri }
     single { InfoAboutUser }
     single { SendImages }

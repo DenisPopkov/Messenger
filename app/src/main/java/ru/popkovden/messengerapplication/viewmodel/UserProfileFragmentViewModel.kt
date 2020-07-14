@@ -3,15 +3,15 @@ package ru.popkovden.messengerapplication.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import ru.popkovden.messengerapplication.model.PostsModel
 
 class UserProfileFragmentViewModel : ViewModel() {
 
-    private val postsLiveData =  MutableLiveData<MutableList<PostsModel>>()
-    val currentPostsLiveData: LiveData<MutableList<PostsModel>>
-        get() = postsLiveData
+    private val translationLiveData =  MutableLiveData<Float>()
+    val currentTranslationLiveData: LiveData<Float>
+        get() = translationLiveData
 
-//    suspend fun getPosts(UID: String) {
-//        postsLiveData.postValue(GetPosts.getPosts(UID))
-//    }
+
+    fun updateTranslation(value: Float) {
+        translationLiveData.value = value
+    }
 }

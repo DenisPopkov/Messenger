@@ -1,14 +1,20 @@
-package ru.popkovden.messengerapplication.utils.helper
+package ru.popkovden.messengerapplication.utils.helper.getData
 
 import android.app.Activity
 import android.provider.ContactsContract
 import ru.popkovden.messengerapplication.model.ContactsModel
+import ru.popkovden.messengerapplication.utils.helper.READ_CONTACTS
+import ru.popkovden.messengerapplication.utils.helper.checkPermission
 
 fun initContacts(activity: Activity): List<ContactsModel> {
 
     val arrayContacts = arrayListOf<ContactsModel>()
 
-    if (checkPermission(READ_CONTACTS, activity)) {
+    if (checkPermission(
+            READ_CONTACTS,
+            activity
+        )
+    ) {
         val cursor = activity.contentResolver.query(
             ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null)
 

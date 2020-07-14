@@ -1,6 +1,5 @@
 package ru.popkovden.messengerapplication.data.repository.contacts
 
-import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
@@ -21,16 +20,12 @@ object AddContact {
         contactInfo["contactUID"] = contact.contactUID
         contactInfo["contactPhoto"] = contact.contactPhoto
 
-        Log.d("efefe", "${contact.contactName}, ${contact.contactUID}, ${contact.contactPhoto}")
-        Log.d("efefe", "${InfoAboutUser.userName} userName")
-
         val contactInfo2 = hashMapOf<String, String>()
 
         contactInfo2["contactName"] = InfoAboutUser.userName
         contactInfo2["contactUID"] = UID
         contactInfo2["contactPhoto"] = userPhoto
 
-        Log.d("efefe", "${InfoAboutUser.userName}, $UID, $userPhoto")
 
         firestoreReference.document(contact.contactUID).collection("contacts").document(UID).set(contactInfo2) // добовляет контакт другому
         firestoreReference.document(UID).collection("contacts").document(contact.contactUID).set(contactInfo) // добовляет контакт себе
@@ -38,9 +33,9 @@ object AddContact {
         val hashMap2 = hashMapOf("collectionSize" to 0)
 
         FirebaseFirestore.getInstance().collection("users")
-            .document(UID).collection("chats").document("CollectionSize").set(hashMap2)
+            .document(UID).collection("chats").document(contact.contactUID).collection("Size").document("CollectionSize").set(hashMap2)
 
         FirebaseFirestore.getInstance().collection("users")
-            .document(contact.contactUID).collection("chats").document("CollectionSize").set(hashMap2)
+            .document(contact.contactUID).collection("chats").document(UID).collection("Size").document("CollectionSize").set(hashMap2)
     }
 }

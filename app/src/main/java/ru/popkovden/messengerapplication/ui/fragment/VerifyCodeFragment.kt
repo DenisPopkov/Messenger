@@ -15,6 +15,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.data.repository.auth.FirebaseAuthHelper
 import ru.popkovden.messengerapplication.databinding.FragmentVerifyCodeBinding
+import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
 import ru.popkovden.messengerapplication.viewmodel.VerifyCodeFragmentViewModel
 
 class VerifyCodeFragment : Fragment() {
@@ -43,6 +44,7 @@ class VerifyCodeFragment : Fragment() {
         arguments?.let {
             with(VerifyCodeFragmentArgs.fromBundle(it)) {
                 number = phoneNumber
+                InfoAboutUser.phoneNumber = number
                 infoFromSms = firebaseAuthHelper.sendSmsCode(phoneNumber)
             }
 

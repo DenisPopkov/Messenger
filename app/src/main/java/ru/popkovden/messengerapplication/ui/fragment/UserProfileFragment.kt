@@ -14,6 +14,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.drawer_profile_content.view.*
 import kotlinx.android.synthetic.main.profile_toolbar.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.popkovden.messengerapplication.R
@@ -33,7 +36,7 @@ class UserProfileFragment : Fragment(){
     private val fabControl: FabControl by inject()
     private val infoAboutUser: InfoAboutUser by inject()
     private val getPostsHelper: GetPosts by inject()
-    private val viewModel: UserProfileFragmentViewModel by viewModel()
+    val viewModel: UserProfileFragmentViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -129,6 +132,10 @@ class UserProfileFragment : Fragment(){
 
                     val slideX = drawerView.width * slideOffset
                     contentLayout.translationX = -slideX
+
+                    CoroutineScope(Main).launch {
+                        viewModel.updateTranslation(-slideX)
+                    }
                 }
             }
 

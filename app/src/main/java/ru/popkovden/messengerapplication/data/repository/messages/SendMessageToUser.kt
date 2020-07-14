@@ -1,12 +1,12 @@
 package ru.popkovden.messengerapplication.data.repository.messages
 
-import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import ru.popkovden.messengerapplication.model.SendMessageModel
-import ru.popkovden.messengerapplication.utils.helper.getCollectionSize
+import ru.popkovden.messengerapplication.utils.helper.getData.getCollectionSize
+import ru.popkovden.messengerapplication.utils.helper.getData.setLastMessage
 
 object SendMessageToUser {
 
@@ -23,24 +23,32 @@ object SendMessageToUser {
         sentMessage["message"] = sendMessageModel.message
         sentMessage["time"] = sendMessageModel.time
         sentMessage["uidSender"] = sendMessageModel.uidSender
-        sentMessage["id"] = getCollectionSize(UID)!!
+        sentMessage["id"] = getCollectionSize(
+            UID,
+            UserUID
+        )!!
         sentMessage["CONTENT_TYPE"] = 1
 
         // Наполняет данные для "полученного" другим пользователем сообщением
         receivedMessage["message"] = sendMessageModel.message
         receivedMessage["time"] = sendMessageModel.time
         receivedMessage["uidSender"] = sendMessageModel.uidSender
-        receivedMessage["id"] = getCollectionSize(UID)!!
+        receivedMessage["id"] = getCollectionSize(
+            UID,
+            UserUID
+        )!!
         receivedMessage["CONTENT_TYPE"] = 2
 
-        Log.d("efefe", "$UserUID - userUID")
-        Log.d("efefe", "$UID - uid")
-
-        // Отправляет в БД
+        // Отправляет в БД себе на телефон, с типом сообщения - "отправленное"
         firebaseFirestore.collection("users").document(UID)
             .collection("chats").document(UserUID).collection("sentMessages").add(sentMessage)
 
+        setLastMessage(UID, UserUID, sendMessageModel.message)
+
+        // Отправляет в БД себе на телефон, с типом сообщения - "полученное"
         firebaseFirestore.collection("users").document(UserUID)
             .collection("chats").document(UID).collection("receivedMessages").add(receivedMessage)
+
+        setLastMessage(UserUID, UID, sendMessageModel.message)
     }
 }

@@ -24,6 +24,7 @@ import ru.popkovden.messengerapplication.data.repository.auth.CreateUser
 import ru.popkovden.messengerapplication.databinding.FragmentEditProfileBinding
 import ru.popkovden.messengerapplication.utils.customView.StatusBarColorChanger
 import ru.popkovden.messengerapplication.utils.helper.DecodeUri
+import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
 import ru.popkovden.messengerapplication.viewmodel.EditProfileFragmentViewModel
 
 class EditProfileFragment : Fragment() {
@@ -64,7 +65,7 @@ class EditProfileFragment : Fragment() {
             if (name.isBlank()) {
                 Toast.makeText(requireContext(), resources.getText(R.string.please_fill_all_data), Toast.LENGTH_SHORT).show()
             } else {
-                userCreateHelper.updateUserInfo(name, requireContext())
+                userCreateHelper.updateUserInfo(name, requireContext(), InfoAboutUser)
                 findNavController().navigate(EditProfileFragmentDirections.actionEditProfileFragmentToAccount())
             }
         }
@@ -108,7 +109,7 @@ class EditProfileFragment : Fragment() {
                     userImageUri = result.uri
                 }
 
-                userCreateHelper.loadImageToDatabase(userImageUri!!)
+                userCreateHelper.loadImageToDatabase(userImageUri!!, InfoAboutUser.UID, InfoAboutUser)
             }
         }
     }
