@@ -1,6 +1,7 @@
 package ru.popkovden.messengerapplication.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,22 +11,24 @@ import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.MergeAdapter
 import kotlinx.android.synthetic.main.drawer_profile_content.view.*
 import kotlinx.android.synthetic.main.profile_toolbar.view.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import ru.popkovden.messengerapplication.R
-import ru.popkovden.messengerapplication.data.repository.posts.GetPosts
 import ru.popkovden.messengerapplication.databinding.FragmentUserProfileBinding
 import ru.popkovden.messengerapplication.model.DrawerItemsModel
 import ru.popkovden.messengerapplication.ui.adapters.profile.drawer.DrawerNavigationRecyclerView
+import ru.popkovden.messengerapplication.ui.adapters.profile.mainPart.MainProfileRecyclerViewPart
+import ru.popkovden.messengerapplication.ui.adapters.profile.mainPart.PostsProfileRecyclerView
 import ru.popkovden.messengerapplication.utils.customView.FabControl
 import ru.popkovden.messengerapplication.utils.customView.StatusBarColorChanger
+import ru.popkovden.messengerapplication.utils.helper.Status
 import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
 import ru.popkovden.messengerapplication.viewmodel.UserProfileFragmentViewModel
 
@@ -35,8 +38,8 @@ class UserProfileFragment : Fragment(){
     private val uiHelper: StatusBarColorChanger by inject()
     private val fabControl: FabControl by inject()
     private val infoAboutUser: InfoAboutUser by inject()
-    private val getPostsHelper: GetPosts by inject()
-    val viewModel: UserProfileFragmentViewModel by viewModel()
+    val viewModel: UserProfileFragmentViewModel by viewModel{ parametersOf(InfoAboutUser.UID,
+        requireContext(), InfoAboutUser.userProfileImage, InfoAboutUser.userName) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -52,15 +55,27 @@ class UserProfileFragment : Fragment(){
         infoAboutUser.loadInfoFromSharedPreferences(requireContext())
 
         // Настройка адаптера постов
-        getPostsHelper.getPosts(
-            infoAboutUser.UID,
-            binding.profileRecyclerView,
-            requireContext(),
-            infoAboutUser.userProfileImage,
-            infoAboutUser.userName
-        )
         binding.profileRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.profileRecyclerView.setHasFixedSize(true)
+
+        viewModel.getPosts().observe(viewLifecycleOwner, Observer {
+            when(it.status) {
+
+                Status.LOADING -> {
+                    binding.progressLoader.visibility = View.VISIBLE
+                }
+                Status.ERROR -> Log.d("efefe", "error")
+                Status.SUCCESS -> {
+                    it?.data?.let { result ->
+                        binding.progressLoader.visibility = View.GONE
+                        val mergeAdapter = MergeAdapter(
+                            MainProfileRecyclerViewPart(requireContext(), InfoAboutUser.userProfileImage, InfoAboutUser.userName),
+                            PostsProfileRecyclerView(requireContext(), result, InfoAboutUser.UID))
+                        binding.profileRecyclerView.adapter = mergeAdapter
+                    }
+                }
+            }
+        })
 
         // Настройка адаптера drawer layout
         binding.drawerContent.contentDrawer.layoutManager = LinearLayoutManager(requireContext())
@@ -132,10 +147,6 @@ class UserProfileFragment : Fragment(){
 
                     val slideX = drawerView.width * slideOffset
                     contentLayout.translationX = -slideX
-
-                    CoroutineScope(Main).launch {
-                        viewModel.updateTranslation(-slideX)
-                    }
                 }
             }
 

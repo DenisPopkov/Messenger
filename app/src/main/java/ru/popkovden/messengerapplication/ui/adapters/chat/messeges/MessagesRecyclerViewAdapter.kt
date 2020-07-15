@@ -16,7 +16,7 @@ const val CONTENT_TYPE_SENT_MESSAGE = 1
 const val CONTENT_TYPE_RECEIVED_MESSAGE = 2
 const val CONTENT_TYPE_SENT_IMAGES = 3
 
-class MessagesRecyclerViewAdapter(private var sentMessageList: List<MessageModel>, val context: Context):
+class MessagesRecyclerViewAdapter(var sentMessageList: List<MessageModel>, val context: Context):
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     inner class SentMessages(itemView: View): RecyclerView.ViewHolder(itemView) {

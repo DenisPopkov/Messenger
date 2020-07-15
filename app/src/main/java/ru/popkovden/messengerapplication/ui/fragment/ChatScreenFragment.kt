@@ -21,6 +21,7 @@ import ru.popkovden.messengerapplication.utils.helper.Status
 import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
 import ru.popkovden.messengerapplication.viewmodel.ChatScreenFragmentViewModel
 
+
 class ChatScreenFragment : Fragment() {
 
     private lateinit var binding: FragmentChatScreenBinding
@@ -42,10 +43,13 @@ class ChatScreenFragment : Fragment() {
 
             when(it.status) {
 
-                Status.LOADING -> Log.d("efefe", "loading")
+                Status.LOADING -> {
+                    binding.progress.visibility = View.VISIBLE
+                }
                 Status.ERROR -> Log.d("efefe", "error")
                 Status.SUCCESS -> {
                     it?.data?.let { result ->
+                        binding.progress.visibility = View.GONE
                         binding.chatScreenRecyclerView.adapter = UserMessagesRecyclerView(requireContext(), result, uid)
                     }
                 }

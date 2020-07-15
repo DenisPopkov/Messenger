@@ -1,22 +1,20 @@
 package ru.popkovden.messengerapplication.data.repository.messages
 
 import android.content.Context
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import ru.popkovden.messengerapplication.model.MessageModel
+import ru.popkovden.messengerapplication.ui.DiffUtilMessengerHelper
 import ru.popkovden.messengerapplication.ui.adapters.chat.messeges.MessagesRecyclerViewAdapter
 
 object GetMessages {
 
     private val firebaseFirestore = FirebaseFirestore.getInstance()
     private var messagesRequestList = arrayListOf<MessageModel>()
-
-    fun clear() {
-        messagesRequestList.clear()
-    }
 
     fun getMessages(UID: String, UserUID: String, recyclerViewAdapter: RecyclerView, context: Context) {
 
@@ -42,8 +40,6 @@ object GetMessages {
                         sentMessages.add(sentMessagesHashMap)
                         messagesRequestList.add(MessageModel(sentMessages, null, null, 1, messageId))
                     }
-
-//                    recyclerViewAdapter.adapter = MessagesRecyclerViewAdapter(messagesRequestList.sortedWith(compareBy { it.id }), context)
 
                     // Получает с БД "полученные" от другого пользователя сообщения
                     getReceivedMessages(recyclerViewAdapter, UID, UserUID, context)
@@ -75,7 +71,14 @@ object GetMessages {
                 }
 
                 // Передает данные в адаптер, отфильтрованные по ID
-                recyclerViewAdapter.adapter = MessagesRecyclerViewAdapter(messagesRequestList.sortedWith(compareBy { it.id }).toMutableSet().toMutableList(), context)
+                val adapter = MessagesRecyclerViewAdapter(messagesRequestList.sortedWith(compareBy { it.id }).toMutableSet().toMutableList(), context)
+                recyclerViewAdapter.adapter = adapter
+
+                val authorDiffUtilCallback = DiffUtilMessengerHelper(adapter.sentMessageList, messagesRequestList.sortedWith(compareBy { it.id }).toMutableSet().toMutableList())
+                val authorDiffResult = DiffUtil.calculateDiff(authorDiffUtilCallback)
+                adapter.sentMessageList = messagesRequestList.sortedWith(compareBy { it.id }).toMutableSet().toMutableList()
+                authorDiffResult.dispatchUpdatesTo(adapter)
+
             }
     }
 

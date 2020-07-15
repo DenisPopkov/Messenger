@@ -3,16 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-        <variable
-            name="translation"
-            type="ru.popkovden.messengerapplication.ui.fragment.MainChatScreenFragment" />
-    </data>
-
     <RelativeLayout
         android:id="@+id/relative"
         android:layout_width="match_parent"
-        android:translationX="@{translation.sharedViewModel.currentTranslationLiveData}"
         android:layout_height="match_parent">
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -42,7 +35,6 @@
             android:background="@color/whiteColor"
             app:itemIconSize="30dp"
             app:itemIconTint="@drawable/bottom_nav_color"
-            android:translationX="@{translation.sharedViewModel.currentTranslationLiveData}"
             app:labelVisibilityMode="unlabeled"
             app:menu="@menu/tab_menu" />
     </RelativeLayout>

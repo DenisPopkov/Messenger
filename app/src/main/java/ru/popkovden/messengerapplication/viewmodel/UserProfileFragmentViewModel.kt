@@ -1,17 +1,22 @@
 package ru.popkovden.messengerapplication.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.content.Context
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
+import kotlinx.coroutines.Dispatchers
+import ru.popkovden.messengerapplication.data.repository.posts.GetPosts
+import ru.popkovden.messengerapplication.utils.helper.Event
 
-class UserProfileFragmentViewModel : ViewModel() {
+class UserProfileFragmentViewModel(val UID: String, val context: Context, val image: String, val name: String) : ViewModel() {
 
-    private val translationLiveData =  MutableLiveData<Float>()
-    val currentTranslationLiveData: LiveData<Float>
-        get() = translationLiveData
+    fun getPosts() = liveData(Dispatchers.IO) {
 
+        emit(Event.loading(data = null))
 
-    fun updateTranslation(value: Float) {
-        translationLiveData.value = value
+        try {
+            emit(Event.success(data = GetPosts.getPosts(UID, context, image, name)))
+        } catch (exception: Exception) {
+            emit(Event.error(data = null, message = exception.message ?: "Error Occurred!"))
+        }
     }
 }

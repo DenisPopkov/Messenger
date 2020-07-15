@@ -1,6 +1,7 @@
 package ru.popkovden.messengerapplication.koin
 
 import android.app.Activity
+import android.content.Context
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import ru.popkovden.messengerapplication.data.repository.auth.CheckIfUserExist
@@ -43,7 +44,7 @@ val viewModelModule = module {
     viewModel { VerifyCodeFragmentViewModel() }
     viewModel { SendPhoneNumberFragmentViewModel() }
     viewModel { GreetingFragmentViewModel() }
-    viewModel { UserProfileFragmentViewModel() }
+    viewModel { (UID: String, context: Context, image: String, name: String)  -> UserProfileFragmentViewModel(UID, context, image, name)}
     viewModel { MessengerFragmentViewModel() }
     viewModel { EditProfileFragmentViewModel() }
     viewModel { (UID: String) -> ChatScreenFragmentViewModel(UID) }

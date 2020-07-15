@@ -18,7 +18,7 @@
         app:shapeAppearanceOverlay="@style/ShapeAppearance.Image.PILL" />
 
     <TextView
-        android:id="@+id/contactName12"
+        android:id="@+id/contactName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
@@ -37,11 +37,10 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="2dp"
         android:fontFamily="@font/roboto"
-        android:text="Привет, как дела?  3м"
         android:textColor="#919191"
         android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@+id/userImage"
-        app:layout_constraintTop_toBottomOf="@+id/contactName12" />
+        app:layout_constraintTop_toBottomOf="@+id/contactName" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:layout_width="13dp"

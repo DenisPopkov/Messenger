@@ -1,7 +1,6 @@
 package ru.popkovden.messengerapplication.ui.adapters.chat.contacts
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,15 +25,12 @@ class UserMessagesRecyclerView(val context: Context, val contacts: ArrayList<Con
 
         val currentContact = contacts[position]
 
-        contactName12.text = currentContact.contactName
-        CoroutineScope(Main).launch {
-            lastMessage.text = getLastMessage(UID, currentContact.contactUID)
-        }
+        contactName.text = currentContact.contactName
+        CoroutineScope(Main).launch { lastMessage.text = getLastMessage(UID, currentContact.contactUID) } // Получает последнее сообщение
         Glide.with(context).load(currentContact.contactPhoto).into(userImage)
 
         this.setOnClickListener {
             val action = ChatScreenFragmentDirections.actionChatToFragmentMessengerScreen(currentContact.contactUID, currentContact.contactName, currentContact.contactPhoto)
-            Log.d("efefe", "${currentContact.contactUID}, ${currentContact.contactName}, ${currentContact.contactPhoto}")
             findNavController().navigate(action)
         }
     }

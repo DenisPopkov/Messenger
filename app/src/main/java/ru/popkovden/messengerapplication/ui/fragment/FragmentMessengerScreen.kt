@@ -23,7 +23,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.data.repository.images.SendImages
 import ru.popkovden.messengerapplication.data.repository.messages.GetMessages
@@ -38,7 +37,6 @@ import ru.popkovden.messengerapplication.utils.helper.getData.toString
 import ru.popkovden.messengerapplication.utils.helper.getData.updateCollectionSize
 import ru.popkovden.messengerapplication.utils.helper.getPath
 import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
-import ru.popkovden.messengerapplication.viewmodel.MessengerFragmentViewModel
 import java.io.File
 
 class FragmentMessengerScreen : Fragment() {
@@ -48,8 +46,6 @@ class FragmentMessengerScreen : Fragment() {
     private val sendMessageHelper: SendMessageToUser by inject()
     private val infoAboutUser: InfoAboutUser by inject()
     private val getSentMessagesHelper: GetMessages by inject()
-    private val viewModel: MessengerFragmentViewModel by viewModel()
-    private val sendImagesHelper: SendImages by inject()
     private var userUID = ""
     private var UID = ""
     private var collectionSize = 0
@@ -86,6 +82,7 @@ class FragmentMessengerScreen : Fragment() {
         getSentMessagesHelper.getMessages(infoAboutUser.UID, userUID, binding.messengerScreenRecyclerView, requireContext())
         val linearLayoutManager =  LinearLayoutManager(requireContext())
         binding.messengerScreenRecyclerView.layoutManager = linearLayoutManager
+        linearLayoutManager.stackFromEnd = true
 
         binding.messengerToolbar.backToContactList.setOnClickListener {
             val action = FragmentMessengerScreenDirections.actionFragmentMessengerScreenToChat()
@@ -119,11 +116,7 @@ class FragmentMessengerScreen : Fragment() {
 
         binding.bottomMessage.appCompatImageButton3.setOnClickListener {
             if (compressImages.size == imageSlider.size) {
-                updateCollectionSize(
-                    UID,
-                    collectionSize,
-                    userUID
-                )
+                updateCollectionSize(UID, collectionSize, userUID)
                 SendImages.sendImages(UID, userUID, SentImageModel(imageSlider, getCurrentDateTime()
                     .toString("HH:mm"), "$UID-$userUID"))
             }
@@ -136,7 +129,6 @@ class FragmentMessengerScreen : Fragment() {
 
             if (textInput.isNotEmpty()) {
 
-                getSentMessagesHelper.clear()
                 val currentTime = getCurrentDateTime().toString("HH:mm")
 
                 sendMessageHelper.sendMessage(infoAboutUser.UID, userUID, SendMessageModel(textInput, currentTime, UID, collectionSize, 0))
