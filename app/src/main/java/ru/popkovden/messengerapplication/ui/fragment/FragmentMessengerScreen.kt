@@ -79,10 +79,9 @@ class FragmentMessengerScreen : Fragment() {
         }
 
         // Настривает адапер
-        getSentMessagesHelper.getMessages(infoAboutUser.UID, userUID, binding.messengerScreenRecyclerView, requireContext())
+        getSentMessagesHelper.getMessages(infoAboutUser.UID, userUID, binding.messengerScreenRecyclerView, requireContext(), binding.messageEmpty, binding.messageStart)
         val linearLayoutManager =  LinearLayoutManager(requireContext())
         binding.messengerScreenRecyclerView.layoutManager = linearLayoutManager
-        linearLayoutManager.stackFromEnd = true
 
         binding.messengerToolbar.backToContactList.setOnClickListener {
             val action = FragmentMessengerScreenDirections.actionFragmentMessengerScreenToChat()

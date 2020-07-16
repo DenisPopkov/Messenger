@@ -46,28 +46,15 @@ class ContactsRecyclerView(private val contactsList: List<ContactsModel>) : Recy
                 CoroutineScope(IO).launch {
 
                     val checkResult = CheckIfUserExist.check(it.contactNumber.text.toString())
-                    val userUID =
-                        getUserUID(
-                            currentContactsItem.contactPhoneNumber
-                        )
-                    val image =
-                        getUserImage(
-                            currentContactsItem.contactPhoneNumber
-                        )
+                    val userUID = getUserUID(currentContactsItem.contactPhoneNumber)
 
-                    if (checkResult && image.isNotEmpty() && userUID.isNotEmpty()) {
+                    if (checkResult && userUID.isNotEmpty()) {
 
-                        val userPhoto =
-                            getUserImage(
-                                InfoAboutUser.phoneNumber
-                            )
-                        val userName =
-                            getUserName(
-                                currentContactsItem.contactPhoneNumber
-                            )
+                        val userPhoto = getUserImage(currentContactsItem.contactPhoneNumber)
+                        val userName = getUserName(currentContactsItem.contactPhoneNumber)
 
-                        AddContact.addContact(ContactFriendModel(currentContactsItem.contactName, userUID, image), InfoAboutUser.UID, userPhoto, userName)
-                        findNavController().navigate(ContactsFragmentDirections.actionContactsFragmentToMessenger(userUID, currentContactsItem.contactName, image))
+                        AddContact.addContact(ContactFriendModel("", userUID, userPhoto), InfoAboutUser.UID, userName)
+                        findNavController().navigate(ContactsFragmentDirections.actionContactsFragmentToMessenger(userUID, currentContactsItem.contactName, userPhoto))
 
                     } else {
                         withContext(Main) {

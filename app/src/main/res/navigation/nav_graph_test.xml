@@ -72,7 +72,7 @@
     </fragment>
     <fragment
         android:id="@+id/createPost"
-        android:name="ru.popkovden.messengerapplication.ui.fragment.CreatePostFragmentFragment"
+        android:name="ru.popkovden.messengerapplication.ui.fragment.CreatePostFragment"
         android:label="CreatePostFragmentFragment"
         tools:layout="@layout/fragment_create_post_fragment">
         <action
@@ -102,5 +102,9 @@
         tools:layout="@layout/fragment_zoom_images">
         <argument android:name="imagesList"
             app:argType="string[]" />
+        <argument
+            android:name="position"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
 </navigation>

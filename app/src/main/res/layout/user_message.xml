@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="85dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="85dp">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/userImage"
@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.Image.PILL" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/contactName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,16 +30,38 @@
         app:layout_constraintStart_toEndOf="@+id/userImage"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/lastMessage"
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/whoSend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="2dp"
-        android:fontFamily="@font/roboto"
-        android:textColor="#919191"
         android:textSize="14sp"
+        android:textColor="@color/darkerText"
         app:layout_constraintStart_toEndOf="@+id/userImage"
+        app:layout_constraintTop_toBottomOf="@+id/contactName" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/lastMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/roboto"
+        android:textColor="@color/lightText"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/whoSend"
+        app:layout_constraintTop_toBottomOf="@+id/contactName" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/timeSend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:textColor="@color/darkerText"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/lastMessage"
         app:layout_constraintTop_toBottomOf="@+id/contactName" />
 
     <com.google.android.material.imageview.ShapeableImageView

@@ -50,7 +50,8 @@ class ChatScreenFragment : Fragment() {
                 Status.SUCCESS -> {
                     it?.data?.let { result ->
                         binding.progress.visibility = View.GONE
-                        binding.chatScreenRecyclerView.adapter = UserMessagesRecyclerView(requireContext(), result, uid)
+                        binding.chatScreenRecyclerView.adapter = UserMessagesRecyclerView(requireContext(), result, uid,
+                            resources.getString(R.string.minute_abbreviation), resources.getString(R.string.hour_abbreviation))
                     }
                 }
             }

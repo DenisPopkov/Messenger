@@ -2,6 +2,8 @@ package ru.popkovden.messengerapplication.data.repository.auth
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
+import androidx.appcompat.widget.AppCompatImageButton
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
@@ -13,7 +15,7 @@ object CreateUser {
     private val storageReference = firebaseStorage.reference.child("userAvatars")
     private val userInfo = hashMapOf<String, Any>()
 
-    fun loadImageToDatabase(userImage: Uri, UID: String, infoProfileImage: InfoAboutUser) {
+    fun loadImageToDatabase(userImage: Uri, UID: String, nextButton: AppCompatImageButton) {
 
         var image = ""
 
@@ -21,9 +23,15 @@ object CreateUser {
             val result = it.metadata?.reference?.downloadUrl
 
             result?.addOnSuccessListener { uri ->
+                Log.d("efefe", "uri - $uri")
                 image = uri.toString()
+                nextButton.isEnabled = false
+                nextButton.isClickable = false
             }?.addOnCompleteListener {
-                infoProfileImage.userProfileImage = image
+                Log.d("efefe", "image - $image")
+                InfoAboutUser.userProfileImage = image
+                nextButton.isEnabled = true
+                nextButton.isClickable = true
             }
         }
     }
@@ -39,15 +47,12 @@ object CreateUser {
 
         userInfo["userName"] = userName
         userInfo["UID"] = infoAboutUser.UID
+        userInfo["userProfileImage"] = infoAboutUser.userProfileImage
         infoAboutUser.userName = userName
 
-        storageReference.child(infoAboutUser.UID).downloadUrl.addOnSuccessListener { task ->
-            userInfo["userProfileImage"] = task.toString()
-
-            // Добовляет все данные о пользователе
-            firebaseFirestore.collection("users").document(infoAboutUser.UID)
-                .update(userInfo)
-        }
+        // Добовляет все данные о пользователе
+        firebaseFirestore.collection("users").document(infoAboutUser.UID)
+            .update(userInfo)
 
         infoAboutUser.saveInfo(context)
     }

@@ -4,10 +4,12 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatImageButton
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import ru.popkovden.messengerapplication.R
+import ru.popkovden.messengerapplication.ui.fragment.CreatePostFragment.Companion.compressImages
 
 class VideoSliderRecyclerView(private val videoList: ArrayList<String>, val context: Context) : RecyclerView.Adapter<VideoSliderViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoSliderViewHolder =
@@ -21,9 +23,16 @@ class VideoSliderRecyclerView(private val videoList: ArrayList<String>, val cont
 
         val currentPosition = videoList[position]
         Glide.with(context).load(currentPosition).into(holder.videoView)
+
+        holder.deleteVideo.setOnClickListener {
+            videoList.removeAt(position)
+            compressImages = videoList
+            notifyDataSetChanged()
+        }
     }
 }
 
 class VideoSliderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val videoView: ShapeableImageView = itemView.findViewById(R.id.videoView)
+    val deleteVideo: AppCompatImageButton = itemView.findViewById(R.id.deleteVideo)
 }

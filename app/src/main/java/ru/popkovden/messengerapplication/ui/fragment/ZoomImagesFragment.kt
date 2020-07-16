@@ -23,7 +23,9 @@ class ZoomImagesFragment : Fragment() {
 
         arguments?.let {
             val imageList = ZoomImagesFragmentArgs.fromBundle(it).imagesList
+            val position = ZoomImagesFragmentArgs.fromBundle(it).position
             binding.zoomImageViewPager.adapter = ZoomImageViewPager(imageList.toMutableList(), requireContext())
+            binding.zoomImageViewPager.currentItem = position
         }
 
         viewHelper.changeStatusBarColor(requireActivity(), R.color.blackColor)

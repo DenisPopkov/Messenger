@@ -16,6 +16,7 @@ class ZoomImageViewPager(private val zoomImages: MutableList<String>, val contex
     override fun getItemCount(): Int = zoomImages.size
 
     override fun onBindViewHolder(holder: ZoomImageSliderViewHolder, position: Int) {
+
         val currentPosition = zoomImages[position]
 
         Glide.with(context).load(currentPosition).into(holder.zoomImage)

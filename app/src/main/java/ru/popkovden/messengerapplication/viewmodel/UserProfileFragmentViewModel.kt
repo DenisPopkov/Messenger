@@ -14,7 +14,7 @@ class UserProfileFragmentViewModel(val UID: String, val context: Context, val im
         emit(Event.loading(data = null))
 
         try {
-            emit(Event.success(data = GetPosts.getPosts(UID, context, image, name)))
+            emit(Event.success(data = GetPosts.getPosts(UID, context, image, name).sortedWith(compareBy { it.id })))
         } catch (exception: Exception) {
             emit(Event.error(data = null, message = exception.message ?: "Error Occurred!"))
         }

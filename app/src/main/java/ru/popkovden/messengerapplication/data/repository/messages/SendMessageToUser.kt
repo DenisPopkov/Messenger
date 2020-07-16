@@ -43,12 +43,12 @@ object SendMessageToUser {
         firebaseFirestore.collection("users").document(UID)
             .collection("chats").document(UserUID).collection("sentMessages").add(sentMessage)
 
-        setLastMessage(UID, UserUID, sendMessageModel.message)
+        setLastMessage(UID, UserUID, sendMessageModel.message, sendMessageModel.time)
 
         // Отправляет в БД себе на телефон, с типом сообщения - "полученное"
         firebaseFirestore.collection("users").document(UserUID)
             .collection("chats").document(UID).collection("receivedMessages").add(receivedMessage)
 
-        setLastMessage(UserUID, UID, sendMessageModel.message)
+        setLastMessage(UserUID, UID, sendMessageModel.message, sendMessageModel.time)
     }
 }

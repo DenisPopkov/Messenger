@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:background="@color/whiteColor"
         android:fitsSystemWindows="true"
-        tools:context=".ui.fragment.CreatePostFragmentFragment">
+        tools:context=".ui.fragment.CreatePostFragment">
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/postMainText"

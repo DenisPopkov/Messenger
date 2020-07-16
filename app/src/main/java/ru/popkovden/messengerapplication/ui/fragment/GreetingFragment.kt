@@ -75,7 +75,7 @@ class GreetingFragment : Fragment() {
                 userInfo["phoneNumber"] = infoAboutUser.phoneNumber
                 userInfo["UID"] = infoAboutUser.UID
                 userInfo["userProfileImage"] = infoAboutUser.userProfileImage
-                Log.d("efefe", "${infoAboutUser.userName}, ${infoAboutUser.phoneNumber}, ${infoAboutUser.UID} - uid last okay")
+                Log.d("efefe", "${infoAboutUser.userName}, ${infoAboutUser.phoneNumber}, ${infoAboutUser.userProfileImage},  ${infoAboutUser.UID} - uid last okay")
                 userCreateHelper.userCreate(requireContext(), userInfo, InfoAboutUser, infoAboutUser.UID)
                 findNavController().navigate(GreetingFragmentDirections.actionGreetingFragmentToMainChatScreenFragment())
             }
@@ -120,7 +120,8 @@ class GreetingFragment : Fragment() {
                     userImageUri = result.uri
                 }
 
-                userCreateHelper.loadImageToDatabase(userImageUri!!, infoAboutUser.UID, InfoAboutUser)
+                Log.d("efefe", "greeting - ${result.uri}")
+                userCreateHelper.loadImageToDatabase(userImageUri!!, infoAboutUser.UID, binding.toMainScreen)
             }
         }
     }

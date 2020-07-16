@@ -31,4 +31,9 @@
     <string name="contact_not_exist">This contact isn\'t registered in the application</string>
     <string name="photo_loading">Downloading. Please wait</string>
     <string name="feed">Feed</string>
+    <string name="minute_abbreviation">m</string>
+    <string name="hour_abbreviation">h</string>
+    <string name="no_messages_yet">No messages yet</string>
+    <string name="start_messaging">Start chat!</string>
+    <string name="who_send">You: </string>
 </resources>

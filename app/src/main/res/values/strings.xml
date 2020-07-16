@@ -30,4 +30,9 @@
     <string name="contact_not_exist">Этот контакт не зарегистрирован в приложении</string>
     <string name="photo_loading">Идет загрузка. Пожалуйста подождите</string>
     <string name="feed">Интересное</string>
+    <string name="minute_abbreviation">м</string>
+    <string name="hour_abbreviation">ч</string>
+    <string name="no_messages_yet">Сообщений пока нет</string>
+    <string name="start_messaging">Начините общение!</string>
+    <string name="who_send">Вы: </string>
 </resources>

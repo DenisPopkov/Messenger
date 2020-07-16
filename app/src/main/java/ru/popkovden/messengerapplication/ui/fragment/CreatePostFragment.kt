@@ -4,6 +4,7 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,19 +32,24 @@ import ru.popkovden.messengerapplication.ui.adapters.profile.createPost.ImageSli
 import ru.popkovden.messengerapplication.ui.adapters.profile.createPost.VideoSliderRecyclerView
 import ru.popkovden.messengerapplication.utils.helper.READ_EXTERNAL_STORAGE
 import ru.popkovden.messengerapplication.utils.helper.checkPermission
+import ru.popkovden.messengerapplication.utils.helper.getData.getCountOfPosts
 import ru.popkovden.messengerapplication.utils.helper.getPath
 import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
 import java.io.File
 
-class CreatePostFragmentFragment : Fragment() {
+class CreatePostFragment : Fragment() {
 
+    private var postsCount: Int = 0
     private lateinit var binding: FragmentCreatePostFragmentBinding
     private val createPostHelper: CreatePost by inject()
     private val infoUser: InfoAboutUser by inject()
     private val imageSlider = arrayListOf<String>()
     private val videoSlider = arrayListOf<String>()
-    private val compressImages = arrayListOf<String>()
     private var mergeAdapter = MergeAdapter()
+
+    companion object {
+        var compressImages = arrayListOf<String>()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -52,6 +58,10 @@ class CreatePostFragmentFragment : Fragment() {
         compressImages.clear()
         imageSlider.clear()
         videoSlider.clear()
+
+        CoroutineScope(IO).launch {
+            postsCount = getCountOfPosts(infoUser.UID) // Получение количества постов
+        }
 
         // Настройка адаптера
         mergeAdapter = MergeAdapter()
@@ -78,8 +88,9 @@ class CreatePostFragmentFragment : Fragment() {
                 }
                 
                 if (compressImages.size == imageSlider.size) {
-                    createPostHelper.createPost(PostsModel(compressImages, videoSlider, "0", header, textFromPost, ""), infoUser.UID)
+                    createPostHelper.createPost(PostsModel(compressImages, videoSlider, "0", header, textFromPost, postsCount.plus(1).toString()), infoUser.UID)
                     backToProfile()
+                    Log.d("efefe", postsCount.toString())
                 } else {
                     Toast.makeText(requireContext(), resources.getString(R.string.photo_loading), Toast.LENGTH_SHORT).show()
                 }
@@ -102,7 +113,7 @@ class CreatePostFragmentFragment : Fragment() {
     }
 
     private fun backToProfile() {
-        val action = CreatePostFragmentFragmentDirections.actionCreatePostToAccount()
+        val action = CreatePostFragmentDirections.actionCreatePostToAccount()
         findNavController().navigate(action)
     }
 

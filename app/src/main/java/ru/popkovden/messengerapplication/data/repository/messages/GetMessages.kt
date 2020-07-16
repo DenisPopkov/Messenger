@@ -1,6 +1,8 @@
 package ru.popkovden.messengerapplication.data.repository.messages
 
 import android.content.Context
+import android.view.View
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
@@ -16,7 +18,7 @@ object GetMessages {
     private val firebaseFirestore = FirebaseFirestore.getInstance()
     private var messagesRequestList = arrayListOf<MessageModel>()
 
-    fun getMessages(UID: String, UserUID: String, recyclerViewAdapter: RecyclerView, context: Context) {
+    fun getMessages(UID: String, UserUID: String, recyclerViewAdapter: RecyclerView, context: Context, emojiText: AppCompatTextView, startText: AppCompatTextView) {
 
         messagesRequestList.clear()
 
@@ -42,14 +44,14 @@ object GetMessages {
                     }
 
                     // Получает с БД "полученные" от другого пользователя сообщения
-                    getReceivedMessages(recyclerViewAdapter, UID, UserUID, context)
+                    getReceivedMessages(recyclerViewAdapter, UID, UserUID, context, emojiText, startText)
                     // Получает с БД "отправленные" фото
 //                    getSentImages(recyclerViewAdapter, UID, UserUID, context)
                 }
         }
     }
 
-    private fun getReceivedMessages(recyclerViewAdapter: RecyclerView, UID: String, UserUID: String, context: Context) {
+    private fun getReceivedMessages(recyclerViewAdapter: RecyclerView, UID: String, UserUID: String, context: Context, emojiText: AppCompatTextView, startText: AppCompatTextView) {
 
         // Получает с БД "полученные" от другого пользователя сообщения
         firebaseFirestore.collection("users").document(UID)
@@ -79,6 +81,13 @@ object GetMessages {
                 adapter.sentMessageList = messagesRequestList.sortedWith(compareBy { it.id }).toMutableSet().toMutableList()
                 authorDiffResult.dispatchUpdatesTo(adapter)
 
+                if (messagesRequestList.isNullOrEmpty()) {
+                    emojiText.visibility = View.VISIBLE
+                    startText.visibility = View.VISIBLE
+                } else {
+                    emojiText.visibility = View.GONE
+                    startText.visibility = View.GONE
+                }
             }
     }
 

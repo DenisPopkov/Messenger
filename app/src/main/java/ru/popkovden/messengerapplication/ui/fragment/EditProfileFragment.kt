@@ -109,7 +109,7 @@ class EditProfileFragment : Fragment() {
                     userImageUri = result.uri
                 }
 
-                userCreateHelper.loadImageToDatabase(userImageUri!!, InfoAboutUser.UID, InfoAboutUser)
+                userCreateHelper.loadImageToDatabase(userImageUri!!, InfoAboutUser.UID, binding.toMainScreen)
             }
         }
     }

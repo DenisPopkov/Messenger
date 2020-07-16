@@ -1,10 +1,12 @@
 package ru.popkovden.messengerapplication.data.repository.contacts
 
+import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import ru.popkovden.messengerapplication.model.ContactFriendModel
+import ru.popkovden.messengerapplication.utils.helper.getData.setLastMessage
 import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
 
 object AddContact {
@@ -12,7 +14,7 @@ object AddContact {
     private val firestoreReference = FirebaseFirestore.getInstance()
         .collection("users")
 
-    fun addContact(contact: ContactFriendModel, UID: String, userPhoto: String, userName: String) = CoroutineScope(IO).launch {
+    fun addContact(contact: ContactFriendModel, UID: String, userName: String) = CoroutineScope(IO).launch {
 
         val contactInfo = hashMapOf<String, String>()
 
@@ -20,11 +22,15 @@ object AddContact {
         contactInfo["contactUID"] = contact.contactUID
         contactInfo["contactPhoto"] = contact.contactPhoto
 
+        Log.d("efefe", "$userName, ${contact.contactUID}, ${contact.contactPhoto} - contactInfo")
+
         val contactInfo2 = hashMapOf<String, String>()
 
         contactInfo2["contactName"] = InfoAboutUser.userName
-        contactInfo2["contactUID"] = UID
-        contactInfo2["contactPhoto"] = userPhoto
+        contactInfo2["contactUID"] = InfoAboutUser.UID
+        contactInfo2["contactPhoto"] = InfoAboutUser.userProfileImage
+
+        Log.d("efefe", "${InfoAboutUser.userName}, ${InfoAboutUser.UID}, ${InfoAboutUser.userProfileImage} - contactInfo2")
 
 
         firestoreReference.document(contact.contactUID).collection("contacts").document(UID).set(contactInfo2) // добовляет контакт другому
@@ -37,5 +43,7 @@ object AddContact {
 
         FirebaseFirestore.getInstance().collection("users")
             .document(contact.contactUID).collection("chats").document(UID).collection("Size").document("CollectionSize").set(hashMap2)
+
+        setLastMessage(UID, contact.contactUID, "", "")
     }
 }
