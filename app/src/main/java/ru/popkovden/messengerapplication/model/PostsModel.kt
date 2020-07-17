@@ -6,7 +6,7 @@ data class PostsModel(
     var likeCount: String,
     var postTitle: String,
     var postMainText: String,
-    var id: String
+    var id: Long
 ) {
-    constructor(): this(arrayListOf<String>(), arrayListOf<String>(),"", "", "", "")
+    constructor(): this(arrayListOf<String>(), arrayListOf<String>(),"", "", "", 0)
 }

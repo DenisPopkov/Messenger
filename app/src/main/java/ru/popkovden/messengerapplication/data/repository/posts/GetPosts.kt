@@ -1,18 +1,18 @@
 package ru.popkovden.messengerapplication.data.repository.posts
 
-import android.content.Context
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import ru.popkovden.messengerapplication.model.PostsModel
+import ru.popkovden.messengerapplication.utils.helper.Event
 
 object GetPosts{
 
     private val firebaseFirestore = FirebaseFirestore.getInstance()
     private val userPosts = arrayListOf<PostsModel>()
 
-    fun getPosts(UID: String, context: Context, image: String, name: String): ArrayList<PostsModel>{
+    fun getPosts(UID: String): Event<ArrayList<PostsModel>> {
 
         CoroutineScope(IO).launch {
             firebaseFirestore.collection("users")
@@ -30,11 +30,12 @@ object GetPosts{
                         val postMainText = document.get("postMainText").toString()
                         val postTitle = document.get("postTitle").toString()
                         val postVideos = document.get("postVideos") as ArrayList<String>?
-                        userPosts.add(PostsModel(postImages, postVideos, likeCount, postTitle, postMainText, ""))
+                        val id = document["id"] as Long?
+                        userPosts.add(PostsModel(postImages, postVideos, likeCount, postTitle, postMainText, id!!))
                     }
                 }
         }
 
-        return userPosts
+        return Event.success(data = userPosts)
     }
 }

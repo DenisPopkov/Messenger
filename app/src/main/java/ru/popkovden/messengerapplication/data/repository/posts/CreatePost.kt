@@ -49,6 +49,7 @@ object CreatePost {
         userInfo["postMainText"] = postInfo.postMainText
         userInfo["likeCount"] = postInfo.likeCount
         userInfo["saveLikeState"] = arrayListOf<String>()
+        userInfo["id"] = postInfo.id.toInt()
 
         // Создает пост
         firebaseFirestore.collection("users").document(UID)

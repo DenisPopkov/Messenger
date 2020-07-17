@@ -6,7 +6,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import ru.popkovden.messengerapplication.model.ContactFriendModel
+import ru.popkovden.messengerapplication.utils.helper.getData.getCurrentDateTime
 import ru.popkovden.messengerapplication.utils.helper.getData.setLastMessage
+import ru.popkovden.messengerapplication.utils.helper.getData.toString
 import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
 
 object AddContact {
@@ -44,6 +46,6 @@ object AddContact {
         FirebaseFirestore.getInstance().collection("users")
             .document(contact.contactUID).collection("chats").document(UID).collection("Size").document("CollectionSize").set(hashMap2)
 
-        setLastMessage(UID, contact.contactUID, "", "")
+        setLastMessage(UID, contact.contactUID, "", "", getCurrentDateTime().toString("dd-M-yyyy"))
     }
 }

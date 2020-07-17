@@ -1,27 +1,53 @@
 package ru.popkovden.messengerapplication.utils.helper
 
 import android.util.Log
-import ru.popkovden.messengerapplication.utils.helper.getData.getCurrentDateTime
-import ru.popkovden.messengerapplication.utils.helper.getData.toString
-import kotlin.math.abs
+import java.text.SimpleDateFormat
+import java.util.*
 
-fun calculateTime(timeSend: String, minute: String, hour: String): String {
+private const val SECOND_MILLIS = 1000
+private const val MINUTE_MILLIS = 60 * SECOND_MILLIS
+private const val HOUR_MILLIS = 60 * MINUTE_MILLIS
+private const val DAY_MILLIS = 24 * HOUR_MILLIS
 
-    val currentHour = getCurrentDateTime().toString("HH").toInt()
-    val currentMinute = getCurrentDateTime().toString("mm").toInt()
+private fun currentDate(): Date {
+    val calendar = Calendar.getInstance()
+    return calendar.time
+}
+
+fun getTimeAgo(date: Date, minute: String, hour: String, day: String): String {
+    var time = date.time
+    if (time < 1000000000000L) {
+        time *= 1000
+    }
+
+    val now = currentDate().time
+    if (time > now || time <= 0) {
+        return "in the future"
+    }
+
+    val diff = now - time
+    return when {
+        diff < MINUTE_MILLIS -> " · 10s"
+        diff < 2 * MINUTE_MILLIS -> " · 1$minute"
+        diff < 60 * MINUTE_MILLIS -> " · ${diff / MINUTE_MILLIS}$minute"
+        diff < 2 * HOUR_MILLIS -> " · 1$hour"
+        diff < 24 * HOUR_MILLIS -> " · ${diff / HOUR_MILLIS}$hour"
+        diff < 48 * HOUR_MILLIS -> " · 1$day"
+        else -> " · ${diff / DAY_MILLIS}$day"
+    }
+}
+
+fun calculateTime(timeSend: String, minute: String, hour: String, day: String, daySend: String): String {
 
     var currentCalculateResult = ""
 
     try {
-        val calculateHour: Int? = timeSend.substring(0..1).toInt() - currentHour
-        val calculateMinute: Int? = timeSend.substring(3..4).toInt() - currentMinute
 
-        currentCalculateResult = if (calculateHour == 0) {
-            "· " + abs(calculateMinute!!).toString() + minute
-        } else {
-            "· " + abs(calculateHour!!).toString() + hour
-        }
+        val sdf = SimpleDateFormat("dd-M-yyyy hh:mm")
+        val dateString = "$daySend $timeSend"
+        val parseDate = sdf.parse(dateString)
 
+        currentCalculateResult = getTimeAgo(parseDate!!, minute, hour, day)
     } catch (e: Exception) {
         Log.d("efefe", "$e - error")
     }

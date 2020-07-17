@@ -14,21 +14,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.MergeAdapter
 import kotlinx.android.synthetic.main.drawer_profile_content.view.*
 import kotlinx.android.synthetic.main.profile_toolbar.view.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.databinding.FragmentUserProfileBinding
 import ru.popkovden.messengerapplication.model.DrawerItemsModel
+import ru.popkovden.messengerapplication.model.PostsModel
 import ru.popkovden.messengerapplication.ui.adapters.profile.drawer.DrawerNavigationRecyclerView
-import ru.popkovden.messengerapplication.ui.adapters.profile.mainPart.MainProfileRecyclerViewPart
 import ru.popkovden.messengerapplication.ui.adapters.profile.mainPart.PostsProfileRecyclerView
 import ru.popkovden.messengerapplication.utils.customView.FabControl
 import ru.popkovden.messengerapplication.utils.customView.StatusBarColorChanger
@@ -42,8 +37,8 @@ class UserProfileFragment : Fragment(){
     private val uiHelper: StatusBarColorChanger by inject()
     private val fabControl: FabControl by inject()
     private val infoAboutUser: InfoAboutUser by inject()
-    val viewModel: UserProfileFragmentViewModel by viewModel{ parametersOf(InfoAboutUser.UID,
-        requireContext(), InfoAboutUser.userProfileImage, InfoAboutUser.userName) }
+    val viewModel: UserProfileFragmentViewModel by viewModel{ parametersOf(infoAboutUser.UID) }
+    lateinit var adapter: PostsProfileRecyclerView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -61,24 +56,24 @@ class UserProfileFragment : Fragment(){
         binding.profileRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.profileRecyclerView.setHasFixedSize(true)
 
-        val mergeAdapter = MergeAdapter(MainProfileRecyclerViewPart(requireContext(), InfoAboutUser.userProfileImage, InfoAboutUser.userName))
-        binding.profileRecyclerView.adapter = mergeAdapter
+//        val mergeAdapter = MergeAdapter(MainProfileRecyclerViewPart(requireContext(), InfoAboutUser.userProfileImage, InfoAboutUser.userName, InfoAboutUser.UID))
+//        binding.profileRecyclerView.adapter = mergeAdapter
 
         viewModel.getPosts().observe(viewLifecycleOwner, Observer {
+
             when(it.status) {
 
                 Status.LOADING -> {
                     binding.progressLoader.visibility = View.VISIBLE
+                    Log.d("efefe", "loading")
                 }
                 Status.ERROR -> Log.d("efefe", "error")
                 Status.SUCCESS -> {
                     it?.data?.let { result ->
-                        CoroutineScope(Main).launch {
-                            delay(500)
-                            binding.progressLoader.visibility = View.GONE
-                            mergeAdapter.addAdapter(PostsProfileRecyclerView(requireContext(), result, InfoAboutUser.UID))
-                            binding.profileRecyclerView.adapter = mergeAdapter
-                        }
+                        Log.d("efefe", "success")
+                        binding.progressLoader.visibility = View.GONE
+//                            mergeAdapter.addAdapter(PostsProfileRecyclerView(requireContext(), result, InfoAboutUser.UID))
+//                        binding.profileRecyclerView.adapter = retrieveList(result)
                     }
                 }
             }
@@ -124,5 +119,12 @@ class UserProfileFragment : Fragment(){
             }
 
         drawerLayout.addDrawerListener(actionBarDrawerToggle)
+    }
+
+    private fun retrieveList(posts: MutableList<PostsModel>) {
+        adapter.apply {
+            addPosts(posts)
+            notifyDataSetChanged()
+        }
     }
 }

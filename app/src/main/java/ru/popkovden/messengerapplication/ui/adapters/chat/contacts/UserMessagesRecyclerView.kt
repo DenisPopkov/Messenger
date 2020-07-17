@@ -18,7 +18,7 @@ import ru.popkovden.messengerapplication.model.ContactFriendModel
 import ru.popkovden.messengerapplication.ui.fragment.ChatScreenFragmentDirections
 import ru.popkovden.messengerapplication.utils.helper.getData.getLastMessage
 
-class UserMessagesRecyclerView(val context: Context, val contacts: ArrayList<ContactFriendModel>, val UID: String, val minute: String, val hour: String) : RecyclerView.Adapter<ChatViewHolder>() {
+class UserMessagesRecyclerView(val context: Context, val contacts: ArrayList<ContactFriendModel>, val UID: String, val minute: String, val hour: String, val day: String) : RecyclerView.Adapter<ChatViewHolder>() {
 
     private var lastMessageHashMap = mutableMapOf<String, String>()
 
@@ -31,7 +31,7 @@ class UserMessagesRecyclerView(val context: Context, val contacts: ArrayList<Con
         val currentContact = contacts[position]
 
         CoroutineScope(IO).launch {
-            lastMessageHashMap = getLastMessage(UID, currentContact.contactUID, minute, hour)
+            lastMessageHashMap = getLastMessage(UID, currentContact.contactUID, minute, hour, day)
         }
 
         CoroutineScope(Main).launch {

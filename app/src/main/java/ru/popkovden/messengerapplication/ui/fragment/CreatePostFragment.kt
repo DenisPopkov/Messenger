@@ -88,7 +88,7 @@ class CreatePostFragment : Fragment() {
                 }
                 
                 if (compressImages.size == imageSlider.size) {
-                    createPostHelper.createPost(PostsModel(compressImages, videoSlider, "0", header, textFromPost, postsCount.plus(1).toString()), infoUser.UID)
+                    createPostHelper.createPost(PostsModel(compressImages, videoSlider, "0", header, textFromPost, postsCount.plus(1).toLong()), infoUser.UID)
                     backToProfile()
                     Log.d("efefe", postsCount.toString())
                 } else {

@@ -6,7 +6,9 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import ru.popkovden.messengerapplication.model.SendMessageModel
 import ru.popkovden.messengerapplication.utils.helper.getData.getCollectionSize
+import ru.popkovden.messengerapplication.utils.helper.getData.getCurrentDateTime
 import ru.popkovden.messengerapplication.utils.helper.getData.setLastMessage
+import ru.popkovden.messengerapplication.utils.helper.getData.toString
 
 object SendMessageToUser {
 
@@ -43,12 +45,12 @@ object SendMessageToUser {
         firebaseFirestore.collection("users").document(UID)
             .collection("chats").document(UserUID).collection("sentMessages").add(sentMessage)
 
-        setLastMessage(UID, UserUID, sendMessageModel.message, sendMessageModel.time)
+        setLastMessage(UID, UserUID, sendMessageModel.message, sendMessageModel.time, getCurrentDateTime().toString("dd-M-yyyy"))
 
         // Отправляет в БД себе на телефон, с типом сообщения - "полученное"
         firebaseFirestore.collection("users").document(UserUID)
             .collection("chats").document(UID).collection("receivedMessages").add(receivedMessage)
 
-        setLastMessage(UserUID, UID, sendMessageModel.message, sendMessageModel.time)
+        setLastMessage(UserUID, UID, sendMessageModel.message, sendMessageModel.time, getCurrentDateTime().toString("dd-M-yyyy"))
     }
 }
