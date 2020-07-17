@@ -58,13 +58,6 @@ class PostsProfileRecyclerView(val context: Context, private val postsList: Muta
             }
         }
     }
-
-    fun addPosts(posts: List<PostsModel>) {
-        this.postsList.apply {
-            clear()
-            addAll(posts)
-        }
-    }
 }
 
 class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

@@ -1,7 +1,6 @@
 package ru.popkovden.messengerapplication.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,25 +10,24 @@ import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.drawer_profile_content.view.*
 import kotlinx.android.synthetic.main.profile_toolbar.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 import ru.popkovden.messengerapplication.R
+import ru.popkovden.messengerapplication.data.repository.posts.GetPosts
 import ru.popkovden.messengerapplication.databinding.FragmentUserProfileBinding
 import ru.popkovden.messengerapplication.model.DrawerItemsModel
-import ru.popkovden.messengerapplication.model.PostsModel
 import ru.popkovden.messengerapplication.ui.adapters.profile.drawer.DrawerNavigationRecyclerView
 import ru.popkovden.messengerapplication.ui.adapters.profile.mainPart.PostsProfileRecyclerView
 import ru.popkovden.messengerapplication.utils.customView.FabControl
 import ru.popkovden.messengerapplication.utils.customView.StatusBarColorChanger
-import ru.popkovden.messengerapplication.utils.helper.Status
 import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
-import ru.popkovden.messengerapplication.viewmodel.UserProfileFragmentViewModel
 
 class UserProfileFragment : Fragment(){
 
@@ -37,8 +35,8 @@ class UserProfileFragment : Fragment(){
     private val uiHelper: StatusBarColorChanger by inject()
     private val fabControl: FabControl by inject()
     private val infoAboutUser: InfoAboutUser by inject()
-    val viewModel: UserProfileFragmentViewModel by viewModel{ parametersOf(infoAboutUser.UID) }
     lateinit var adapter: PostsProfileRecyclerView
+    private val getPostsHelper: GetPosts by inject()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -53,31 +51,33 @@ class UserProfileFragment : Fragment(){
         infoAboutUser.loadInfoFromSharedPreferences(requireContext())
 
         // Настройка адаптера постов
+        getPostsHelper.getPosts(
+            binding.profileRecyclerView,
+            infoAboutUser.UID,
+            requireContext(),
+            infoAboutUser.userProfileImage,
+            infoAboutUser.userName
+        )
         binding.profileRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.profileRecyclerView.setHasFixedSize(true)
 
-//        val mergeAdapter = MergeAdapter(MainProfileRecyclerViewPart(requireContext(), InfoAboutUser.userProfileImage, InfoAboutUser.userName, InfoAboutUser.UID))
-//        binding.profileRecyclerView.adapter = mergeAdapter
+        binding.swipeRefreshLayout.setColorSchemeResources(
+            R.color.mainColor
+        )
 
-        viewModel.getPosts().observe(viewLifecycleOwner, Observer {
-
-            when(it.status) {
-
-                Status.LOADING -> {
-                    binding.progressLoader.visibility = View.VISIBLE
-                    Log.d("efefe", "loading")
-                }
-                Status.ERROR -> Log.d("efefe", "error")
-                Status.SUCCESS -> {
-                    it?.data?.let { result ->
-                        Log.d("efefe", "success")
-                        binding.progressLoader.visibility = View.GONE
-//                            mergeAdapter.addAdapter(PostsProfileRecyclerView(requireContext(), result, InfoAboutUser.UID))
-//                        binding.profileRecyclerView.adapter = retrieveList(result)
-                    }
-                }
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            CoroutineScope(IO).launch {
+                getPostsHelper.getPosts(
+                    binding.profileRecyclerView,
+                    infoAboutUser.UID,
+                    requireContext(),
+                    infoAboutUser.userProfileImage,
+                    infoAboutUser.userName
+                )
+                delay(2000)
+                binding.swipeRefreshLayout.isRefreshing = false
             }
-        })
+        }
 
         // Настройка адаптера drawer layout
         binding.drawerContent.contentDrawer.layoutManager = LinearLayoutManager(requireContext())
@@ -119,12 +119,5 @@ class UserProfileFragment : Fragment(){
             }
 
         drawerLayout.addDrawerListener(actionBarDrawerToggle)
-    }
-
-    private fun retrieveList(posts: MutableList<PostsModel>) {
-        adapter.apply {
-            addPosts(posts)
-            notifyDataSetChanged()
-        }
     }
 }

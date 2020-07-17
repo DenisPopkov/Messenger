@@ -8,6 +8,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import ru.popkovden.messengerapplication.model.PostsModel
+import ru.popkovden.messengerapplication.utils.helper.getData.getPhotoCount
+import ru.popkovden.messengerapplication.utils.helper.getData.updatePhotoCount
 
 object CreatePost {
 
@@ -20,6 +22,8 @@ object CreatePost {
     private val imageHelper = arrayListOf<String>()
 
     fun createPost(postInfo: PostsModel, UID: String) = CoroutineScope(IO).launch {
+
+        val previousPhotoCount = getPhotoCount(UID)
 
         userInfo.clear()
         imageHelper.clear()
@@ -36,6 +40,7 @@ object CreatePost {
                 }.addOnCompleteListener {
                     if (postInfo.postImages.size == imageHelper.size) {
                         sendPost(postInfo, UID)
+                        updatePhotoCount(UID, imageHelper.size, previousPhotoCount)
                     }
                 }
             }

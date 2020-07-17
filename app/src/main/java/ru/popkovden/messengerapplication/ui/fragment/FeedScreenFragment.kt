@@ -8,6 +8,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.databinding.FragmentFeedScreenBinding
+import ru.popkovden.messengerapplication.utils.helper.getData.setPhotoCount
+import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
 
 class FeedScreenFragment : Fragment() {
 
@@ -16,6 +18,13 @@ class FeedScreenFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_feed_screen, container, false)
+
+        InfoAboutUser.loadInfoFromSharedPreferences(requireContext())
+
+        if (InfoAboutUser.setPhotoCount) {
+            setPhotoCount(InfoAboutUser.UID)
+            InfoAboutUser.setPhotoCount = false
+        }
 
         return binding.root
     }
