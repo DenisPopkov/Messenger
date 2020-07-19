@@ -23,6 +23,7 @@ object AddContact {
         contactInfo["contactName"] = userName
         contactInfo["contactUID"] = contact.contactUID
         contactInfo["contactPhoto"] = contact.contactPhoto
+        setLastMessage(UID, contact.contactUID, "", "", getCurrentDateTime().toString("dd-M-yyyy"))
 
         Log.d("efefe", "$userName, ${contact.contactUID}, ${contact.contactPhoto} - contactInfo")
 
@@ -31,6 +32,7 @@ object AddContact {
         contactInfo2["contactName"] = InfoAboutUser.userName
         contactInfo2["contactUID"] = InfoAboutUser.UID
         contactInfo2["contactPhoto"] = InfoAboutUser.userProfileImage
+        setLastMessage(contact.contactUID, UID, "", "", getCurrentDateTime().toString("dd-M-yyyy"))
 
         Log.d("efefe", "${InfoAboutUser.userName}, ${InfoAboutUser.UID}, ${InfoAboutUser.userProfileImage} - contactInfo2")
 
@@ -45,7 +47,5 @@ object AddContact {
 
         FirebaseFirestore.getInstance().collection("users")
             .document(contact.contactUID).collection("chats").document(UID).collection("Size").document("CollectionSize").set(hashMap2)
-
-        setLastMessage(UID, contact.contactUID, "", "", getCurrentDateTime().toString("dd-M-yyyy"))
     }
 }

@@ -27,7 +27,8 @@ class ChatScreenFragment : Fragment() {
     private lateinit var binding: FragmentChatScreenBinding
     private val infoAboutUser: InfoAboutUser by inject()
     var uid = ""
-    private val viewModel: ChatScreenFragmentViewModel by viewModel{ parametersOf(uid) }
+    private val viewModel: ChatScreenFragmentViewModel by viewModel{ parametersOf(uid,
+        resources.getString(R.string.minute_abbreviation), resources.getString(R.string.hour_abbreviation), resources.getString(R.string.day_abbreviation)) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 

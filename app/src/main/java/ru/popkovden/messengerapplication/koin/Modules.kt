@@ -46,6 +46,6 @@ val viewModelModule = module {
     viewModel { (UID: String)  -> UserProfileFragmentViewModel(UID)}
     viewModel { MessengerFragmentViewModel() }
     viewModel { EditProfileFragmentViewModel() }
-    viewModel { (UID: String) -> ChatScreenFragmentViewModel(UID) }
+    viewModel { (UID: String, minute: String, hour: String, day: String) -> ChatScreenFragmentViewModel(UID, minute, hour, day) }
     viewModel { (activity: Activity) -> ContactsFragmentViewModel(activity)}
 }

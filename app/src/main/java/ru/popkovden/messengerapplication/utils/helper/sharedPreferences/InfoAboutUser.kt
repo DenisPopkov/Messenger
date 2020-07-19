@@ -6,6 +6,7 @@ object InfoAboutUser {
 
     var userName = ""
     var userProfileImage = ""
+    var userProfileImageFile = ""
     var UID = ""
     var phoneNumber = ""
     var setPhotoCount = true
@@ -17,6 +18,7 @@ object InfoAboutUser {
         editor.putString("userName", userName)
         editor.putString("userProfileImage", userProfileImage)
         editor.putString("phoneNumber", phoneNumber)
+        editor.putString("userProfileImageFile", userProfileImageFile)
         editor.putBoolean("setPhotoCount", setPhotoCount)
         editor.apply()
     }
@@ -26,6 +28,7 @@ object InfoAboutUser {
         UID = sharedPreferences.getString("UID", "").toString()
         userName = sharedPreferences.getString("userName", "").toString()
         userProfileImage = sharedPreferences.getString("userProfileImage", "").toString()
+        userProfileImageFile = sharedPreferences.getString("userProfileImageFile", "").toString()
         phoneNumber = sharedPreferences.getString("phoneNumber", "").toString()
         setPhotoCount = sharedPreferences.getBoolean("setPhotoCount", false)
     }

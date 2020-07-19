@@ -2,7 +2,6 @@ package ru.popkovden.messengerapplication.data.repository.auth
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.appcompat.widget.AppCompatImageButton
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -23,12 +22,10 @@ object CreateUser {
             val result = it.metadata?.reference?.downloadUrl
 
             result?.addOnSuccessListener { uri ->
-                Log.d("efefe", "uri - $uri")
                 image = uri.toString()
                 nextButton.isEnabled = false
                 nextButton.isClickable = false
             }?.addOnCompleteListener {
-                Log.d("efefe", "image - $image")
                 InfoAboutUser.userProfileImage = image
                 nextButton.isEnabled = true
                 nextButton.isClickable = true

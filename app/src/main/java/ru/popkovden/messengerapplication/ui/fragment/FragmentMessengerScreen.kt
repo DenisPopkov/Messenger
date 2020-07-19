@@ -1,6 +1,7 @@
 package ru.popkovden.messengerapplication.ui.fragment
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -15,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.firebase.iid.FirebaseInstanceId
 import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.resolution
 import id.zelory.compressor.constraint.size
@@ -27,14 +29,15 @@ import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.data.repository.images.SendImages
 import ru.popkovden.messengerapplication.data.repository.messages.GetMessages
 import ru.popkovden.messengerapplication.data.repository.messages.SendMessageToUser
+import ru.popkovden.messengerapplication.data.repository.notification.FirebaseNotificationService
+import ru.popkovden.messengerapplication.data.repository.notification.RetrofitInstance
 import ru.popkovden.messengerapplication.databinding.FragmentMessengerScreenBinding
 import ru.popkovden.messengerapplication.model.SendMessageModel
 import ru.popkovden.messengerapplication.model.SentImageModel
+import ru.popkovden.messengerapplication.model.notification.NotificationData
+import ru.popkovden.messengerapplication.model.notification.PushNotificationModel
 import ru.popkovden.messengerapplication.utils.customView.StatusBarColorChanger
-import ru.popkovden.messengerapplication.utils.helper.getData.getCollectionSize
-import ru.popkovden.messengerapplication.utils.helper.getData.getCurrentDateTime
-import ru.popkovden.messengerapplication.utils.helper.getData.toString
-import ru.popkovden.messengerapplication.utils.helper.getData.updateCollectionSize
+import ru.popkovden.messengerapplication.utils.helper.getData.*
 import ru.popkovden.messengerapplication.utils.helper.getPath
 import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
 import java.io.File
@@ -52,6 +55,9 @@ class FragmentMessengerScreen : Fragment() {
 
     private val compressImages = arrayListOf<String>()
     private val imageSlider = arrayListOf<String>()
+
+    private var token = ""
+    private var tokenFromContact = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -76,6 +82,19 @@ class FragmentMessengerScreen : Fragment() {
                 Glide.with(requireContext()).load(this.UserPhoto.toString()).into(binding.messengerToolbar.userImage)
                 binding.messengerToolbar.textView.text = this.UserName.toString()
             }
+        }
+
+        // Получает токен для отправки сообщений
+        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener {
+
+            FirebaseNotificationService.sharedPreferences = requireContext().getSharedPreferences("token", Context.MODE_PRIVATE)
+            FirebaseNotificationService.token = it.token
+            token = it.token
+            setToken(UID, token)
+        }
+
+        CoroutineScope(IO).launch {
+            tokenFromContact = getToken(userUID)
         }
 
         // Настривает адапер
@@ -130,6 +149,10 @@ class FragmentMessengerScreen : Fragment() {
 
                 val currentTime = getCurrentDateTime().toString("HH:mm")
 
+                PushNotificationModel(NotificationData(InfoAboutUser.userName, textInput), tokenFromContact).also {
+                    sendNotification(it)
+                }
+
                 sendMessageHelper.sendMessage(infoAboutUser.UID, userUID, SendMessageModel(textInput, currentTime, UID, collectionSize, 0))
                 updateCollectionSize(UID, collectionSize, userUID)
                 binding.bottomMessage.messageInput.text?.clear()
@@ -143,6 +166,11 @@ class FragmentMessengerScreen : Fragment() {
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
         intent.type = type
         startActivityForResult(intent, 1)
+    }
+
+    private fun sendNotification(notification: PushNotificationModel) = CoroutineScope(IO).launch {
+
+       RetrofitInstance.api.postNotification(notification)
     }
 
     private fun getDataFromExternal(resultCode: Int, data: Intent?, list: ArrayList<String>) {
