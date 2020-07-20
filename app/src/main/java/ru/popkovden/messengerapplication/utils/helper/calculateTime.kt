@@ -22,7 +22,7 @@ fun getTimeAgo(date: Date, minute: String, hour: String, day: String): String {
 
     val now = currentDate().time
     if (time > now || time <= 0) {
-        return "in the future"
+        return ""
     }
 
     val diff = now - time

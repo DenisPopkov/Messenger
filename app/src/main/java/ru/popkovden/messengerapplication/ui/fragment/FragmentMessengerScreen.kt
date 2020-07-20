@@ -49,9 +49,13 @@ class FragmentMessengerScreen : Fragment() {
     private val sendMessageHelper: SendMessageToUser by inject()
     private val infoAboutUser: InfoAboutUser by inject()
     private val getSentMessagesHelper: GetMessages by inject()
-    private var userUID = ""
     private var UID = ""
-    private var collectionSize = 0
+    private var userPhoto = ""
+
+    companion object {
+        var userUID = ""
+        var collectionSize = 0
+    }
 
     private val compressImages = arrayListOf<String>()
     private val imageSlider = arrayListOf<String>()
@@ -79,6 +83,7 @@ class FragmentMessengerScreen : Fragment() {
         arguments?.let {
             with(FragmentMessengerScreenArgs.fromBundle(it)) {
                 userUID = this.UserUID.toString()
+                userPhoto = this.UserPhoto.toString()
                 Glide.with(requireContext()).load(this.UserPhoto.toString()).into(binding.messengerToolbar.userImage)
                 binding.messengerToolbar.textView.text = this.UserName.toString()
             }
@@ -100,6 +105,7 @@ class FragmentMessengerScreen : Fragment() {
         // Настривает адапер
         getSentMessagesHelper.getMessages(infoAboutUser.UID, userUID, binding.messengerScreenRecyclerView, requireContext(), binding.messageEmpty, binding.messageStart)
         val linearLayoutManager =  LinearLayoutManager(requireContext())
+        linearLayoutManager.stackFromEnd = true
         binding.messengerScreenRecyclerView.layoutManager = linearLayoutManager
 
         binding.messengerToolbar.backToContactList.setOnClickListener {
@@ -149,7 +155,7 @@ class FragmentMessengerScreen : Fragment() {
 
                 val currentTime = getCurrentDateTime().toString("HH:mm")
 
-                PushNotificationModel(NotificationData(InfoAboutUser.userName, textInput), tokenFromContact).also {
+                PushNotificationModel(NotificationData(InfoAboutUser.userName, textInput, userPhoto), token).also {
                     sendNotification(it)
                 }
 

@@ -8,7 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
-import android.net.Uri
+import android.graphics.BitmapFactory
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -16,14 +16,10 @@ import androidx.core.app.RemoteInput
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import ru.popkovden.messengerapplication.R
-import ru.popkovden.messengerapplication.ui.fragment.ChatScreenFragment
-import ru.popkovden.messengerapplication.utils.helper.DecodeUri
 import ru.popkovden.messengerapplication.utils.helper.getCircleBitmap
-import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
+import java.net.URL
 
 class FirebaseNotificationService : FirebaseMessagingService() {
-
-    private val channelId = "channelId"
 
     companion object {
         var sharedPreferences: SharedPreferences? = null
@@ -33,6 +29,10 @@ class FirebaseNotificationService : FirebaseMessagingService() {
             set(value) {
                 sharedPreferences?.edit()?.putString("token", value)?.apply()
             }
+
+        const val CHANNEL_ID = "ru.popkovden.messengerapplication"
+        const val NOTIFICATION_ID = 1010
+        const val REPLY_KEY = "reply_action"
     }
 
     override fun onNewToken(newToken: String) {
@@ -46,31 +46,28 @@ class FirebaseNotificationService : FirebaseMessagingService() {
 
         createNotificationChannel()
 
-        val intent = Intent(this, ChatScreenFragment::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        val pendingIntent = PendingIntent.getActivity(this, 0,
-            intent, FLAG_ONE_SHOT)
-
-        val largeIcon = getCircleBitmap(DecodeUri.decodeUriToBitmap(
-            Uri.parse(InfoAboutUser.userProfileImageFile), this))
-
+        // Получает фото отправителя
+        val url = URL(message.data["image"].toString())
+        val image = BitmapFactory.decodeStream(url.openConnection().getInputStream())
+        val largeIcon = getCircleBitmap(image)
         val scaledLargeIcon = Bitmap.createScaledBitmap(largeIcon, 128, 128, false)
 
         val notification =
-            NotificationCompat.Builder(this, channelId)
+            NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle(message.data["title"])
                 .setContentText(message.data["message"])
-                .setContentIntent(pendingIntent)
                 .setSmallIcon(R.drawable.mini_notification_icon)
                 .setAutoCancel(true)
                 .setLargeIcon(scaledLargeIcon)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setColor(resources.getColor(R.color.mainColor))
-                .addAction(createReadAction())
-                .addAction(createReplyAction())
+                .addAction(readAction())
+                .addAction(replyAction())
+                .setGroup("Messages")
+                .setGroupSummary(true)
 
         with(NotificationManagerCompat.from(this)) {
-            notify(0, notification.build())
+            notify(NOTIFICATION_ID, notification.build())
         }
     }
 
@@ -80,7 +77,7 @@ class FirebaseNotificationService : FirebaseMessagingService() {
             val name = "Сообщения"
             val desc = "Сообщения полученные из диалогов"
             val importance = NotificationManager.IMPORTANCE_HIGH
-            val channel = NotificationChannel(channelId, name, importance).apply {
+            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
                 description = desc
             }
 
@@ -89,22 +86,28 @@ class FirebaseNotificationService : FirebaseMessagingService() {
         }
     }
 
-    private fun createReadAction(): NotificationCompat.Action {
+    private fun readAction(): NotificationCompat.Action {
 
-        val intent = Intent(this, ChatScreenFragment::class.java)
-        intent.putExtra("wasRead", "read")
-        val pendingIntent =
-            PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-        val action = NotificationCompat.Action.Builder(R.drawable.ic_launcher_background, "Прочитано", pendingIntent)
+        // Создает интент для действия прочитать
+        val readIntent = Intent(applicationContext, ReadReceiverAction::class.java)
+        readIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        val readPendingIntent = PendingIntent.getBroadcast(applicationContext, 0,
+            readIntent, FLAG_ONE_SHOT)
 
-        return action.build()
+        return NotificationCompat.Action.Builder(android.R.drawable.ic_menu_send,
+            "Прочитать", readPendingIntent).build()
     }
 
-    private fun createReplyAction(): NotificationCompat.Action {
+    private fun replyAction(): NotificationCompat.Action {
 
-        val intent = Intent(this, ChatScreenFragment::class.java)
-        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
-        val remoteInput = RemoteInput.Builder("key_reply").setLabel("Ответить").build()
+        // Создает интент для действия ответа
+        val replyIntent = Intent(applicationContext, ReplyReceiverAction::class.java)
+        replyIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        val pendingIntent = PendingIntent.getBroadcast(applicationContext, 0,
+            replyIntent, FLAG_ONE_SHOT)
+
+        // Создает действие ответа
+        val remoteInput = RemoteInput.Builder(REPLY_KEY).setLabel("Ответить").build()
         val action = NotificationCompat.Action.Builder(android.R.drawable.ic_menu_send, "Ответить", pendingIntent)
 
         return action.addRemoteInput(remoteInput).build()

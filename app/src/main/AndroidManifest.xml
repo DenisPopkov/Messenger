@@ -37,6 +37,7 @@
 
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat"/>
-        <receiver android:name=".utils.helper.ReceiverAction" />
+        <receiver android:name=".data.repository.notification.ReplyReceiverAction"/>
+        <receiver android:name=".data.repository.notification.ReadReceiverAction"/>
     </application>
 </manifest>

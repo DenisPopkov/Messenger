@@ -10,11 +10,7 @@ fun initContacts(activity: Activity): List<ContactsModel> {
 
     val arrayContacts = arrayListOf<ContactsModel>()
 
-    if (checkPermission(
-            READ_CONTACTS,
-            activity
-        )
-    ) {
+    if (checkPermission(READ_CONTACTS, activity)) {
         val cursor = activity.contentResolver.query(
             ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null)
 

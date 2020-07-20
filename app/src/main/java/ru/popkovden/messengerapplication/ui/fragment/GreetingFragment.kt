@@ -17,6 +17,10 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.popkovden.messengerapplication.R
@@ -70,15 +74,19 @@ class GreetingFragment : Fragment() {
             if (userName.isBlank()) {
                 Toast.makeText(requireContext(), resources.getText(R.string.please_fill_all_data), Toast.LENGTH_SHORT).show()
             } else {
-                val userInfo = hashMapOf<String, String>()
-                userInfo["userName"] = infoAboutUser.userName
-                userInfo["phoneNumber"] = infoAboutUser.phoneNumber
-                userInfo["UID"] = infoAboutUser.UID
-                userInfo["userProfileImage"] = infoAboutUser.userProfileImage
-                userInfo["token"] = ""
-                Log.d("efefe", "${infoAboutUser.userName}, ${infoAboutUser.phoneNumber}, ${infoAboutUser.userProfileImage},  ${infoAboutUser.UID} - uid last okay")
-                userCreateHelper.userCreate(requireContext(), userInfo, InfoAboutUser, infoAboutUser.UID)
-                findNavController().navigate(GreetingFragmentDirections.actionGreetingFragmentToMainChatScreenFragment())
+                CoroutineScope(Main).launch {
+                    delay(2000)
+                    Toast.makeText(requireContext(), "loading...", Toast.LENGTH_SHORT).show()
+                    val userInfo = hashMapOf<String, String>()
+                    userInfo["userName"] = infoAboutUser.userName
+                    userInfo["phoneNumber"] = infoAboutUser.phoneNumber
+                    userInfo["UID"] = infoAboutUser.UID
+                    userInfo["userProfileImage"] = infoAboutUser.userProfileImage
+                    userInfo["token"] = ""
+                    Log.d("efefe", "${infoAboutUser.userName}, ${infoAboutUser.phoneNumber}, ${infoAboutUser.userProfileImage},  ${infoAboutUser.UID} - uid last okay")
+                    userCreateHelper.userCreate(requireContext(), userInfo, InfoAboutUser, infoAboutUser.UID)
+                    findNavController().navigate(GreetingFragmentDirections.actionGreetingFragmentToMainChatScreenFragment())
+                }
             }
         }
 
