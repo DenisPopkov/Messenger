@@ -6,9 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.MergeAdapter
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.post_item_for_feed.view.mainPostText
-import kotlinx.android.synthetic.main.post_item_for_feed.view.title
-import kotlinx.android.synthetic.main.posts_item.view.*
+import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.post_item_for_feed.view.*
 import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.model.PostsModel
 import ru.popkovden.messengerapplication.ui.adapters.profile.createPost.VideoSliderRecyclerView
@@ -19,7 +18,7 @@ class PostsProfileRecyclerView(val context: Context, private val postsList: Muta
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
-            LayoutInflater.from(context).inflate(R.layout.posts_item, parent, false)
+            LayoutInflater.from(context).inflate(R.layout.post_item_for_feed, parent, false)
         )
 
     override fun getItemCount(): Int = postsList.size
@@ -36,6 +35,9 @@ class PostsProfileRecyclerView(val context: Context, private val postsList: Muta
         title.text = currentPosition.postTitle
         mainPostText.text = currentPosition.postMainText
         likeCount.text = currentPosition.likeCount
+        Glide.with(context).load(currentPosition.photoProfile).into(userImage)
+        postName.text = currentPosition.postName
+        timeSendPost.text = currentPosition.timeSend
 
         for (images in currentPosition.postImages!!) {
             postImages.add(images)

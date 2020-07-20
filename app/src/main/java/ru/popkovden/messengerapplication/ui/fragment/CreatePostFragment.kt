@@ -33,6 +33,8 @@ import ru.popkovden.messengerapplication.ui.adapters.profile.createPost.VideoSli
 import ru.popkovden.messengerapplication.utils.helper.READ_EXTERNAL_STORAGE
 import ru.popkovden.messengerapplication.utils.helper.checkPermission
 import ru.popkovden.messengerapplication.utils.helper.getData.getCountOfPosts
+import ru.popkovden.messengerapplication.utils.helper.getData.getCurrentDateTime
+import ru.popkovden.messengerapplication.utils.helper.getData.toString
 import ru.popkovden.messengerapplication.utils.helper.getPath
 import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
 import java.io.File
@@ -88,7 +90,8 @@ class CreatePostFragment : Fragment() {
                 }
                 
                 if (compressImages.size == imageSlider.size) {
-                    createPostHelper.createPost(PostsModel(compressImages, videoSlider, "0", header, textFromPost, postsCount.plus(1).toLong()), infoUser.UID)
+                    createPostHelper.createPost(PostsModel(compressImages, videoSlider, "0", header, textFromPost, InfoAboutUser.UID,
+                        InfoAboutUser.userProfileImage, InfoAboutUser.userName, getCurrentDateTime().toString("HH:mm"), postsCount.plus(1).toLong()), infoUser.UID)
                     backToProfile()
                     Log.d("efefe", postsCount.toString())
                 } else {

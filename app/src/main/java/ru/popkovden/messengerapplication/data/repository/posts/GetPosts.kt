@@ -16,12 +16,12 @@ object GetPosts{
     private val firebaseFirestore = FirebaseFirestore.getInstance()
     private val userPosts = arrayListOf<PostsModel>()
 
-    fun getPosts(recyclerViewAdapter: RecyclerView, UID: String, context: Context, image: String, name: String): MutableList<PostsModel>? {
+    fun getPosts(recyclerViewAdapter: RecyclerView, UID: String, context: Context, image: String, name: String, reference: String): MutableList<PostsModel>? {
 
         CoroutineScope(IO).launch {
             firebaseFirestore.collection("users")
                 .document(UID)
-                .collection("posts").get().addOnSuccessListener {
+                .collection(reference).get().addOnSuccessListener {
 
                     // Получает данные
                     val postsRequestList = it.documents
@@ -40,9 +40,18 @@ object GetPosts{
                         val postImages: ArrayList<String>? = document.get("postImages") as ArrayList<String>?
                         val postMainText = document.get("postMainText").toString()
                         val postTitle = document.get("postTitle").toString()
+                        val UID = document.get("UID").toString()
+                        val userPhoto = document.get("photoProfile").toString()
+                        val timeSendPost = document.get("timeSendPost").toString()
+                        val postName = document.get("postName").toString()
                         val postVideos = document.get("postVideos") as ArrayList<String>?
                         val id = document["id"] as Long?
-                        userPosts.add(PostsModel(postImages, postVideos, likeCount, postTitle, postMainText, id!!))
+                        userPosts.add(PostsModel(postImages, postVideos, likeCount, postTitle, postMainText, UID, userPhoto, postName, timeSendPost, id!!))
+                    }
+
+                    if (reference == "postsFromFriends") {
+                        recyclerViewAdapter.adapter = PostsProfileRecyclerView(context,
+                            userPosts.sortedWith(compareBy { it.id }).toMutableList(), UID)
                     }
 
                     // Устанавливает адаптер с постами

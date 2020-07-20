@@ -56,7 +56,8 @@ class UserProfileFragment : Fragment(){
             infoAboutUser.UID,
             requireContext(),
             infoAboutUser.userProfileImage,
-            infoAboutUser.userName
+            infoAboutUser.userName,
+            "posts"
         )
         binding.profileRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.profileRecyclerView.setHasFixedSize(true)
@@ -72,7 +73,8 @@ class UserProfileFragment : Fragment(){
                     infoAboutUser.UID,
                     requireContext(),
                     infoAboutUser.userProfileImage,
-                    infoAboutUser.userName
+                    infoAboutUser.userName,
+                    "posts"
                 )
                 delay(2000)
                 binding.swipeRefreshLayout.isRefreshing = false

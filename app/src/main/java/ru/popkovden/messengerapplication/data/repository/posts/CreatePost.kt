@@ -7,9 +7,14 @@ import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
+import ru.popkovden.messengerapplication.data.repository.contacts.GetContacts
+import ru.popkovden.messengerapplication.model.ContactFriendModel
 import ru.popkovden.messengerapplication.model.PostsModel
+import ru.popkovden.messengerapplication.utils.helper.getData.getCurrentDateTime
 import ru.popkovden.messengerapplication.utils.helper.getData.getPhotoCount
+import ru.popkovden.messengerapplication.utils.helper.getData.toString
 import ru.popkovden.messengerapplication.utils.helper.getData.updatePhotoCount
+import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
 
 object CreatePost {
 
@@ -24,6 +29,7 @@ object CreatePost {
     fun createPost(postInfo: PostsModel, UID: String) = CoroutineScope(IO).launch {
 
         val previousPhotoCount = getPhotoCount(UID)
+        val contactsFriendList = GetContacts.getContacts(UID, "", "", "")
 
         userInfo.clear()
         imageHelper.clear()
@@ -39,7 +45,7 @@ object CreatePost {
                     imageHelper.add(uri.toString())
                 }.addOnCompleteListener {
                     if (postInfo.postImages.size == imageHelper.size) {
-                        sendPost(postInfo, UID)
+                        sendPost(postInfo, UID, contactsFriendList)
                         updatePhotoCount(UID, imageHelper.size, previousPhotoCount)
                     }
                 }
@@ -47,7 +53,7 @@ object CreatePost {
         }
     }
 
-    private fun sendPost(postInfo: PostsModel, UID: String) = CoroutineScope(IO).launch {
+    private fun sendPost(postInfo: PostsModel, UID: String, contactsFriendList: ArrayList<ContactFriendModel>) = CoroutineScope(IO).launch {
         userInfo["postImages"] = imageHelper
         userInfo["postVideos"] = imageHelper
         userInfo["postTitle"] = postInfo.postTitle
@@ -55,9 +61,19 @@ object CreatePost {
         userInfo["likeCount"] = postInfo.likeCount
         userInfo["saveLikeState"] = arrayListOf<String>()
         userInfo["id"] = postInfo.id.toInt()
+        userInfo["uidSender"] = UID
+        userInfo["timeSendPost"] = getCurrentDateTime().toString("HH:mm")
+        userInfo["postName"] = InfoAboutUser.userName
+        userInfo["photoProfile"] = InfoAboutUser.userProfileImage
 
         // Создает пост
         firebaseFirestore.collection("users").document(UID)
             .collection("posts").document("$UID-${postInfo.postTitle}").set(userInfo)
+
+        for (friends in contactsFriendList) {
+            // Создает пост для друзей
+            firebaseFirestore.collection("users").document(friends.contactUID)
+                .collection("postsFromFriends").document("$UID-${postInfo.postTitle}").set(userInfo)
+        }
     }
 }

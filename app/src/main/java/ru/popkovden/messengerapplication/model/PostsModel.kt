@@ -6,7 +6,11 @@ data class PostsModel(
     var likeCount: String,
     var postTitle: String,
     var postMainText: String,
+    var uidSender: String,
+    var photoProfile: String,
+    var postName: String,
+    var timeSend: String,
     var id: Long
 ) {
-    constructor(): this(arrayListOf<String>(), arrayListOf<String>(),"", "", "", 0)
+    constructor(): this(arrayListOf<String>(), arrayListOf<String>(),"", "", "","","", "","", 0)
 }

@@ -25,7 +25,7 @@
         app:shapeAppearanceOverlay="@style/ShapeAppearance.Image.PILL" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/postName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
@@ -38,7 +38,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/appCompatTextView2"
+        android:id="@+id/timeSendPost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
@@ -47,21 +47,21 @@
         android:textColor="#858484"
         android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@+id/userImage"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/postName" />
 
     <TextView
         android:id="@+id/title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="10dp"
         android:fontFamily="@font/roboto_medium"
         android:text="Разработка"
+        android:layout_marginTop="20dp"
         android:textColor="@color/blackColor"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userImage" />
+        app:layout_constraintTop_toBottomOf="@+id/timeSendPost" />
 
     <TextView
         android:id="@+id/mainPostText"
@@ -78,18 +78,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title" />
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/appCompatImageView"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/postFileSliderRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="190dp"
-        android:layout_marginStart="10dp"
         android:layout_marginTop="15dp"
-        android:layout_marginEnd="10dp"
-        android:src="@color/mainColor"
+        android:overScrollMode="never"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainPostText"
-        app:shapeAppearanceOverlay="@style/ShapeAppearance.Image.ROUND" />
+        app:layout_constraintTop_toBottomOf="@+id/mainPostText"/>
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/linear"
@@ -100,9 +97,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appCompatImageView">
+        app:layout_constraintTop_toBottomOf="@+id/postFileSliderRecyclerView">
 
         <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/likeIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -110,7 +108,7 @@
             android:background="@drawable/corner_test"
             android:paddingStart="15dp"
             android:paddingTop="8dp"
-            android:paddingEnd="15dp"
+            android:paddingEnd="50dp"
             android:paddingBottom="8dp"
             android:src="@drawable/like_outlined_icon" />
 
@@ -139,18 +137,30 @@
             android:src="@drawable/resend_icon" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/indicatorCounter"
-        android:layout_width="40dp"
-        android:layout_height="30dp"
-        android:layout_gravity="end"
-        android:layout_marginTop="10dp"
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/appCompatImageButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
-        android:background="@drawable/corner_for_image_counter"
-        android:gravity="center"
-        android:text="1/3"
-        android:textColor="#fff"
-        android:textSize="13sp"
-        app:layout_constraintEnd_toEndOf="@+id/appCompatImageView"
-        app:layout_constraintTop_toTopOf="@+id/appCompatImageView" />
+        android:background="@drawable/corner_test"
+        android:paddingStart="15dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="15dp"
+        android:paddingBottom="8dp"
+        android:src="@drawable/delete_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/linear"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/linear" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/likeCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="65dp"
+        android:text="0"
+        android:textColor="#717171"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/linear"
+        app:layout_constraintTop_toTopOf="@+id/linear" />
 </androidx.constraintlayout.widget.ConstraintLayout>
