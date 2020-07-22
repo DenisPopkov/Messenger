@@ -18,7 +18,7 @@
         android:paddingEnd="53dp"
         android:paddingBottom="8dp"
         android:text="I'm okay, how are you? efee feefeefefe"
-        android:textColor="@color/whiteColor"
+        android:textColor="@color/messageTextColorSent"
         android:textSize="@dimen/text_message_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,7 +31,6 @@
         android:layout_marginEnd="12dp"
         android:layout_marginBottom="4dp"
         android:text="12:30"
-        android:textColor="@color/whiteColor"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/sentMessage"
         app:layout_constraintEnd_toEndOf="@+id/sentMessage" />

@@ -6,6 +6,6 @@
         android:radius="18dp"/>
 
     <solid
-        android:color="#F0F0F0"/>
+        android:color="@color/receivedMessageBubbleColor"/>
 
 </shape>

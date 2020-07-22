@@ -41,7 +41,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:singleLine="true"
-            android:textColor="@color/blackColor"
+            android:textColor="@android:color/black"
             android:textSize="18sp"
             app:layout_constraintEnd_toStartOf="@+id/toMainScreen"
             app:layout_constraintStart_toStartOf="parent"

@@ -47,12 +47,11 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/appCompatTextView2"
+            android:id="@+id/onlineStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginTop="1dp"
-            android:text="был в сети сегодня в 1:16"
             android:textColor="#5E5E5E"
             android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@+id/userImage"

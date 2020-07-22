@@ -18,6 +18,7 @@ import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.databinding.FragmentChatScreenBinding
 import ru.popkovden.messengerapplication.ui.adapters.chat.contacts.UserMessagesRecyclerView
 import ru.popkovden.messengerapplication.utils.helper.Status
+import ru.popkovden.messengerapplication.utils.helper.setOnlineStatus
 import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
 import ru.popkovden.messengerapplication.viewmodel.ChatScreenFragmentViewModel
 
@@ -29,6 +30,11 @@ class ChatScreenFragment : Fragment() {
     var uid = ""
     private val viewModel: ChatScreenFragmentViewModel by viewModel{ parametersOf(uid,
         resources.getString(R.string.minute_abbreviation), resources.getString(R.string.hour_abbreviation), resources.getString(R.string.day_abbreviation)) }
+
+    override fun onStop() {
+        super.onStop()
+        setOnlineStatus("offline")
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 

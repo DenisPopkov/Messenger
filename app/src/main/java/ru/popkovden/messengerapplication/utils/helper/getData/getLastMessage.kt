@@ -1,6 +1,5 @@
 package ru.popkovden.messengerapplication.utils.helper.getData
 
-import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import ru.popkovden.messengerapplication.utils.helper.calculateTime
@@ -33,8 +32,6 @@ suspend fun getLastMessage(UID: String, userUID: String, minute: String, hour: S
 
     if (lastMessage["uidSender"].toString() == UID) {
         user = "Вы: "
-        Log.d("efefe", "${lastMessage["uidSender"].toString()} uidSender")
-        Log.d("efefe", "$UID uid")
     }
 
     if (predicateMessage.length > 20) {

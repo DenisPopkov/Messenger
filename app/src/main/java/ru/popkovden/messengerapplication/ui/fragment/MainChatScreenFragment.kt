@@ -1,5 +1,6 @@
 package ru.popkovden.messengerapplication.ui.fragment
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +14,10 @@ import org.koin.android.ext.android.inject
 import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.databinding.FragmentMainChatScreenBinding
 import ru.popkovden.messengerapplication.utils.customView.StatusBarColorChanger
-
+import ru.popkovden.messengerapplication.utils.darkMode.openDarkMode
+import ru.popkovden.messengerapplication.utils.helper.setOnlineStatus
+import ru.popkovden.messengerapplication.utils.helper.updateScreenDestination
+import ru.popkovden.messengerapplication.utils.internetChecker.CheckInternetConnection
 
 class MainChatScreenFragment : Fragment() {
 
@@ -26,7 +30,8 @@ class MainChatScreenFragment : Fragment() {
     ): View? {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main_chat_screen, container, false)
-        uiHelper.changeStatusBarColor(requireActivity(), R.color.whiteColor)
+
+        openDarkMode(requireContext())
 
         val navHostFragment = childFragmentManager.findFragmentById(R.id.nav_host_test) as NavHostFragment
         val navController = navHostFragment.navController
@@ -34,12 +39,52 @@ class MainChatScreenFragment : Fragment() {
 
         navHostFragment.findNavController().addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.messenger,
+                R.id.messenger -> {
+                    binding.mainChatBottomNavigationView.visibility = View.GONE
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (CheckInternetConnection.isOnline(requireContext())) {
+                            setOnlineStatus("online")
+                            updateScreenDestination("MessengerScreen")
+                        } else {
+                            setOnlineStatus("offline")
+                        }
+                    }
+                }
+
+                R.id.discover, R.id.chat -> {
+
+                    binding.mainChatBottomNavigationView.visibility = View.VISIBLE
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (CheckInternetConnection.isOnline(requireContext())) {
+                            setOnlineStatus("online")
+                        } else {
+                            setOnlineStatus("offline")
+                        }
+                    }
+                }
+
                 R.id.createPost,
                 R.id.editProfileFragment,
                 R.id.zoomImagesFragment,
-                R.id.contactsFragment -> binding.mainChatBottomNavigationView.visibility = View.GONE
-                else -> binding.mainChatBottomNavigationView.visibility = View.VISIBLE
+                R.id.contactsFragment -> {
+                    binding.mainChatBottomNavigationView.visibility = View.GONE
+                    updateScreenDestination("")
+                }
+
+                else -> {
+                    binding.mainChatBottomNavigationView.visibility = View.VISIBLE
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (CheckInternetConnection.isOnline(requireContext())) {
+                            setOnlineStatus("online")
+                            updateScreenDestination("")
+                        } else {
+                            setOnlineStatus("offline")
+                        }
+                    }
+                }
             }
         }
 

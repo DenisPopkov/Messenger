@@ -15,7 +15,9 @@ import org.koin.android.ext.android.inject
 import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.data.repository.posts.GetPosts
 import ru.popkovden.messengerapplication.databinding.FragmentFeedScreenBinding
+import ru.popkovden.messengerapplication.ui.adapters.profile.mainPart.PostsProfileRecyclerView
 import ru.popkovden.messengerapplication.utils.helper.getData.setPhotoCount
+import ru.popkovden.messengerapplication.utils.helper.setOnlineStatus
 import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
 
 class FeedScreenFragment : Fragment() {
@@ -23,6 +25,11 @@ class FeedScreenFragment : Fragment() {
     private lateinit var binding: FragmentFeedScreenBinding
     private val getPostsHelper: GetPosts by inject()
     private val infoAboutUser: InfoAboutUser by inject()
+
+    override fun onStop() {
+        super.onStop()
+        setOnlineStatus("offline")
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -34,6 +41,8 @@ class FeedScreenFragment : Fragment() {
             setPhotoCount(InfoAboutUser.UID)
             InfoAboutUser.setPhotoCount = false
         }
+
+        val adapter = PostsProfileRecyclerView(requireContext(), arrayListOf(), InfoAboutUser.UID)
 
         // Настройка адаптера постов
         getPostsHelper.getPosts(
@@ -64,6 +73,14 @@ class FeedScreenFragment : Fragment() {
                 delay(2000)
                 binding.swipeRefreshLayoutFeed.isRefreshing = false
             }
+        }
+
+        if (adapter.itemCount <= 0) {
+            binding.feedWithoutPosts.visibility = View.VISIBLE
+            binding.pleaseCreateFirst.visibility = View.VISIBLE
+        } else {
+            binding.feedWithoutPosts.visibility = View.GONE
+            binding.pleaseCreateFirst.visibility = View.GONE
         }
 
         return binding.root

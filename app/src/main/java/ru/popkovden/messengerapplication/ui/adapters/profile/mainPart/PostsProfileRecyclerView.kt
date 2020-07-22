@@ -14,7 +14,7 @@ import ru.popkovden.messengerapplication.ui.adapters.profile.createPost.VideoSli
 import ru.popkovden.messengerapplication.utils.getLikeState
 import ru.popkovden.messengerapplication.utils.helper.getLikeCount
 
-class PostsProfileRecyclerView(val context: Context, private val postsList: MutableList<PostsModel>, val UID: String) : RecyclerView.Adapter<ViewHolder>() {
+class PostsProfileRecyclerView(val context: Context, val postsList: MutableList<PostsModel>, val UID: String) : RecyclerView.Adapter<ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(

@@ -4,37 +4,35 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import android.util.Log
+import androidx.annotation.RequiresApi
 
 object CheckInternetConnection {
 
-    fun isInternetAvailable(context: Context): Boolean {
-        var result = false
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun isOnline(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val networkCapabilities = connectivityManager.activeNetwork ?: return false
-            val actNw =
-                connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
-            result = when {
-                actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-                actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-                actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
-                else -> false
-            }
-        } else {
-            connectivityManager.run {
-                connectivityManager.activeNetworkInfo?.run {
-                    result = when (type) {
-                        ConnectivityManager.TYPE_WIFI -> true
-                        ConnectivityManager.TYPE_MOBILE -> true
-                        ConnectivityManager.TYPE_ETHERNET -> true
-                        else -> false
+        if (connectivityManager != null) {
+            val capabilities =
+                connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+            if (capabilities != null) {
+                when {
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
+                        Log.i("Internet", "NetworkCapabilities.TRANSPORT_CELLULAR")
+                        return true
                     }
-
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> {
+                        Log.i("Internet", "NetworkCapabilities.TRANSPORT_WIFI")
+                        return true
+                    }
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> {
+                        Log.i("Internet", "NetworkCapabilities.TRANSPORT_ETHERNET")
+                        return true
+                    }
                 }
             }
         }
-
-        return result
+        return false
     }
 }

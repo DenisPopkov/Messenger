@@ -35,7 +35,7 @@
         android:padding="7dp"
         android:textSize="17sp"
         android:text="Опубликовать"
-        android:textColor="@color/whiteColor"
+        android:textColor="@color/bottomButtonColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

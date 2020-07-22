@@ -37,6 +37,35 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/include" />
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/feed_without_posts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:text="@string/friends_without_posts"
+                android:textColor="@color/blackColor"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/please_create_first"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/roboto"
+                android:text="@string/create_post_hope"
+                android:textColor="@color/darkerText"
+                android:textSize="16sp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/feed_without_posts" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/feed_recyclerView"
                 android:layout_width="match_parent"

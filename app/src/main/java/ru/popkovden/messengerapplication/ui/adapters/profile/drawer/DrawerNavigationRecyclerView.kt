@@ -9,6 +9,8 @@ import kotlinx.android.synthetic.main.drawer_items.view.*
 import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.model.DrawerItemsModel
 import ru.popkovden.messengerapplication.ui.fragment.UserProfileFragmentDirections
+import ru.popkovden.messengerapplication.utils.darkMode.enableDarkMode
+import ru.popkovden.messengerapplication.utils.darkMode.loadInfoAboutMode
 
 class DrawerNavigationRecyclerView(private val drawerList: ArrayList<DrawerItemsModel>, val name: String, val userImage: String) : RecyclerView.Adapter<DrawerNavigationViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DrawerNavigationViewHolder = DrawerNavigationViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.drawer_items, parent, false))
@@ -27,9 +29,11 @@ class DrawerNavigationRecyclerView(private val drawerList: ArrayList<DrawerItems
 
             when (position) {
                 0 -> findNavController().navigate(action)
+                1 -> {
+                    loadInfoAboutMode(context)
+                    enableDarkMode(context)
+                }
             }
-
-
         }
     }
 }

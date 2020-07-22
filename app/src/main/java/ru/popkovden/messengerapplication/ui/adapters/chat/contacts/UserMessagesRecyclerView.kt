@@ -25,22 +25,21 @@ class UserMessagesRecyclerView(val context: Context, val contacts: ArrayList<Con
 
         val currentContact = contacts[position]
 
-        Log.d("efefe", currentContact.lastMessage["uidSender"].toString() + " joefhei")
-
-        if (currentContact.lastMessage.isNullOrEmpty()) {
+        if (currentContact.lastMessage["lastMessage"].toString().isEmpty()) {
+            Log.d("efefe", currentContact.lastMessage["lastMessage"].toString() + " test")
             whoSend.setTextColor(resources.getColor(R.color.lightText))
             whoSend.text = resources.getString(R.string.no_messages_yet)
-        }
-
-        if (currentContact.lastMessage["uidSender"].toString().isBlank()) {
-            whoSend.setTextColor(resources.getColor(R.color.lightText))
-            lastMessage.setTextColor(resources.getColor(R.color.darkerText))
-            whoSend.text = currentContact.lastMessage["lastMessage"].toString()
-            lastMessage.text = currentContact.lastMessage["timeSend"].toString()
         } else {
-            whoSend.text = resources.getString(R.string.who_send)
-            lastMessage.text = " " + currentContact.lastMessage["lastMessage"].toString() // Получает последнее сообщение
-            timeSend.text = currentContact.lastMessage["timeSend"].toString()
+            if (currentContact.lastMessage["uidSender"].toString().isBlank()) {
+                whoSend.setTextColor(resources.getColor(R.color.lightText))
+                lastMessage.setTextColor(resources.getColor(R.color.darkerText))
+                whoSend.text = currentContact.lastMessage["lastMessage"].toString()
+                lastMessage.text = currentContact.lastMessage["timeSend"].toString()
+            } else {
+                whoSend.text = resources.getString(R.string.who_send)
+                lastMessage.text = " " + currentContact.lastMessage["lastMessage"].toString() // Получает последнее сообщение
+                timeSend.text = currentContact.lastMessage["timeSend"].toString()
+            }
         }
 
         contactName.text = currentContact.contactName

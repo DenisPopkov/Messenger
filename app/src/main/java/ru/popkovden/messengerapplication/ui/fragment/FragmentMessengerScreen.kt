@@ -23,6 +23,7 @@ import id.zelory.compressor.constraint.size
 import kotlinx.android.synthetic.main.toolbar_for_messaging.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import ru.popkovden.messengerapplication.R
@@ -38,7 +39,10 @@ import ru.popkovden.messengerapplication.model.notification.NotificationData
 import ru.popkovden.messengerapplication.model.notification.PushNotificationModel
 import ru.popkovden.messengerapplication.utils.customView.StatusBarColorChanger
 import ru.popkovden.messengerapplication.utils.helper.getData.*
+import ru.popkovden.messengerapplication.utils.helper.getOnlineStatus
 import ru.popkovden.messengerapplication.utils.helper.getPath
+import ru.popkovden.messengerapplication.utils.helper.getScreenDestination
+import ru.popkovden.messengerapplication.utils.helper.setOnlineStatus
 import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
 import java.io.File
 
@@ -51,6 +55,8 @@ class FragmentMessengerScreen : Fragment() {
     private val getSentMessagesHelper: GetMessages by inject()
     private var UID = ""
     private var userPhoto = ""
+    private var onlineStatus = ""
+    private var screen = ""
 
     companion object {
         var userUID = ""
@@ -63,6 +69,11 @@ class FragmentMessengerScreen : Fragment() {
     private var token = ""
     private var tokenFromContact = ""
 
+    override fun onStop() {
+        super.onStop()
+        setOnlineStatus("offline")
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_messenger_screen, container, false)
@@ -70,7 +81,7 @@ class FragmentMessengerScreen : Fragment() {
         requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
 
         // Подготавливает важные данные
-        uiHelper.changeStatusBarColor(requireActivity(), R.color.whiteColor)
+//        uiHelper.changeStatusBarColor(requireActivity(), R.color.whiteColor)
         UID = infoAboutUser.UID
 
         return binding.root
@@ -100,6 +111,17 @@ class FragmentMessengerScreen : Fragment() {
 
         CoroutineScope(IO).launch {
             tokenFromContact = getToken(userUID)
+        }
+
+        CoroutineScope(Main).launch {
+            onlineStatus = getOnlineStatus(userUID)
+            binding.messengerToolbar.onlineStatus.text = onlineStatus
+        }
+
+        CoroutineScope(IO).launch {
+            while (true) {
+                screen = getScreenDestination(userUID)
+            }
         }
 
         // Настривает адапер
@@ -155,7 +177,7 @@ class FragmentMessengerScreen : Fragment() {
 
                 val currentTime = getCurrentDateTime().toString("HH:mm")
 
-                PushNotificationModel(NotificationData(InfoAboutUser.userName, textInput, userPhoto), token).also {
+                PushNotificationModel(NotificationData(InfoAboutUser.userName, textInput, userPhoto, userUID, screen), tokenFromContact).also {
                     sendNotification(it)
                 }
 

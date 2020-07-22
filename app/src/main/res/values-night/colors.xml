@@ -3,11 +3,11 @@
     <color name="colorPrimary">#03B3FF</color>
     <color name="colorPrimaryDark">#03B3FF</color>
     <color name="colorAccent">#03B3FF</color>
-    <color name="whiteColor">#FFFFFF</color>
+    <color name="whiteColor">#000000</color>
     <color name="transperent">#00FFFFFF</color>
     <color name="mainColor">#03B3FF</color>
     <color name="grayColor">#DCDCDC</color>
-    <color name="blackColor">#000000</color>
+    <color name="blackColor">#FFFFFF</color>
     <color name="purpleColor">#7866FE</color>
     <color name="redColor">#FF0000</color>
     <color name="greenColor">#18FF00</color>
@@ -16,28 +16,28 @@
     <color name="darkerText">#6A6A6A</color>
     <color name="lightText">#919191</color>
     <color name="white_color_for_text">#FFFFFF</color>
-    <color name="bottom_navigation_color">#FFFFFF</color>
-    <color name="drawer_color">#FFFFFF</color>
+    <color name="bottom_navigation_color">#2C2D2F</color>
+    <color name="drawer_color">#131313</color>
 
     //UI colors
-    <color name="statusBarColor">#FFFFFF</color>
+    <color name="statusBarColor">#000000</color>
 
     //Post colors
-    <color name="backgroundPost">#F8F8F8</color>
-    <color name="postButtons">#EDEDED</color>
+    <color name="backgroundPost">#252525</color>
+    <color name="postButtons">#1A1A1B</color>
 
     //InfoPanel colors
-    <color name="backgroundInfoPanel">#03B3FF</color>
+    <color name="backgroundInfoPanel">#252525</color>
 
-    //Messages color
-    <color name="sentMessageBubbleColor">#A403B3FF</color>
-    <color name="receivedMessageBubbleColor">#F0F0F0</color>
+    //Messages bubble
+    <color name="sentMessageBubbleColor">#454648</color>
+    <color name="receivedMessageBubbleColor">#2C2D2F</color>
     <color name="messageTextColorSent">#FFFFFF</color>
-    <color name="messageTextColorReceived">#000000</color>
-    <color name="messageInput">#000000</color>
+    <color name="messageTextColorReceived">#FFFFFF</color>
+    <color name="messageInput">#FFFFFF</color>
 
     //BottomSheet
-    <color name="bottomMessengerSheet">#FFFFFF</color>
+    <color name="bottomMessengerSheet">#2C2D2F</color>
     <color name="bottomButtonColor">#FFFFFF</color>
 
     //BottomSheetElips

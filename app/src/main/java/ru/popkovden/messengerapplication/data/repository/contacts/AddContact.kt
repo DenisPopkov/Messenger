@@ -1,6 +1,5 @@
 package ru.popkovden.messengerapplication.data.repository.contacts
 
-import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
@@ -25,17 +24,12 @@ object AddContact {
         contactInfo["contactPhoto"] = contact.contactPhoto
         setLastMessage(UID, contact.contactUID, "", "", getCurrentDateTime().toString("dd-M-yyyy"))
 
-        Log.d("efefe", "$userName, ${contact.contactUID}, ${contact.contactPhoto} - contactInfo")
-
         val contactInfo2 = hashMapOf<String, String>()
 
         contactInfo2["contactName"] = InfoAboutUser.userName
         contactInfo2["contactUID"] = InfoAboutUser.UID
         contactInfo2["contactPhoto"] = InfoAboutUser.userProfileImage
         setLastMessage(contact.contactUID, UID, "", "", getCurrentDateTime().toString("dd-M-yyyy"))
-
-        Log.d("efefe", "${InfoAboutUser.userName}, ${InfoAboutUser.UID}, ${InfoAboutUser.userProfileImage} - contactInfo2")
-
 
         firestoreReference.document(contact.contactUID).collection("contacts").document(UID).set(contactInfo2) // добовляет контакт другому
         firestoreReference.document(UID).collection("contacts").document(contact.contactUID).set(contactInfo) // добовляет контакт себе

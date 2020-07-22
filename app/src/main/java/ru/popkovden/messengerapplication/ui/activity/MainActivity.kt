@@ -3,8 +3,7 @@ package ru.popkovden.messengerapplication.ui.activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.NavOptions
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import com.google.firebase.auth.FirebaseAuth
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidFileProperties
@@ -17,7 +16,7 @@ import ru.popkovden.messengerapplication.databinding.ActivityMainBinding
 import ru.popkovden.messengerapplication.koin.helperModule
 import ru.popkovden.messengerapplication.koin.repositoryModule
 import ru.popkovden.messengerapplication.koin.viewModelModule
-import ru.popkovden.messengerapplication.ui.fragment.SendPhoneNumberFragmentDirections
+import ru.popkovden.messengerapplication.utils.helper.changeStartDestination
 
 
 class MainActivity : AppCompatActivity() {
@@ -31,12 +30,8 @@ class MainActivity : AppCompatActivity() {
 
         if (FirebaseAuth.getInstance().currentUser != null) {
 
-            val navOptions = NavOptions.Builder()
-                .setPopUpTo(R.id.sendPhoneNumberFragment, true)
-                .build()
-
-            findNavController(R.id.nav_host).navigate(
-                SendPhoneNumberFragmentDirections.actionSendPhoneNumberFragmentToMainChatScreenFragment(), navOptions)
+            val navHost = supportFragmentManager.findFragmentById(R.id.nav_host) as NavHostFragment
+            changeStartDestination(navHost, R.id.mainChatScreenFragment)
         }
 
         startKoin {

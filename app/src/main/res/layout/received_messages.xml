@@ -18,7 +18,7 @@
         android:paddingEnd="53dp"
         android:paddingBottom="8dp"
         android:text="I'm okay, how are you? efee feefefefe efef efefe efefe"
-        android:textColor="@color/blackColor"
+        android:textColor="@color/messageTextColorReceived"
         android:textSize="@dimen/text_message_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

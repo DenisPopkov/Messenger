@@ -10,6 +10,7 @@ import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.drawer_profile_content.view.*
@@ -26,13 +27,12 @@ import ru.popkovden.messengerapplication.model.DrawerItemsModel
 import ru.popkovden.messengerapplication.ui.adapters.profile.drawer.DrawerNavigationRecyclerView
 import ru.popkovden.messengerapplication.ui.adapters.profile.mainPart.PostsProfileRecyclerView
 import ru.popkovden.messengerapplication.utils.customView.FabControl
-import ru.popkovden.messengerapplication.utils.customView.StatusBarColorChanger
+import ru.popkovden.messengerapplication.utils.helper.changeStartDestination
 import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
 
 class UserProfileFragment : Fragment(){
 
     private lateinit var binding: FragmentUserProfileBinding
-    private val uiHelper: StatusBarColorChanger by inject()
     private val fabControl: FabControl by inject()
     private val infoAboutUser: InfoAboutUser by inject()
     lateinit var adapter: PostsProfileRecyclerView
@@ -49,6 +49,9 @@ class UserProfileFragment : Fragment(){
 
         // Получение информации о профиле пользователя
         infoAboutUser.loadInfoFromSharedPreferences(requireContext())
+
+        val navHost = requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_test) as NavHostFragment?
+        changeStartDestination(navHost, R.id.account)
 
         // Настройка адаптера постов
         getPostsHelper.getPosts(
@@ -93,7 +96,6 @@ class UserProfileFragment : Fragment(){
         binding.drawerContent.contentDrawer.setHasFixedSize(true)
 
         // Настройка интерфейса
-        uiHelper.changeStatusBarColor(requireActivity(), R.color.whiteColor)
         fabControl.controlFabActionPosition(binding.profileRecyclerView, binding.fab)
 
         drawerControl(binding.drawerLayout, binding.content)
