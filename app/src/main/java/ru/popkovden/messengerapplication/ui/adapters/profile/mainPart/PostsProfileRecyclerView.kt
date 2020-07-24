@@ -30,11 +30,12 @@ class PostsProfileRecyclerView(val context: Context, val postsList: MutableList<
 
         val currentPosition = postsList[position]
 
+//        getAbsoluteReferenceLikeCount(UID, "$UID-${currentPosition.postTitle}", likeCount)
+
         getLikeState(UID, currentPosition.postTitle, likeIcon)
 
         title.text = currentPosition.postTitle
         mainPostText.text = currentPosition.postMainText
-        likeCount.text = currentPosition.likeCount
         Glide.with(context).load(currentPosition.photoProfile).into(userImage)
         postName.text = currentPosition.postName
         timeSendPost.text = currentPosition.timeSend
@@ -47,6 +48,7 @@ class PostsProfileRecyclerView(val context: Context, val postsList: MutableList<
         mergeAdapter.addAdapter(VideoSliderRecyclerView(postVideos, context))
         postFileSliderRecyclerView.adapter = mergeAdapter
 
+        // Логика лайков
         likeIcon.setOnClickListener {
 
             val imageDrawable = likeIcon.drawable

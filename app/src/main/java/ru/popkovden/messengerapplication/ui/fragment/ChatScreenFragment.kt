@@ -18,7 +18,6 @@ import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.databinding.FragmentChatScreenBinding
 import ru.popkovden.messengerapplication.ui.adapters.chat.contacts.UserMessagesRecyclerView
 import ru.popkovden.messengerapplication.utils.helper.Status
-import ru.popkovden.messengerapplication.utils.helper.setOnlineStatus
 import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
 import ru.popkovden.messengerapplication.viewmodel.ChatScreenFragmentViewModel
 
@@ -28,15 +27,20 @@ class ChatScreenFragment : Fragment() {
     private lateinit var binding: FragmentChatScreenBinding
     private val infoAboutUser: InfoAboutUser by inject()
     var uid = ""
-    private val viewModel: ChatScreenFragmentViewModel by viewModel{ parametersOf(uid,
-        resources.getString(R.string.minute_abbreviation), resources.getString(R.string.hour_abbreviation), resources.getString(R.string.day_abbreviation)) }
-
-    override fun onStop() {
-        super.onStop()
-        setOnlineStatus("offline")
+    private val viewModel: ChatScreenFragmentViewModel by viewModel {
+        parametersOf(
+            uid,
+            resources.getString(R.string.minute_abbreviation),
+            resources.getString(R.string.hour_abbreviation),
+            resources.getString(R.string.day_abbreviation)
+        )
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_chat_screen, container, false)
 
@@ -48,7 +52,7 @@ class ChatScreenFragment : Fragment() {
         binding.chatScreenRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         viewModel.getContacts().observe(viewLifecycleOwner, Observer {
 
-            when(it.status) {
+            when (it.status) {
 
                 Status.LOADING -> {
                     binding.progress.visibility = View.VISIBLE
@@ -57,8 +61,9 @@ class ChatScreenFragment : Fragment() {
                 Status.SUCCESS -> {
                     it?.data?.let { result ->
                         binding.progress.visibility = View.GONE
-                        binding.chatScreenRecyclerView.adapter = UserMessagesRecyclerView(requireContext(), result, uid,
-                            resources.getString(R.string.minute_abbreviation), resources.getString(R.string.hour_abbreviation), resources.getString(R.string.day_abbreviation))
+                        binding.chatScreenRecyclerView.adapter =
+                            UserMessagesRecyclerView(requireContext(), result, uid)
+//                        instanceDB()
                     }
                 }
             }
@@ -70,4 +75,13 @@ class ChatScreenFragment : Fragment() {
 
         return binding.root
     }
+
+//    fun instanceDB() {
+//        CoroutineScope(IO).launch {
+//            val db = DatabaseHelperImpl(DatabaseBuilder.getInstance(requireContext()))
+//
+//            val contactsEntities = ContactsEntities(1, "1", "1")
+//            db.insertContacts(contactsEntities)
+//        }
+//    }
 }

@@ -1,5 +1,6 @@
 package ru.popkovden.messengerapplication.data.repository.contacts
 
+import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import ru.popkovden.messengerapplication.model.ContactFriendModel
@@ -17,11 +18,13 @@ object GetContacts {
         for (contact in firestoreReference.documents) {
 
             val lastMessageHashMap = getLastMessage(UID, contact["contactUID"].toString(), minute, hour, day)
+            Log.d("efefe", contact["wasRead"].toString() + " getContacts")
 
             contacts.add(ContactFriendModel(
                 contact["contactName"].toString(),
                 contact["contactUID"].toString(),
                 contact["contactPhoto"].toString(),
+                contact["wasRead"].toString(),
                 lastMessageHashMap
             ))
         }

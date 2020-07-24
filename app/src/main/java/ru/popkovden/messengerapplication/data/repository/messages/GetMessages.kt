@@ -38,6 +38,7 @@ object GetMessages {
                         val sentMessages = arrayListOf<HashMap<String, Any>>()
                         sentMessagesHashMap["message"] = message["message"].toString()
                         sentMessagesHashMap["time"] = message["time"].toString()
+                        sentMessagesHashMap["wasRead"] = message["wasRead"].toString()
                         val messageId = message["id"].toString().toInt()
                         sentMessages.add(sentMessagesHashMap)
                         messagesRequestList.add(MessageModel(sentMessages, null, null, 1, messageId))
@@ -67,6 +68,7 @@ object GetMessages {
                     val receivedMessages = arrayListOf<HashMap<String, Any>>()
                     receivedMessagesHashMap["message"] = messages["message"].toString()
                     receivedMessagesHashMap["time"] = messages["time"].toString()
+                    receivedMessagesHashMap["wasRead"] = messages["wasRead"].toString()
                     val messageId = messages["id"].toString().toInt()
                     receivedMessages.add(receivedMessagesHashMap)
                     messagesRequestList.add(MessageModel(null, receivedMessages, null, 2, messageId))
@@ -80,6 +82,7 @@ object GetMessages {
                 val authorDiffResult = DiffUtil.calculateDiff(authorDiffUtilCallback)
                 adapter.sentMessageList = messagesRequestList.sortedWith(compareBy { it.id }).toMutableSet().toMutableList()
                 authorDiffResult.dispatchUpdatesTo(adapter)
+                recyclerViewAdapter.smoothScrollToPosition(messagesRequestList.size)
 
                 if (messagesRequestList.isNullOrEmpty()) {
                     emojiText.visibility = View.VISIBLE

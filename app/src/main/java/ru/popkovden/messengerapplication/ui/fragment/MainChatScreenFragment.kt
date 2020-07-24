@@ -45,9 +45,6 @@ class MainChatScreenFragment : Fragment() {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (CheckInternetConnection.isOnline(requireContext())) {
                             setOnlineStatus("online")
-                            updateScreenDestination("MessengerScreen")
-                        } else {
-                            setOnlineStatus("offline")
                         }
                     }
                 }
@@ -56,11 +53,11 @@ class MainChatScreenFragment : Fragment() {
 
                     binding.mainChatBottomNavigationView.visibility = View.VISIBLE
 
+                    updateScreenDestination("", "")
+
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (CheckInternetConnection.isOnline(requireContext())) {
                             setOnlineStatus("online")
-                        } else {
-                            setOnlineStatus("offline")
                         }
                     }
                 }
@@ -70,16 +67,16 @@ class MainChatScreenFragment : Fragment() {
                 R.id.zoomImagesFragment,
                 R.id.contactsFragment -> {
                     binding.mainChatBottomNavigationView.visibility = View.GONE
-                    updateScreenDestination("")
+                    updateScreenDestination("", "")
                 }
 
                 else -> {
+                    updateScreenDestination("", "")
                     binding.mainChatBottomNavigationView.visibility = View.VISIBLE
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (CheckInternetConnection.isOnline(requireContext())) {
                             setOnlineStatus("online")
-                            updateScreenDestination("")
                         } else {
                             setOnlineStatus("offline")
                         }

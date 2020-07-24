@@ -36,17 +36,17 @@ object GetPosts{
 
                     // Перебирает данные
                     for (document in postsRequestList!!) {
+                        val likeCount = document.get("likeCount").toString()
                         val postImages: ArrayList<String>? = document.get("postImages") as ArrayList<String>?
                         val postMainText = document.get("postMainText").toString()
                         val postTitle = document.get("postTitle").toString()
                         val UID = document.get("UID").toString()
-                        val likeCount= document.get("likeCount").toString()
                         val userPhoto = document.get("photoProfile").toString()
                         val timeSendPost = document.get("timeSendPost").toString()
                         val postName = document.get("postName").toString()
                         val postVideos = document.get("postVideos") as ArrayList<String>?
                         val id = document["id"] as Long?
-                        userPosts.add(PostsModel(postImages, postVideos, likeCount!!, postTitle, postMainText, UID, userPhoto, postName, timeSendPost, id!!))
+                        userPosts.add(PostsModel(postImages, postVideos, likeCount, postTitle, postMainText, UID, userPhoto, postName, timeSendPost, id!!))
                     }
 
                     if (reference == "postsFromFriends") {

@@ -57,7 +57,7 @@ class FirebaseNotificationService : FirebaseMessagingService() {
         }
 
         // Если пользователь, которому отправляется уведомление находиться в диалоге, уведомление не придет
-        if (message.data["screenStatus"] == "MessengerScreen") {
+        if (message.data["screenStatus"]!!.contains("MessengerScreen")) {
             canReceive = false
         }
 

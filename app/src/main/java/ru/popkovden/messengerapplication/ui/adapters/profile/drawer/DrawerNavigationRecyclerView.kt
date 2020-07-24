@@ -13,7 +13,8 @@ import ru.popkovden.messengerapplication.utils.darkMode.enableDarkMode
 import ru.popkovden.messengerapplication.utils.darkMode.loadInfoAboutMode
 
 class DrawerNavigationRecyclerView(private val drawerList: ArrayList<DrawerItemsModel>, val name: String, val userImage: String) : RecyclerView.Adapter<DrawerNavigationViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DrawerNavigationViewHolder = DrawerNavigationViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.drawer_items, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DrawerNavigationViewHolder =
+        DrawerNavigationViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.drawer_items, parent, false))
 
     override fun getItemCount(): Int = drawerList.size
     override fun onBindViewHolder(holder: DrawerNavigationViewHolder, position: Int) = holder.itemView.run {
@@ -32,6 +33,7 @@ class DrawerNavigationRecyclerView(private val drawerList: ArrayList<DrawerItems
                 1 -> {
                     loadInfoAboutMode(context)
                     enableDarkMode(context)
+                    findNavController().navigate(UserProfileFragmentDirections.actionAccountSelf())
                 }
             }
         }

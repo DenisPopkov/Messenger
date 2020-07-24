@@ -13,8 +13,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.create_post_toolbar.view.*
 import kotlinx.android.synthetic.main.drawer_profile_content.view.*
-import kotlinx.android.synthetic.main.profile_toolbar.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.delay
@@ -27,6 +27,7 @@ import ru.popkovden.messengerapplication.model.DrawerItemsModel
 import ru.popkovden.messengerapplication.ui.adapters.profile.drawer.DrawerNavigationRecyclerView
 import ru.popkovden.messengerapplication.ui.adapters.profile.mainPart.PostsProfileRecyclerView
 import ru.popkovden.messengerapplication.utils.customView.FabControl
+import ru.popkovden.messengerapplication.utils.customView.StatusBarColorChanger
 import ru.popkovden.messengerapplication.utils.helper.changeStartDestination
 import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
 
@@ -37,6 +38,7 @@ class UserProfileFragment : Fragment(){
     private val infoAboutUser: InfoAboutUser by inject()
     lateinit var adapter: PostsProfileRecyclerView
     private val getPostsHelper: GetPosts by inject()
+    private val uiHelper: StatusBarColorChanger by inject()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 

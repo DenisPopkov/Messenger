@@ -5,13 +5,14 @@ import kotlinx.coroutines.tasks.await
 import ru.popkovden.messengerapplication.utils.helper.calculateTime
 
 // Отправляет в БД последнее сообщение из диалога
-fun setLastMessage(UID: String, userUID: String, lastMessage: String, timeSend: String, daySend: String) {
+fun setLastMessage(UID: String, userUID: String, lastMessage: String, timeSend: String, daySend: String, wasRead: String) {
 
     val lastMessageHashMap = hashMapOf<String, String>()
     lastMessageHashMap["lastMessage"] = lastMessage
     lastMessageHashMap["timeSend"] = timeSend
     lastMessageHashMap["uidSender"] = userUID
     lastMessageHashMap["daySend"] = daySend
+    lastMessageHashMap["wasRead"] = wasRead
 
     FirebaseFirestore.getInstance().collection("users").document(UID).collection("contacts")
         .document(userUID).collection("lastMessage").document("last").set(lastMessageHashMap as Map<String, Any>)
@@ -42,6 +43,7 @@ suspend fun getLastMessage(UID: String, userUID: String, minute: String, hour: S
     lastMessageHashMap["uidSender"] = user
     lastMessageHashMap["lastMessage"] = predicateMessage
     lastMessageHashMap["daySend"] = daySend
+    lastMessageHashMap["wasRead"] = lastMessage["wasRead"].toString()
     lastMessageHashMap["timeSend"] = calculateTime(timeSend, minute, hour, day, daySend)
 
     return lastMessageHashMap

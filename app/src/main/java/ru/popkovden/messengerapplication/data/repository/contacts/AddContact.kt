@@ -22,14 +22,14 @@ object AddContact {
         contactInfo["contactName"] = userName
         contactInfo["contactUID"] = contact.contactUID
         contactInfo["contactPhoto"] = contact.contactPhoto
-        setLastMessage(UID, contact.contactUID, "", "", getCurrentDateTime().toString("dd-M-yyyy"))
+        setLastMessage(UID, contact.contactUID, "", "", getCurrentDateTime().toString("dd-M-yyyy"), "false")
 
         val contactInfo2 = hashMapOf<String, String>()
 
         contactInfo2["contactName"] = InfoAboutUser.userName
         contactInfo2["contactUID"] = InfoAboutUser.UID
         contactInfo2["contactPhoto"] = InfoAboutUser.userProfileImage
-        setLastMessage(contact.contactUID, UID, "", "", getCurrentDateTime().toString("dd-M-yyyy"))
+        setLastMessage(contact.contactUID, UID, "", "", getCurrentDateTime().toString("dd-M-yyyy"), "false")
 
         firestoreReference.document(contact.contactUID).collection("contacts").document(UID).set(contactInfo2) // добовляет контакт другому
         firestoreReference.document(UID).collection("contacts").document(contact.contactUID).set(contactInfo) // добовляет контакт себе

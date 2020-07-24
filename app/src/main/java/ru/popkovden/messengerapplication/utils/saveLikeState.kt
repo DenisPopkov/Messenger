@@ -40,8 +40,12 @@ fun getLikeState(UID: String, postTitle: String, imageButton: AppCompatImageButt
 
             val stateList = state.result?.get("saveLikeState") as ArrayList<String>?
 
-            if (stateList!!.contains(UID)) {
-                imageButton.setImageResource(R.drawable.like_lined_icon)
+            try {
+                if (stateList!!.contains(UID)) {
+                    imageButton.setImageResource(R.drawable.like_lined_icon)
+                }
+            } catch (e: Exception) {
+
             }
         }
 }

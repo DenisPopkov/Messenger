@@ -6,7 +6,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import ru.popkovden.messengerapplication.utils.deleteLikeState
 import ru.popkovden.messengerapplication.utils.saveLikeState
@@ -64,10 +63,10 @@ fun getLikeCount(UID: String, postTitle: String, counter: Int, like: AppCompatTe
         }
 }
 
-suspend fun getAbsoluteReferenceLikeCount(UID: String, postTitle: String): String{
+fun getAbsoluteReferenceLikeCount(UID: String, reference: String, textView: AppCompatTextView){
 
-    val result = FirebaseFirestore.getInstance().collection("users").document(UID)
-        .collection("posts").document("$UID-$postTitle").get().await()
-
-    return result["likeCount"].toString()
+    FirebaseFirestore.getInstance().collection("users").document(UID)
+        .collection("posts").document(reference).get().addOnCompleteListener {
+            textView.text = it.result?.get("likeCount").toString()
+        }
 }

@@ -1,6 +1,7 @@
 package ru.popkovden.messengerapplication.ui.adapters.chat.messeges
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +26,12 @@ class MessagesRecyclerViewAdapter(var sentMessageList: List<MessageModel>, val c
             for (message in model.sentMessages!!) {
                 itemView.sentMessage.text = message["message"].toString()
                 itemView.timeSentMessage.text = message["time"].toString()
+
+                Log.d("efefe", "messenger adapter sent - ${message["wasRead"]}")
+
+                if (message["wasRead"] == true) {
+                    itemView.readStatusSentMessage.visibility = View.GONE
+                }
             }
         }
     }
@@ -35,6 +42,12 @@ class MessagesRecyclerViewAdapter(var sentMessageList: List<MessageModel>, val c
             for (message in model.receivedMessages!!) {
                 itemView.receivedMessage.text = message["message"].toString()
                 itemView.timeReceivedMessage.text = message["time"].toString()
+
+                Log.d("efefe", "messenger adapter received - ${message["wasRead"]}")
+
+                if (message["wasRead"] == true) {
+                    itemView.readStatusReceivedMessage.visibility = View.GONE
+                }
             }
         }
     }

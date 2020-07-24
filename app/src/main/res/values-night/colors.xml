@@ -21,6 +21,8 @@
 
     //UI colors
     <color name="statusBarColor">#000000</color>
+    <color name="statusBarEditFragmentColor">#000000</color>
+    <color name="editFragmentBackground">#000000</color>
 
     //Post colors
     <color name="backgroundPost">#252525</color>
@@ -35,6 +37,8 @@
     <color name="messageTextColorSent">#FFFFFF</color>
     <color name="messageTextColorReceived">#FFFFFF</color>
     <color name="messageInput">#FFFFFF</color>
+    <color name="messageSentTimeColor">#898989</color>
+    <color name="view_color">#2C2D2F</color>
 
     //BottomSheet
     <color name="bottomMessengerSheet">#2C2D2F</color>

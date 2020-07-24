@@ -44,7 +44,6 @@ class EditProfileFragment : Fragment() {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit_profile, container, false)
 
-        uiHelper.changeStatusBarColor(requireActivity(), R.color.mainColor)
         requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
 
         arguments?.let {

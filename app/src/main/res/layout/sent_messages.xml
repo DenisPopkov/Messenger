@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="5dp"
     android:layout_marginEnd="10dp"
-    android:layout_marginStart="60dp"
+    android:layout_marginStart="50dp"
     android:layout_marginBottom="5dp">
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -17,7 +17,7 @@
         android:paddingTop="8dp"
         android:paddingEnd="53dp"
         android:paddingBottom="8dp"
-        android:text="I'm okay, how are you? efee feefeefefe"
+        android:text="I'm okay, how are you?"
         android:textColor="@color/messageTextColorSent"
         android:textSize="@dimen/text_message_size"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -32,7 +32,21 @@
         android:layout_marginBottom="4dp"
         android:text="12:30"
         android:textSize="12sp"
+        android:textColor="@color/messageSentTimeColor"
         app:layout_constraintBottom_toBottomOf="@+id/sentMessage"
         app:layout_constraintEnd_toEndOf="@+id/sentMessage" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/readStatusSentMessage"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginEnd="15dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@color/mainColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/sentMessage"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.Image.PILL" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

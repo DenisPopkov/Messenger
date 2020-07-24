@@ -7,17 +7,14 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.Main
 import org.koin.android.ext.android.inject
 import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.data.repository.posts.GetPosts
 import ru.popkovden.messengerapplication.databinding.FragmentFeedScreenBinding
 import ru.popkovden.messengerapplication.ui.adapters.profile.mainPart.PostsProfileRecyclerView
 import ru.popkovden.messengerapplication.utils.helper.getData.setPhotoCount
-import ru.popkovden.messengerapplication.utils.helper.setOnlineStatus
 import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
 
 class FeedScreenFragment : Fragment() {
@@ -25,11 +22,6 @@ class FeedScreenFragment : Fragment() {
     private lateinit var binding: FragmentFeedScreenBinding
     private val getPostsHelper: GetPosts by inject()
     private val infoAboutUser: InfoAboutUser by inject()
-
-    override fun onStop() {
-        super.onStop()
-        setOnlineStatus("offline")
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -71,7 +63,9 @@ class FeedScreenFragment : Fragment() {
                     "postsFromFriends"
                 )
                 delay(2000)
-                binding.swipeRefreshLayoutFeed.isRefreshing = false
+                withContext(Main) {
+                    binding.swipeRefreshLayoutFeed.isRefreshing = false
+                }
             }
         }
 

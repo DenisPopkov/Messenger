@@ -20,7 +20,9 @@
     <color name="drawer_color">#FFFFFF</color>
 
     //UI colors
-    <color name="statusBarColor">#FFFFFF</color>
+    <color name="statusBarColor">#03B3FF</color>
+    <color name="statusBarEditFragmentColor">#03B3FF</color>
+    <color name="editFragmentBackground">#03B3FF</color>
 
     //Post colors
     <color name="backgroundPost">#F8F8F8</color>
@@ -35,6 +37,8 @@
     <color name="messageTextColorSent">#FFFFFF</color>
     <color name="messageTextColorReceived">#000000</color>
     <color name="messageInput">#000000</color>
+    <color name="messageSentTimeColor">#EFEEEE</color>
+    <color name="view_color">#F8F8F8</color>
 
     //BottomSheet
     <color name="bottomMessengerSheet">#FFFFFF</color>

@@ -80,7 +80,8 @@ class GreetingFragment : Fragment() {
                     val userInfo = hashMapOf<String, String>()
                     userInfo["userName"] = infoAboutUser.userName
                     userInfo["phoneNumber"] = infoAboutUser.phoneNumber
-                    userInfo["UID"] = infoAboutUser.UID
+                    InfoAboutUser.UID = uid
+                    userInfo["UID"] = InfoAboutUser.UID
                     userInfo["userProfileImage"] = infoAboutUser.userProfileImage
                     userInfo["token"] = ""
                     Log.d("efefe", "${infoAboutUser.userName}, ${infoAboutUser.phoneNumber}, ${infoAboutUser.userProfileImage},  ${infoAboutUser.UID} - uid last okay")

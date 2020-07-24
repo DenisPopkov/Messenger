@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,8 @@ import kotlinx.android.synthetic.main.toolbar_for_messaging.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import ru.popkovden.messengerapplication.R
@@ -37,19 +40,14 @@ import ru.popkovden.messengerapplication.model.SendMessageModel
 import ru.popkovden.messengerapplication.model.SentImageModel
 import ru.popkovden.messengerapplication.model.notification.NotificationData
 import ru.popkovden.messengerapplication.model.notification.PushNotificationModel
-import ru.popkovden.messengerapplication.utils.customView.StatusBarColorChanger
+import ru.popkovden.messengerapplication.utils.helper.*
 import ru.popkovden.messengerapplication.utils.helper.getData.*
-import ru.popkovden.messengerapplication.utils.helper.getOnlineStatus
-import ru.popkovden.messengerapplication.utils.helper.getPath
-import ru.popkovden.messengerapplication.utils.helper.getScreenDestination
-import ru.popkovden.messengerapplication.utils.helper.setOnlineStatus
 import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
 import java.io.File
 
 class FragmentMessengerScreen : Fragment() {
 
     private lateinit var binding: FragmentMessengerScreenBinding
-    private val uiHelper: StatusBarColorChanger by inject()
     private val sendMessageHelper: SendMessageToUser by inject()
     private val infoAboutUser: InfoAboutUser by inject()
     private val getSentMessagesHelper: GetMessages by inject()
@@ -57,6 +55,8 @@ class FragmentMessengerScreen : Fragment() {
     private var userPhoto = ""
     private var onlineStatus = ""
     private var screen = ""
+
+    val job = IO + Job()
 
     companion object {
         var userUID = ""
@@ -72,6 +72,7 @@ class FragmentMessengerScreen : Fragment() {
     override fun onStop() {
         super.onStop()
         setOnlineStatus("offline")
+        job.cancel()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -81,7 +82,6 @@ class FragmentMessengerScreen : Fragment() {
         requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
 
         // Подготавливает важные данные
-//        uiHelper.changeStatusBarColor(requireActivity(), R.color.whiteColor)
         UID = infoAboutUser.UID
 
         return binding.root
@@ -118,16 +118,22 @@ class FragmentMessengerScreen : Fragment() {
             binding.messengerToolbar.onlineStatus.text = onlineStatus
         }
 
-        CoroutineScope(IO).launch {
+        CoroutineScope(job).launch {
             while (true) {
+                updateScreenDestination("MessengerScreen", userUID)
                 screen = getScreenDestination(userUID)
+
+                Log.d("efefe", "messenger screen another user - $screen")
+                if (screen.contains(userUID)) {
+                    Log.d("efefe", "contains")
+                    readAllMessagesInChat(userUID)
+                }
             }
         }
 
         // Настривает адапер
         getSentMessagesHelper.getMessages(infoAboutUser.UID, userUID, binding.messengerScreenRecyclerView, requireContext(), binding.messageEmpty, binding.messageStart)
         val linearLayoutManager =  LinearLayoutManager(requireContext())
-        linearLayoutManager.stackFromEnd = true
         binding.messengerScreenRecyclerView.layoutManager = linearLayoutManager
 
         binding.messengerToolbar.backToContactList.setOnClickListener {
@@ -177,7 +183,7 @@ class FragmentMessengerScreen : Fragment() {
 
                 val currentTime = getCurrentDateTime().toString("HH:mm")
 
-                PushNotificationModel(NotificationData(InfoAboutUser.userName, textInput, userPhoto, userUID, screen), tokenFromContact).also {
+                PushNotificationModel(NotificationData(InfoAboutUser.userName, textInput, InfoAboutUser.userProfileImage, userUID, screen), tokenFromContact).also {
                     sendNotification(it)
                 }
 

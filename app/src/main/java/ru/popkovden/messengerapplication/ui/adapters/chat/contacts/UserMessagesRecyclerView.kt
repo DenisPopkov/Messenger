@@ -13,9 +13,7 @@ import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.model.ContactFriendModel
 import ru.popkovden.messengerapplication.ui.fragment.ChatScreenFragmentDirections
 
-class UserMessagesRecyclerView(val context: Context, val contacts: ArrayList<ContactFriendModel>, val UID: String, val minute: String, val hour: String, val day: String) : RecyclerView.Adapter<ChatViewHolder>() {
-
-    private var lastMessageHashMap = arrayListOf<HashMap<String, String>>()
+class UserMessagesRecyclerView(val context: Context, val contacts: ArrayList<ContactFriendModel>, val UID: String) : RecyclerView.Adapter<ChatViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder = ChatViewHolder(LayoutInflater.from(context).inflate(R.layout.user_message, parent, false))
 
@@ -25,8 +23,12 @@ class UserMessagesRecyclerView(val context: Context, val contacts: ArrayList<Con
 
         val currentContact = contacts[position]
 
+        Log.d("efefe", "userMessagesContacts - ${currentContact.lastMessage["wasRead"]}")
+        if (currentContact.lastMessage["wasRead"] == "true") {
+            readStatus.visibility = View.GONE
+        }
+
         if (currentContact.lastMessage["lastMessage"].toString().isEmpty()) {
-            Log.d("efefe", currentContact.lastMessage["lastMessage"].toString() + " test")
             whoSend.setTextColor(resources.getColor(R.color.lightText))
             whoSend.text = resources.getString(R.string.no_messages_yet)
         } else {

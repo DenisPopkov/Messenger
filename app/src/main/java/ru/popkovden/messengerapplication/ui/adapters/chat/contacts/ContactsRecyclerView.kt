@@ -53,7 +53,7 @@ class ContactsRecyclerView(private val contactsList: List<ContactsModel>) : Recy
                         val userPhoto = getUserImage(currentContactsItem.contactPhoneNumber)
                         val userName = getUserName(currentContactsItem.contactPhoneNumber)
 
-                        AddContact.addContact(ContactFriendModel("", userUID, userPhoto, hashMapOf()), InfoAboutUser.UID, userName)
+                        AddContact.addContact(ContactFriendModel("", userUID, userPhoto, "false", hashMapOf()), InfoAboutUser.UID, userName)
                         findNavController().navigate(ContactsFragmentDirections.actionContactsFragmentToMessenger(userUID, currentContactsItem.contactName, userPhoto))
 
                     } else {

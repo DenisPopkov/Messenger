@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.profile_info.view.*
@@ -12,6 +13,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.popkovden.messengerapplication.R
+import ru.popkovden.messengerapplication.ui.fragment.UserProfileFragmentDirections
 import ru.popkovden.messengerapplication.utils.helper.getData.getCountOfPosts
 import ru.popkovden.messengerapplication.utils.helper.getData.getFriendsCount
 import ru.popkovden.messengerapplication.utils.helper.getData.getPhotoCount
@@ -40,6 +42,11 @@ class MainProfileRecyclerViewPart(val context: Context, val image: String, val n
 
         Glide.with(context).load(image).into(profileImage)
         profileName.text = name
+
+        profileImage.setOnClickListener {
+            val action = UserProfileFragmentDirections.actionAccountToEditProfileFragment(name, image)
+            findNavController().navigate(action)
+        }
     }
 }
 

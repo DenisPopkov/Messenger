@@ -36,6 +36,9 @@
         <action
             android:id="@+id/action_account_to_zoomImagesFragment"
             app:destination="@id/zoomImagesFragment" />
+        <action
+            android:id="@+id/action_account_self"
+            app:destination="@id/account" />
     </fragment>
     <fragment
         android:id="@+id/messenger"
