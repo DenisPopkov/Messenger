@@ -1,4 +1,4 @@
-package ru.popkovden.messengerapplication.ui.adapters.chat.messenger.audiomessage
+package ru.popkovden.messengerapplication.ui.adapters.chat.audiomessage
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.popkovden.messengerapplication.R
-import ru.popkovden.messengerapplication.ui.adapters.chat.audiomessage.SentAudioMessagesViewHolder
 
 class ReceivedVoiceMessagesRecyclerView(val context: Context) : RecyclerView.Adapter<SentAudioMessagesViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SentAudioMessagesViewHolder =

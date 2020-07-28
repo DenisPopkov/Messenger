@@ -24,7 +24,7 @@ object SendMessageToUser {
         // Наполняет данные для "отправленного" сообщения"
         sentMessage["message"] = sendMessageModel.message
         sentMessage["time"] = sendMessageModel.time
-        sentMessage["wasRead"] = false
+        sentMessage["wasRead"] = "false"
         sentMessage["uidSender"] = sendMessageModel.uidSender
         sentMessage["id"] = getCollectionSize(UID, UserUID)!!
         sentMessage["CONTENT_TYPE"] = 1
@@ -32,7 +32,7 @@ object SendMessageToUser {
         // Наполняет данные для "полученного" другим пользователем сообщением
         receivedMessage["message"] = sendMessageModel.message
         receivedMessage["time"] = sendMessageModel.time
-        receivedMessage["wasRead"] = false
+        receivedMessage["wasRead"] = "false"
         receivedMessage["uidSender"] = sendMessageModel.uidSender
         receivedMessage["id"] = getCollectionSize(UID, UserUID)!!
         receivedMessage["CONTENT_TYPE"] = 2
@@ -40,12 +40,22 @@ object SendMessageToUser {
         // Отправляет в БД себе на телефон, с типом сообщения - "отправленное"
         firebaseFirestore.collection("users").document(UID)
             .collection("chats").document(UserUID).collection("sentMessages").add(sentMessage)
+            .addOnSuccessListener {
+                val documentId = it.id
+                sentMessage["documentId"] = documentId
+                it.update(sentMessage)
+            }
 
         setLastMessage(UID, UserUID, sendMessageModel.message, sendMessageModel.time, getCurrentDateTime().toString("dd-M-yyyy"), "false")
 
         // Отправляет в БД себе на телефон, с типом сообщения - "полученное"
         firebaseFirestore.collection("users").document(UserUID)
             .collection("chats").document(UID).collection("receivedMessages").add(receivedMessage)
+            .addOnSuccessListener {
+                val documentId = it.id
+                receivedMessage["documentId"] = documentId
+                it.update(receivedMessage)
+            }
 
         setLastMessage(UserUID, UID, sendMessageModel.message, sendMessageModel.time, getCurrentDateTime().toString("dd-M-yyyy"), "false")
     }

@@ -22,12 +22,9 @@ import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.resolution
 import id.zelory.compressor.constraint.size
 import kotlinx.android.synthetic.main.toolbar_for_messaging.view.*
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.data.repository.images.SendImages
@@ -109,24 +106,27 @@ class FragmentMessengerScreen : Fragment() {
             setToken(UID, token)
         }
 
-        CoroutineScope(IO).launch {
-            tokenFromContact = getToken(userUID)
-        }
-
         CoroutineScope(Main).launch {
+            tokenFromContact = getToken(userUID)
             onlineStatus = getOnlineStatus(userUID)
             binding.messengerToolbar.onlineStatus.text = onlineStatus
         }
 
+        val day = resources.getString(R.string.day_abbreviation)
+        val hour = resources.getString(R.string.hour_abbreviation)
+        val minute = resources.getString(R.string.minute_abbreviation)
+
         CoroutineScope(job).launch {
             while (true) {
+                delay(4000)
                 updateScreenDestination("MessengerScreen", userUID)
                 screen = getScreenDestination(userUID)
 
-                Log.d("efefe", "messenger screen another user - $screen")
-                if (screen.contains(userUID)) {
-                    Log.d("efefe", "contains")
-                    readAllMessagesInChat(userUID)
+                if (screen.contains(UID)) {
+                    delay(1000)
+                    readAllMessagesInChat(UID, userUID, "sentMessages")
+                    delay(1000)
+                    readAllMessagesInChat(UID, userUID, "receivedMessages")
                 }
             }
         }
@@ -171,6 +171,7 @@ class FragmentMessengerScreen : Fragment() {
                 updateCollectionSize(UID, collectionSize, userUID)
                 SendImages.sendImages(UID, userUID, SentImageModel(imageSlider, getCurrentDateTime()
                     .toString("HH:mm"), "$UID-$userUID"))
+                Log.d("efefe", "${imageSlider.size} размер")
             }
         }
 
@@ -183,11 +184,11 @@ class FragmentMessengerScreen : Fragment() {
 
                 val currentTime = getCurrentDateTime().toString("HH:mm")
 
-                PushNotificationModel(NotificationData(InfoAboutUser.userName, textInput, InfoAboutUser.userProfileImage, userUID, screen), tokenFromContact).also {
+                PushNotificationModel(NotificationData(InfoAboutUser.userName, textInput, InfoAboutUser.userProfileImage, userUID, screen), token).also {
                     sendNotification(it)
                 }
 
-                sendMessageHelper.sendMessage(infoAboutUser.UID, userUID, SendMessageModel(textInput, currentTime, UID, collectionSize, 0))
+                sendMessageHelper.sendMessage(infoAboutUser.UID, userUID, SendMessageModel(textInput, currentTime, UID, collectionSize, "false", "", 0))
                 updateCollectionSize(UID, collectionSize, userUID)
                 binding.bottomMessage.messageInput.text?.clear()
             }
@@ -234,6 +235,7 @@ class FragmentMessengerScreen : Fragment() {
             } else if (data?.data != null) { // Для одного элемента
 
                 val uri = data.data.toString()
+                Log.d("efefe", uri.toString())
 
                 list.add(uri)
 

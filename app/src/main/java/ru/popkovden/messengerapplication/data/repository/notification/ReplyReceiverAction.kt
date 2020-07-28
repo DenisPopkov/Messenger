@@ -25,7 +25,7 @@ class ReplyReceiverAction : BroadcastReceiver() {
         val remoteInput: Bundle = RemoteInput.getResultsFromIntent(intent)
         val receiverText = remoteInput.getCharSequence(FirebaseNotificationService.REPLY_KEY).toString()
 
-        SendMessageToUser.sendMessage(UID, userUID, SendMessageModel(receiverText, currentTime, UID, id, 0))
+        SendMessageToUser.sendMessage(UID, userUID, SendMessageModel(receiverText, currentTime, UID, id, "false","",0))
         updateCollectionSize(UID, id, userUID)
 
         val notificationManager = context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

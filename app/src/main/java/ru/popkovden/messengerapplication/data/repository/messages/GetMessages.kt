@@ -41,9 +41,11 @@ object GetMessages {
                         sentMessagesHashMap["wasRead"] = message["wasRead"].toString()
                         val messageId = message["id"].toString().toInt()
                         sentMessages.add(sentMessagesHashMap)
-                        messagesRequestList.add(MessageModel(sentMessages, null, null, 1, messageId))
+                        messagesRequestList.add(MessageModel(sentMessages, null, null, null,1, messageId))
                     }
 
+                    getSentImages(UID, UserUID)
+                    getReceivedImages(UID, UserUID)
                     // Получает с БД "полученные" от другого пользователя сообщения
                     getReceivedMessages(recyclerViewAdapter, UID, UserUID, context, emojiText, startText)
                     // Получает с БД "отправленные" фото
@@ -71,7 +73,7 @@ object GetMessages {
                     receivedMessagesHashMap["wasRead"] = messages["wasRead"].toString()
                     val messageId = messages["id"].toString().toInt()
                     receivedMessages.add(receivedMessagesHashMap)
-                    messagesRequestList.add(MessageModel(null, receivedMessages, null, 2, messageId))
+                    messagesRequestList.add(MessageModel(null, receivedMessages, null, null, 2, messageId))
                 }
 
                 // Передает данные в адаптер, отфильтрованные по ID
@@ -94,7 +96,7 @@ object GetMessages {
             }
     }
 
-    private fun getSentImages(recyclerViewAdapter: RecyclerView, UID: String, UserUID: String, context: Context) {
+    private fun getSentImages(UID: String, UserUID: String) {
 
         // Получает с БД "полученные" от другого пользователя сообщения
         firebaseFirestore.collection("users").document(UID)
@@ -108,15 +110,35 @@ object GetMessages {
                 for (images in sentImagesRequest!!) {
                     val sentImagesHashMap = hashMapOf<String, Any>()
                     val sentImages = arrayListOf<HashMap<String, Any>>()
-                    sentImagesHashMap["images"] = images["images"].toString()
+                    sentImagesHashMap["image"] = images["image"].toString()
                     sentImagesHashMap["time"] = images["time"].toString()
                     val messageId = images["id"].toString().toInt()
                     sentImages.add(sentImagesHashMap)
-                    messagesRequestList.add(MessageModel(null, null, sentImages, 3, messageId))
+                    messagesRequestList.add(MessageModel(null, null, sentImages, null,3, messageId))
                 }
+            }
+    }
 
-                // Передает данные в адаптер, отфильтрованные по ID
-                recyclerViewAdapter.adapter = MessagesRecyclerViewAdapter(messagesRequestList.sortedWith(compareBy { it.id }), context)
+    private fun getReceivedImages(UID: String, UserUID: String) {
+
+        // Получает с БД "полученные" от другого пользователя сообщения
+        firebaseFirestore.collection("users").document(UID)
+            .collection("chats").document(UserUID).collection("receivedImages")
+            .addSnapshotListener { documentSnapshot, _ ->
+
+                // Получает данные
+                val receivedImagesRequest = documentSnapshot?.documents
+
+                // Перебирает данные
+                for (images in receivedImagesRequest!!) {
+                    val receivedImagesHashMap = hashMapOf<String, Any>()
+                    val receivedImages = arrayListOf<HashMap<String, Any>>()
+                    receivedImagesHashMap["images"] = images["images"].toString()
+                    receivedImagesHashMap["time"] = images["time"].toString()
+                    val messageId = images["id"].toString().toInt()
+                    receivedImages.add(receivedImagesHashMap)
+                    messagesRequestList.add(MessageModel(null, null, null, receivedImages,3, messageId))
+                }
             }
     }
 }

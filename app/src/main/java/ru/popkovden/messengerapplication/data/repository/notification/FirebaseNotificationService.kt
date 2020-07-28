@@ -17,12 +17,14 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.utils.helper.getCircleBitmap
+import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
 import java.net.URL
 
 class FirebaseNotificationService : FirebaseMessagingService() {
 
     private var canReceive = true
     private lateinit var notificationManager: NotificationManager
+    private var userUID = ""
 
     companion object {
         var sharedPreferences: SharedPreferences? = null
@@ -55,6 +57,8 @@ class FirebaseNotificationService : FirebaseMessagingService() {
                 NotificationChannelGroup(GROUP_ID, "MessagesGroup")
             )
         }
+
+        userUID = message.data["userUID"].toString()
 
         // Если пользователь, которому отправляется уведомление находиться в диалоге, уведомление не придет
         if (message.data["screenStatus"]!!.contains("MessengerScreen")) {
@@ -110,6 +114,8 @@ class FirebaseNotificationService : FirebaseMessagingService() {
         // Создает интент для действия прочитать
         val readIntent = Intent(applicationContext, ReadReceiverAction::class.java)
         readIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        readIntent.putExtra("UID", InfoAboutUser.UID)
+        readIntent.putExtra("userUID", userUID)
         val readPendingIntent = PendingIntent.getBroadcast(applicationContext, 0,
             readIntent, FLAG_ONE_SHOT)
 

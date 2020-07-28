@@ -1,22 +1,34 @@
 package ru.popkovden.messengerapplication.utils.helper
 
-import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
+import ru.popkovden.messengerapplication.model.LastMessageModel
+import ru.popkovden.messengerapplication.model.SendMessageModel
+import ru.popkovden.messengerapplication.utils.helper.getData.setLastMessage
 
-suspend fun readAllMessagesInChat(userUID: String) {
+suspend fun readAllMessagesInChat(UID: String, userUID: String, reference: String) = CoroutineScope(IO).launch {
 
-    val wasReadList = FirebaseFirestore.getInstance().collection("users").document(userUID)
-        .collection("chats").document(InfoAboutUser.UID)
-        .collection("sentMessages").get().await()
+    val updateMessageInfo = hashMapOf<String, Any>()
 
-    for (readMessages in wasReadList.documents) {
-        Log.d("efefe", readMessages.toString() + " wasReadList")
+    val wasReadList = FirebaseFirestore.getInstance().collection("users").document(UID)
+        .collection("chats").document(userUID)
+        .collection(reference).get().await()
+
+    val lastMessage = FirebaseFirestore.getInstance().collection("users").document(UID).collection("contacts")
+        .document(userUID).collection("lastMessage").document("last").get().await()
+
+    val lastMessageModel = lastMessage.toObject(LastMessageModel::class.java)!!
+    setLastMessage(UID, userUID, lastMessageModel.lastMessage, lastMessageModel.timeSend, lastMessageModel.daySend, "true")
+    val result = wasReadList.toObjects(SendMessageModel::class.java)
+
+    for (readMessages in result) {
+        updateMessageInfo["wasRead"] = "true"
+
+        FirebaseFirestore.getInstance().collection("users").document(UID)
+            .collection("chats").document(userUID)
+            .collection(reference).document(readMessages.documentId).update(updateMessageInfo)
     }
-}
-
-fun readLastMessageOrNot() {
-
-
 }
