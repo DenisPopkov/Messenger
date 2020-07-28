@@ -10,10 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
-import org.koin.android.ext.android.inject
 import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.databinding.FragmentMainChatScreenBinding
-import ru.popkovden.messengerapplication.utils.customView.StatusBarColorChanger
 import ru.popkovden.messengerapplication.utils.darkMode.openDarkMode
 import ru.popkovden.messengerapplication.utils.helper.setOnlineStatus
 import ru.popkovden.messengerapplication.utils.helper.updateScreenDestination
@@ -22,7 +20,12 @@ import ru.popkovden.messengerapplication.utils.internetChecker.CheckInternetConn
 class MainChatScreenFragment : Fragment() {
 
     private lateinit var binding: FragmentMainChatScreenBinding
-    private val uiHelper: StatusBarColorChanger by inject()
+
+    override fun onStop() {
+        super.onStop()
+
+        setOnlineStatus("offline")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
