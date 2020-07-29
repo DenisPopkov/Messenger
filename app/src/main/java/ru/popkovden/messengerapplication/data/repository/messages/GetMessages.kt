@@ -82,7 +82,7 @@ object GetMessages {
 
                 val authorDiffUtilCallback = DiffUtilMessengerHelper(adapter.sentMessageList, messagesRequestList.sortedWith(compareBy { it.id }).toMutableSet().toMutableList())
                 val authorDiffResult = DiffUtil.calculateDiff(authorDiffUtilCallback)
-                adapter.sentMessageList = messagesRequestList.sortedWith(compareBy { it.id }).toMutableSet().toMutableList()
+                adapter.sentMessageList = messagesRequestList.sortedWith(compareBy { it.id }).toMutableSet().toMutableList().distinctBy { it.id }
                 authorDiffResult.dispatchUpdatesTo(adapter)
                 recyclerViewAdapter.smoothScrollToPosition(messagesRequestList.size)
 

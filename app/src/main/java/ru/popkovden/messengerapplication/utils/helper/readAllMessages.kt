@@ -1,5 +1,6 @@
 package ru.popkovden.messengerapplication.utils.helper
 
+import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
@@ -27,8 +28,13 @@ suspend fun readAllMessagesInChat(UID: String, userUID: String, reference: Strin
     for (readMessages in result) {
         updateMessageInfo["wasRead"] = "true"
 
-        FirebaseFirestore.getInstance().collection("users").document(UID)
-            .collection("chats").document(userUID)
-            .collection(reference).document(readMessages.documentId).update(updateMessageInfo)
+        Log.d("efefe", "UID - $UID, userUID - $userUID, reference - $reference, document - ${readMessages}")
+        try {
+            FirebaseFirestore.getInstance().collection("users").document(UID)
+                .collection("chats").document(userUID)
+                .collection(reference).document(readMessages.documentId).update(updateMessageInfo)
+        } catch (e: Exception) {
+
+        }
     }
 }

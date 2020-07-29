@@ -31,6 +31,7 @@ class UserMessagesRecyclerView(val context: Context, val contacts: ArrayList<Con
         if (currentContact.lastMessage["lastMessage"].toString().isEmpty()) {
             whoSend.setTextColor(resources.getColor(R.color.lightText))
             whoSend.text = resources.getString(R.string.no_messages_yet)
+            readStatus.visibility = View.GONE
         } else {
             if (currentContact.lastMessage["uidSender"].toString().isBlank()) {
                 whoSend.setTextColor(resources.getColor(R.color.lightText))

@@ -112,20 +112,16 @@ class FragmentMessengerScreen : Fragment() {
             binding.messengerToolbar.onlineStatus.text = onlineStatus
         }
 
-        val day = resources.getString(R.string.day_abbreviation)
-        val hour = resources.getString(R.string.hour_abbreviation)
-        val minute = resources.getString(R.string.minute_abbreviation)
-
         CoroutineScope(job).launch {
             while (true) {
-                delay(4000)
+                delay(1000)
                 updateScreenDestination("MessengerScreen", userUID)
                 screen = getScreenDestination(userUID)
 
                 if (screen.contains(UID)) {
                     delay(1000)
                     readAllMessagesInChat(UID, userUID, "sentMessages")
-                    delay(1000)
+                    delay(2000)
                     readAllMessagesInChat(UID, userUID, "receivedMessages")
                 }
             }
@@ -184,7 +180,7 @@ class FragmentMessengerScreen : Fragment() {
 
                 val currentTime = getCurrentDateTime().toString("HH:mm")
 
-                PushNotificationModel(NotificationData(InfoAboutUser.userName, textInput, InfoAboutUser.userProfileImage, userUID, screen), token).also {
+                PushNotificationModel(NotificationData(InfoAboutUser.userName, textInput, InfoAboutUser.userProfileImage, userUID, screen), tokenFromContact).also {
                     sendNotification(it)
                 }
 

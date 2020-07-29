@@ -9,6 +9,7 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import ru.popkovden.messengerapplication.model.PostsModel
 import ru.popkovden.messengerapplication.ui.adapters.profile.mainPart.MainProfileRecyclerViewPart
+import ru.popkovden.messengerapplication.ui.adapters.profile.mainPart.PostsFeedRecyclerView
 import ru.popkovden.messengerapplication.ui.adapters.profile.mainPart.PostsProfileRecyclerView
 
 object GetPosts{
@@ -40,7 +41,7 @@ object GetPosts{
                         val postImages: ArrayList<String>? = document.get("postImages") as ArrayList<String>?
                         val postMainText = document.get("postMainText").toString()
                         val postTitle = document.get("postTitle").toString()
-                        val UID = document.get("UID").toString()
+                        val UID = document.get("uidSender").toString()
                         val userPhoto = document.get("photoProfile").toString()
                         val timeSendPost = document.get("timeSendPost").toString()
                         val postName = document.get("postName").toString()
@@ -50,7 +51,7 @@ object GetPosts{
                     }
 
                     if (reference == "postsFromFriends") {
-                        recyclerViewAdapter.adapter = PostsProfileRecyclerView(context,
+                        recyclerViewAdapter.adapter = PostsFeedRecyclerView(context,
                             userPosts.sortedWith(compareBy { it.id }).toMutableList(), UID)
                     }
 

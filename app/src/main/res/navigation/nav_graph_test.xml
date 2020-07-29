@@ -9,7 +9,11 @@
         android:id="@+id/discover"
         android:name="ru.popkovden.messengerapplication.ui.fragment.FeedScreenFragment"
         android:label="fragment_feed_screen"
-        tools:layout="@layout/fragment_feed_screen" />
+        tools:layout="@layout/fragment_feed_screen" >
+        <action
+            android:id="@+id/action_discover_to_zoomImagesFragment"
+            app:destination="@id/zoomImagesFragment" />
+    </fragment>
     <fragment
         android:id="@+id/chat"
         android:name="ru.popkovden.messengerapplication.ui.fragment.ChatScreenFragment"

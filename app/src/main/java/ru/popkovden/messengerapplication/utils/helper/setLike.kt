@@ -14,10 +14,6 @@ fun plusLike(previousValue: Int, UID: String, postTitle: String, like: AppCompat
 
     val settingsHashMap = mutableMapOf("likeCount" to previousValue.plus(1))
 
-    // ставит лайк у друзей
-//    FirebaseFirestore.getInstance().collection("users").document(userUID)
-//        .collection("postsFromFriends").document("$UID-$postTitle").update(settingsHashMap as Map<String, Any>)
-
     // Убирает у себя
     FirebaseFirestore.getInstance().collection("users").document(UID)
         .collection("posts").document("$UID-$postTitle").update(settingsHashMap as Map<String, Any>)
@@ -31,10 +27,6 @@ fun minusLike(previousValue: Int, UID: String, postTitle: String, like: AppCompa
 
     val settingsHashMap = hashMapOf("likeCount" to previousValue.minus(1))
 
-    // Убирает лайк у друзей
-//    FirebaseFirestore.getInstance().collection("users").document(userUID)
-//        .collection("postsFromFriends").document("$UID-$postTitle").update(settingsHashMap as Map<String, Any>)
-
     // Убирает у себя
     FirebaseFirestore.getInstance().collection("users").document(UID)
         .collection("posts").document("$UID-$postTitle").update(settingsHashMap as Map<String, Any>)
@@ -44,7 +36,7 @@ fun minusLike(previousValue: Int, UID: String, postTitle: String, like: AppCompa
     }
 }
 
-fun getLikeCount(UID: String, postTitle: String, counter: Int, like: AppCompatTextView) {
+fun getLikeCount(UID: String, postTitle: String, counter: Int, like: AppCompatTextView, userUID: String) {
 
     FirebaseFirestore.getInstance().collection("users").document(UID)
         .collection("posts").document("$UID-$postTitle").get().addOnCompleteListener {
@@ -53,20 +45,22 @@ fun getLikeCount(UID: String, postTitle: String, counter: Int, like: AppCompatTe
             when (counter) {
                 1 -> {
                     plusLike(likeCount, UID, postTitle, like)
-                    saveLikeState(UID, postTitle)
+                    saveLikeState(UID, postTitle, userUID)
                 }
                 2 -> {
                     minusLike(likeCount, UID, postTitle, like)
-                    deleteLikeState(UID, postTitle)
+                    deleteLikeState(UID, postTitle, userUID)
                 }
             }
         }
 }
 
-fun getAbsoluteReferenceLikeCount(UID: String, reference: String, textView: AppCompatTextView){
+fun getAbsoluteReferenceLikeCount(UID: String, reference: String, textView: AppCompatTextView) = CoroutineScope(IO).launch{
 
     FirebaseFirestore.getInstance().collection("users").document(UID)
         .collection("posts").document(reference).get().addOnCompleteListener {
-            textView.text = it.result?.get("likeCount").toString()
+            CoroutineScope(Main).launch {
+                textView.text = it.result?.get("likeCount").toString()
+            }
         }
 }

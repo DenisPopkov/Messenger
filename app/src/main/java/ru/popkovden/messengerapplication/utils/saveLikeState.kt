@@ -9,11 +9,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import ru.popkovden.messengerapplication.R
 
-fun saveLikeState(UID: String, postTitle: String) = CoroutineScope(IO).launch {
+fun saveLikeState(UID: String, postTitle: String, userUID: String) = CoroutineScope(IO).launch {
 
     val previousLikesState = getPreviousState(UID, postTitle)
     delay(1000)
-    previousLikesState.add(UID)
+    previousLikesState.add(userUID)
 
     val settingsHashMap = mutableMapOf("saveLikeState" to previousLikesState)
 
@@ -21,11 +21,11 @@ fun saveLikeState(UID: String, postTitle: String) = CoroutineScope(IO).launch {
         .collection("posts").document("$UID-$postTitle").update(settingsHashMap as Map<String, Any>)
 }
 
-fun deleteLikeState(UID: String, postTitle: String) = CoroutineScope(IO).launch {
+fun deleteLikeState(UID: String, postTitle: String, userUID: String) = CoroutineScope(IO).launch {
 
     val previousLikesState = getPreviousState(UID, postTitle)
     delay(1000)
-    previousLikesState.remove(UID)
+    previousLikesState.remove(userUID)
 
     val settingsHashMap = mutableMapOf("saveLikeState" to previousLikesState)
 
@@ -33,7 +33,7 @@ fun deleteLikeState(UID: String, postTitle: String) = CoroutineScope(IO).launch 
         .collection("posts").document("$UID-$postTitle").update(settingsHashMap as Map<String, Any>)
 }
 
-fun getLikeState(UID: String, postTitle: String, imageButton: AppCompatImageButton) {
+fun getLikeState(UID: String, postTitle: String, imageButton: AppCompatImageButton, userUID: String) {
 
     FirebaseFirestore.getInstance().collection("users").document(UID)
         .collection("posts").document("$UID-$postTitle").get().addOnCompleteListener {state ->
@@ -41,7 +41,7 @@ fun getLikeState(UID: String, postTitle: String, imageButton: AppCompatImageButt
             val stateList = state.result?.get("saveLikeState") as ArrayList<String>?
 
             try {
-                if (stateList!!.contains(UID)) {
+                if (stateList!!.contains(userUID)) {
                     imageButton.setImageResource(R.drawable.like_lined_icon)
                 }
             } catch (e: Exception) {
