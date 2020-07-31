@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import ru.popkovden.messengerapplication.model.LastMessageModel
 import ru.popkovden.messengerapplication.model.SendMessageModel
+import ru.popkovden.messengerapplication.model.SentImageModel
 import ru.popkovden.messengerapplication.utils.helper.getData.setLastMessage
 
 suspend fun readAllMessagesInChat(UID: String, userUID: String, reference: String) = CoroutineScope(IO).launch {
@@ -23,18 +24,36 @@ suspend fun readAllMessagesInChat(UID: String, userUID: String, reference: Strin
 
     val lastMessageModel = lastMessage.toObject(LastMessageModel::class.java)!!
     setLastMessage(UID, userUID, lastMessageModel.lastMessage, lastMessageModel.timeSend, lastMessageModel.daySend, "true")
-    val result = wasReadList.toObjects(SendMessageModel::class.java)
 
-    for (readMessages in result) {
-        updateMessageInfo["wasRead"] = "true"
+    if (reference == "sentImages" || reference == "receivedImages") {
+        val result = wasReadList.toObjects(SentImageModel::class.java)
 
-        Log.d("efefe", "UID - $UID, userUID - $userUID, reference - $reference, document - ${readMessages}")
-        try {
-            FirebaseFirestore.getInstance().collection("users").document(UID)
-                .collection("chats").document(userUID)
-                .collection(reference).document(readMessages.documentId).update(updateMessageInfo)
-        } catch (e: Exception) {
+        for (readMessages in result) {
+            updateMessageInfo["wasRead"] = "true"
+            Log.d("efefe", "always ok - ${readMessages.documentId}")
 
+            try {
+                FirebaseFirestore.getInstance().collection("users").document(UID)
+                    .collection("chats").document(userUID)
+                    .collection(reference).document(readMessages.documentId).update(updateMessageInfo)
+                Log.d("efefe", "always ok")
+            } catch (e: Exception) {
+
+            }
+        }
+    } else {
+        val result2 = wasReadList.toObjects(SendMessageModel::class.java)
+
+        for (readMessages in result2) {
+            updateMessageInfo["wasRead"] = "true"
+
+            try {
+                FirebaseFirestore.getInstance().collection("users").document(UID)
+                    .collection("chats").document(userUID)
+                    .collection(reference).document(readMessages.documentId).update(updateMessageInfo)
+            } catch (e: Exception) {
+
+            }
         }
     }
 }

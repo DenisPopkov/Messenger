@@ -44,12 +44,11 @@ object GetMessages {
                         messagesRequestList.add(MessageModel(sentMessages, null, null, null,1, messageId))
                     }
 
+                    // Получает с БД фото
                     getSentImages(UID, UserUID)
                     getReceivedImages(UID, UserUID)
                     // Получает с БД "полученные" от другого пользователя сообщения
                     getReceivedMessages(recyclerViewAdapter, UID, UserUID, context, emojiText, startText)
-                    // Получает с БД "отправленные" фото
-//                    getSentImages(recyclerViewAdapter, UID, UserUID, context)
                 }
         }
     }
@@ -110,8 +109,10 @@ object GetMessages {
                 for (images in sentImagesRequest!!) {
                     val sentImagesHashMap = hashMapOf<String, Any>()
                     val sentImages = arrayListOf<HashMap<String, Any>>()
-                    sentImagesHashMap["image"] = images["image"].toString()
+                    sentImagesHashMap["image"] = images["image"] as ArrayList<String>
                     sentImagesHashMap["time"] = images["time"].toString()
+                    sentImagesHashMap["wasRead"] = images["wasRead"].toString()
+                    sentImagesHashMap["documentId"] = images["documentId"].toString()
                     val messageId = images["id"].toString().toInt()
                     sentImages.add(sentImagesHashMap)
                     messagesRequestList.add(MessageModel(null, null, sentImages, null,3, messageId))
@@ -133,11 +134,13 @@ object GetMessages {
                 for (images in receivedImagesRequest!!) {
                     val receivedImagesHashMap = hashMapOf<String, Any>()
                     val receivedImages = arrayListOf<HashMap<String, Any>>()
-                    receivedImagesHashMap["images"] = images["images"].toString()
+                    receivedImagesHashMap["image"] = images["image"] as ArrayList<String>
                     receivedImagesHashMap["time"] = images["time"].toString()
+                    receivedImagesHashMap["wasRead"] = images["wasRead"].toString()
+                    receivedImagesHashMap["documentId"] = images["documentId"].toString()
                     val messageId = images["id"].toString().toInt()
                     receivedImages.add(receivedImagesHashMap)
-                    messagesRequestList.add(MessageModel(null, null, null, receivedImages,3, messageId))
+                    messagesRequestList.add(MessageModel(null, null, null, receivedImages,4, messageId))
                 }
             }
     }

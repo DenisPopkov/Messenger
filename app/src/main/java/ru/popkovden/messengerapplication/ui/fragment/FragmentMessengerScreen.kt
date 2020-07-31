@@ -5,14 +5,15 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -21,6 +22,7 @@ import com.google.firebase.iid.FirebaseInstanceId
 import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.resolution
 import id.zelory.compressor.constraint.size
+import kotlinx.android.synthetic.main.send_message.view.*
 import kotlinx.android.synthetic.main.toolbar_for_messaging.view.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
@@ -37,17 +39,21 @@ import ru.popkovden.messengerapplication.model.SendMessageModel
 import ru.popkovden.messengerapplication.model.SentImageModel
 import ru.popkovden.messengerapplication.model.notification.NotificationData
 import ru.popkovden.messengerapplication.model.notification.PushNotificationModel
+import ru.popkovden.messengerapplication.ui.adapters.profile.createPost.ImageSliderRecyclerView
 import ru.popkovden.messengerapplication.utils.helper.*
 import ru.popkovden.messengerapplication.utils.helper.getData.*
 import ru.popkovden.messengerapplication.utils.helper.sharedPreferences.InfoAboutUser
+import ru.popkovden.messengerapplication.viewmodel.MessengerFragmentViewModel
 import java.io.File
 
 class FragmentMessengerScreen : Fragment() {
 
     private lateinit var binding: FragmentMessengerScreenBinding
     private val sendMessageHelper: SendMessageToUser by inject()
+    private val sendImagesHelper: SendImages by inject()
     private val infoAboutUser: InfoAboutUser by inject()
     private val getSentMessagesHelper: GetMessages by inject()
+    private val viewModel: MessengerFragmentViewModel by inject()
     private var UID = ""
     private var userPhoto = ""
     private var onlineStatus = ""
@@ -121,8 +127,12 @@ class FragmentMessengerScreen : Fragment() {
                 if (screen.contains(UID)) {
                     delay(1000)
                     readAllMessagesInChat(UID, userUID, "sentMessages")
-                    delay(2000)
+                    delay(1000)
                     readAllMessagesInChat(UID, userUID, "receivedMessages")
+                    delay(1000)
+                    readAllMessagesInChat(UID, userUID, "sentImages")
+                    delay(1000)
+                    readAllMessagesInChat(UID, userUID, "receivedImages")
                 }
             }
         }
@@ -131,6 +141,23 @@ class FragmentMessengerScreen : Fragment() {
         getSentMessagesHelper.getMessages(infoAboutUser.UID, userUID, binding.messengerScreenRecyclerView, requireContext(), binding.messageEmpty, binding.messageStart)
         val linearLayoutManager =  LinearLayoutManager(requireContext())
         binding.messengerScreenRecyclerView.layoutManager = linearLayoutManager
+
+        // Настраивает адаптер для фото
+        viewModel.currentImagesLiveData.observe(viewLifecycleOwner, Observer { images ->
+
+            val adapter = ImageSliderRecyclerView(images, requireContext(), binding.imagesRecyclerView, FragmentMessengerScreenDirections
+                .actionMessengerToZoomImagesFragment(imageSlider.toTypedArray(), 0), binding.linearLayoutCompat2.microphoneIcon)
+
+            if (adapter.imagesSliderList.size > 0) {
+                binding.imagesRecyclerView.visibility = View.VISIBLE
+                binding.bottomMessage.microphoneIcon.setImageResource(R.drawable.send_icon)
+            } else {
+                binding.imagesRecyclerView.visibility = View.GONE
+                binding.bottomMessage.microphoneIcon.setImageResource(R.drawable.microphone_icon)
+            }
+
+            binding.imagesRecyclerView.adapter = adapter
+        })
 
         binding.messengerToolbar.backToContactList.setOnClickListener {
             val action = FragmentMessengerScreenDirections.actionFragmentMessengerScreenToChat()
@@ -162,17 +189,26 @@ class FragmentMessengerScreen : Fragment() {
             }
         }
 
-        binding.bottomMessage.appCompatImageButton3.setOnClickListener {
-            if (compressImages.size == imageSlider.size) {
-                updateCollectionSize(UID, collectionSize, userUID)
-                SendImages.sendImages(UID, userUID, SentImageModel(imageSlider, getCurrentDateTime()
-                    .toString("HH:mm"), "$UID-$userUID"))
-                Log.d("efefe", "${imageSlider.size} размер")
-            }
-        }
-
         // Отправляет сообщение
         binding.bottomMessage.microphoneIcon.setOnClickListener {
+
+            viewModel.currentImagesLiveData.observe(viewLifecycleOwner, Observer {
+                if (it.size > 0) {
+                    if (viewModel.currentImagesLiveData.value!!.size == imageSlider.size) {
+                        sendImagesHelper.sendImages(UID, userUID, SentImageModel(
+                                imageSlider, getCurrentDateTime().toString("HH:mm"), "$UID-$userUID", ""))
+                        binding.imagesRecyclerView.visibility = View.GONE
+                        binding.bottomMessage.microphoneIcon.setImageResource(R.drawable.microphone_icon)
+                        updateCollectionSize(UID, collectionSize, userUID)
+
+                        PushNotificationModel(NotificationData(InfoAboutUser.userName, "Фото", InfoAboutUser.userProfileImage, userUID, screen), tokenFromContact).also {notification ->
+                            sendNotification(notification)
+                        }
+                    } else {
+                        Toast.makeText(requireContext(), resources.getString(R.string.photo_loading), Toast.LENGTH_SHORT).show()
+                    }
+                }
+            })
 
             val textInput = binding.bottomMessage.messageInput.text.toString()
 
@@ -212,6 +248,7 @@ class FragmentMessengerScreen : Fragment() {
                 for (i in 0 until count) {
                     val uri = data.clipData!!.getItemAt(i).uri.toString()
                     list.add(uri)
+                    viewModel.addAll(list)
                 }
 
                 CoroutineScope(IO).launch {
@@ -226,12 +263,13 @@ class FragmentMessengerScreen : Fragment() {
 
                         compressImages.add(Uri.fromFile(compressedImageFile).toString())
                     }
+
+                    viewModel.addAll(compressImages)
                 }
 
             } else if (data?.data != null) { // Для одного элемента
 
                 val uri = data.data.toString()
-                Log.d("efefe", uri.toString())
 
                 list.add(uri)
 
@@ -241,6 +279,7 @@ class FragmentMessengerScreen : Fragment() {
                         size(1_097_152) // 1 MB
                     }
                     compressImages.add(Uri.fromFile(compressedImageFile).toString())
+                    viewModel.addAll(compressImages)
                 }
             }
         }

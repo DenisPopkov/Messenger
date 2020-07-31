@@ -6,12 +6,11 @@ import androidx.lifecycle.ViewModel
 
 class MessengerFragmentViewModel : ViewModel() {
 
-    private val messagesLiveData = MutableLiveData<ArrayList<HashMap<String, Any>>>()
-    val currentMessagesLiveData: LiveData<ArrayList<HashMap<String, Any>>>
-        get() = messagesLiveData
+    private val imagesLiveData = MutableLiveData<ArrayList<String>>()
+    val currentImagesLiveData: LiveData<ArrayList<String>>
+        get() = imagesLiveData
 
-    fun getSentMessages(message: ArrayList<HashMap<String, Any>>) {
-        messagesLiveData.value?.clear()
-        messagesLiveData.postValue(message)
+    fun addAll(imagesList: ArrayList<String>) {
+        imagesLiveData.postValue(imagesList)
     }
 }

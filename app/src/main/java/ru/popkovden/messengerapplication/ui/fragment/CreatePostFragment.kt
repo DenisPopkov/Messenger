@@ -179,7 +179,8 @@ class CreatePostFragment : Fragment() {
 
             1 -> {
                 getDataFromExternal(resultCode, data, imageSlider)
-                mergeAdapter.addAdapter(ImageSliderRecyclerView(imageSlider, requireContext()))
+                mergeAdapter.addAdapter(ImageSliderRecyclerView(imageSlider, requireContext(), binding.imagesListViewPager,
+                CreatePostFragmentDirections.actionCreatePostToZoomImagesFragment(imageSlider.toTypedArray(), 0), null))
             }
 
             2 -> {

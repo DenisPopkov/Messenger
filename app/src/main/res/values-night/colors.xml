@@ -18,6 +18,7 @@
     <color name="white_color_for_text">#FFFFFF</color>
     <color name="bottom_navigation_color">#2C2D2F</color>
     <color name="drawer_color">#131313</color>
+    <color name="exit_icon">#FFFFFF</color>
 
     //UI colors
     <color name="statusBarColor">#000000</color>
@@ -39,6 +40,9 @@
     <color name="messageInput">#FFFFFF</color>
     <color name="messageSentTimeColor">#898989</color>
     <color name="view_color">#2C2D2F</color>
+
+    //functional panel
+    <color name="panel_color">#191919</color>
 
     //BottomSheet
     <color name="bottomMessengerSheet">#2C2D2F</color>

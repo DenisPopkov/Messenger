@@ -1,6 +1,7 @@
 package ru.popkovden.messengerapplication.data.repository.posts
 
 import android.net.Uri
+import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -43,8 +44,10 @@ object CreatePost {
                 result.addOnSuccessListener { uri ->
 
                     imageHelper.add(uri.toString())
+                    Log.d("efefe", "result post - $uri")
                 }.addOnCompleteListener {
                     if (postInfo.postImages.size == imageHelper.size) {
+                        Log.d("efefe", "okay")
                         sendPost(postInfo, UID, contactsFriendList)
                         updatePhotoCount(UID, imageHelper.size, previousPhotoCount)
                     }

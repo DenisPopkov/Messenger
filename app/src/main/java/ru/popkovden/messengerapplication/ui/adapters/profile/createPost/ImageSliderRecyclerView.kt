@@ -5,13 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageButton
+import androidx.navigation.NavDirections
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.ui.fragment.CreatePostFragment.Companion.compressImages
 
-class ImageSliderRecyclerView(private val imagesSliderList: ArrayList<String>, val context: Context) : RecyclerView.Adapter<ImageSliderViewHolder>() {
+class ImageSliderRecyclerView(val imagesSliderList: ArrayList<String>, val context: Context, val recyclerView: RecyclerView, val direction: NavDirections, val imageButton: AppCompatImageButton?) : RecyclerView.Adapter<ImageSliderViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageSliderViewHolder =
         ImageSliderViewHolder(
             LayoutInflater.from(parent.context)
@@ -24,10 +26,19 @@ class ImageSliderRecyclerView(private val imagesSliderList: ArrayList<String>, v
         val currentPosition = imagesSliderList[position]
         Glide.with(context).load(currentPosition).into(holder.imageSlider)
 
+        holder.imageSlider.setOnClickListener {
+            Navigation.findNavController(it).navigate(direction)
+        }
+
         holder.deleteImage.setOnClickListener {
             imagesSliderList.removeAt(position)
             compressImages = imagesSliderList
             notifyDataSetChanged()
+
+            if (imagesSliderList.size <= 0) {
+                recyclerView.visibility = View.GONE
+                imageButton?.setImageResource(R.drawable.microphone_icon)
+            }
         }
     }
 }

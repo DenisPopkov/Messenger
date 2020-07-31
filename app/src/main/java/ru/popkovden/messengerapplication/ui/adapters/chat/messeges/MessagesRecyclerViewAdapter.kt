@@ -1,18 +1,17 @@
 package ru.popkovden.messengerapplication.ui.adapters.chat.messeges
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.received_image_message_item.view.*
 import kotlinx.android.synthetic.main.received_messages.view.*
 import kotlinx.android.synthetic.main.sent_image_message_item.view.*
 import kotlinx.android.synthetic.main.sent_messages.view.*
 import ru.popkovden.messengerapplication.R
 import ru.popkovden.messengerapplication.model.MessageModel
+
 
 const val CONTENT_TYPE_SENT_MESSAGE = 1
 const val CONTENT_TYPE_RECEIVED_MESSAGE = 2
@@ -53,13 +52,14 @@ class MessagesRecyclerViewAdapter(var sentMessageList: List<MessageModel>, val c
     inner class SentImagesMessage(itemView: View): RecyclerView.ViewHolder(itemView) {
         fun bind(model: MessageModel) {
 
-            try {
-                for (image in model.sentImages!!) {
-                    Log.d("efefe", image["image"].toString())
-                    Glide.with(context).load(image["image"]).into(itemView.sentImage)
-                }
-            } catch (e: Exception) {
+            for (i in model.sentImages!!) {
+                val list = i["image"] as ArrayList<String>
+                itemView.indicatorTime.text = i["time"].toString()
+                itemView.viewPagerMessengerSentImages.adapter = ImagesViewPager(list, context)
 
+                if (i["wasRead"] == "true") {
+                    itemView.readStatusSent.visibility = View.GONE
+                }
             }
         }
     }
@@ -67,12 +67,14 @@ class MessagesRecyclerViewAdapter(var sentMessageList: List<MessageModel>, val c
     inner class ReceivedImagesMessage(itemView: View): RecyclerView.ViewHolder(itemView) {
         fun bind(model: MessageModel) {
 
-            try {
-                for (image in model.receivedImages!!) {
-                    Glide.with(context).load(image["image"].toString()).into(itemView.receivedImage)
-                }
-            }catch (e: Exception) {
+            for (i in model.receivedImages!!) {
+                val list = i["image"] as ArrayList<String>
+                itemView.indicatorTimeReceived.text = i["time"].toString()
+                itemView.viewPagerMessengerReceivedImages.adapter = ImagesViewPager(list, context)
 
+                if (i["wasRead"] == "true") {
+                    itemView.readStatusReceived.visibility = View.GONE
+                }
             }
         }
     }
@@ -101,6 +103,8 @@ class MessagesRecyclerViewAdapter(var sentMessageList: List<MessageModel>, val c
     override fun getItemCount(): Int = sentMessageList.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
+        val currentPosition = sentMessageList[position]
 
         when {
             getItemViewType(position) == CONTENT_TYPE_SENT_MESSAGE -> {

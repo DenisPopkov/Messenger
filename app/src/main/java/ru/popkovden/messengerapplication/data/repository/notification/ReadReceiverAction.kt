@@ -16,7 +16,13 @@ class ReadReceiverAction : BroadcastReceiver() {
         CoroutineScope(IO).launch {
             val UID = intent.getStringExtra("UID")!!
             val userUID = intent.getStringExtra("userUID")!!
-            readAllMessagesInChat(UID, userUID, "receivedMessages")
+            val messageFromNotification = intent.getStringExtra("messageFromNotification")!!
+
+            if (messageFromNotification == "Фото") {
+                readAllMessagesInChat(UID, userUID, "receivedImages")
+            } else {
+                readAllMessagesInChat(UID, userUID, "receivedMessages")
+            }
         }
 
         val notificationManager = context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

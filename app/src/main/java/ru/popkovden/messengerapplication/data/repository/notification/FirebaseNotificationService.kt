@@ -25,6 +25,7 @@ class FirebaseNotificationService : FirebaseMessagingService() {
     private var canReceive = true
     private lateinit var notificationManager: NotificationManager
     private var userUID = ""
+    private var messageFromNotification = ""
 
     companion object {
         var sharedPreferences: SharedPreferences? = null
@@ -59,6 +60,7 @@ class FirebaseNotificationService : FirebaseMessagingService() {
         }
 
         userUID = message.data["userUID"].toString()
+        messageFromNotification = message.data["message"].toString()
 
         // Если пользователь, которому отправляется уведомление находиться в диалоге, уведомление не придет
         if (message.data["screenStatus"]!!.contains("MessengerScreen")) {
@@ -93,6 +95,7 @@ class FirebaseNotificationService : FirebaseMessagingService() {
         }
     }
 
+
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
@@ -116,6 +119,7 @@ class FirebaseNotificationService : FirebaseMessagingService() {
         readIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         readIntent.putExtra("UID", InfoAboutUser.UID)
         readIntent.putExtra("userUID", userUID)
+        readIntent.putExtra("messageFromNotification", messageFromNotification)
         val readPendingIntent = PendingIntent.getBroadcast(applicationContext, 0,
             readIntent, FLAG_ONE_SHOT)
 

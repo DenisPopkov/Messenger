@@ -18,6 +18,7 @@
     <color name="white_color_for_text">#FFFFFF</color>
     <color name="bottom_navigation_color">#FFFFFF</color>
     <color name="drawer_color">#FFFFFF</color>
+    <color name="exit_icon">#03B3FF</color>
 
     //UI colors
     <color name="statusBarColor">#03B3FF</color>
@@ -43,6 +44,9 @@
     //BottomSheet
     <color name="bottomMessengerSheet">#FFFFFF</color>
     <color name="bottomButtonColor">#FFFFFF</color>
+
+    //functional panel
+    <color name="panel_color">#FFFFFF</color>
 
     //BottomSheetElips
     <color name="camera_elips">#D8F6FB</color>

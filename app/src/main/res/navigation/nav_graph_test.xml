@@ -64,6 +64,9 @@
             android:name="UserPhoto"
             app:argType="string"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_messenger_to_zoomImagesFragment"
+            app:destination="@id/zoomImagesFragment" />
     </fragment>
     <fragment
         android:id="@+id/contactsFragment"
@@ -85,6 +88,9 @@
         <action
             android:id="@+id/action_createPost_to_account"
             app:destination="@id/account" />
+        <action
+            android:id="@+id/action_createPost_to_zoomImagesFragment"
+            app:destination="@id/zoomImagesFragment" />
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
